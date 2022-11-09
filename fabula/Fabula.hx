@@ -1,5 +1,6 @@
 package fabula;
 
+import fabula.condition.ConditionFactory;
 import haxe.ds.StringMap;
 
 enum EEventType
@@ -17,6 +18,10 @@ enum EPlayingType
 
 class Fabula
 {
+	// list of achieved event/dialog
+	public var achievedListID(default, null):Array<String>;
+	public var conditionFactory(default, null):ConditionFactory;
+
 	// Different lists are stored so you can pick up an event/dial on a particular list or from all:
 	// quest list is a special list for main events
 	var _questsID:Array<String>;
@@ -24,9 +29,6 @@ class Fabula
 	var _encountersID:Array<String>;
 	// small part of texts that you can merge in a event/dialog randomly
 	var _textsID:Array<String>;
-
-	// list of achieved event/dialog
-	public var achievedListID(default, null):Array<String>;
 
 	var _sequences:Array<Sequence>;
 	var _randomEncounters:Array<Event>;
@@ -44,6 +46,7 @@ class Fabula
 		_encountersID = [];
 		_textsID = [];
 		achievedListID = [];
+		conditionFactory = new ConditionFactory();
 
 		_sequences = [];
 
@@ -56,7 +59,7 @@ class Fabula
 	function init(raw:String):Void
 	{
 		// TODO JSON parser?
-		var elements = FabulaXmlParser.parse(raw);
+		var elements = FabulaXmlParser.parse(raw, conditionFactory);
 		arrayMerge(_sequences, elements.sequences);
 	}
 

@@ -1,5 +1,7 @@
 package fabula;
 
+import fabula.condition.ConditionFactory;
+import fabula.condition.Variable.EVariableType;
 import haxe.ds.StringMap;
 import haxe.xml.Access;
 
@@ -12,8 +14,12 @@ class FabulaXmlParser
 	public static var ID_GEN_HELPER:String;
 	public static var ID_GEN_COUNT:Int;
 
-	public static function parse(raw:String):{sequences:Array<Sequence>}
+	static var _conditionFactory:ConditionFactory;
+
+	public static function parse(raw:String, conditionFactory:ConditionFactory):{sequences:Array<Sequence>}
 	{
+		_conditionFactory = conditionFactory;
+
 		_xml = new Access(Xml.parse(raw).firstElement());
 
 		var sequences:Array<Sequence> = [];
@@ -38,9 +44,10 @@ class FabulaXmlParser
 				switch (key.name)
 				{
 					case "variable":
-						seq.addVariable(key.att.id, key.att.type, key.att.value);
+						seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
+							key.att.value);
 					case "event":
-						event = new Event(key.getString("id", ID_GEN_HELPER + "_" + ++ID_GEN_COUNT),
+						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT),
 							key.getString("text"), key.getInt("weight", 1), key.getBool("once", false),
 							key.getString("speaker"), key.getString("listeners"), key.getString("environment"));
 
@@ -49,9 +56,10 @@ class FabulaXmlParser
 							// id:String, text:String, type:String, target:String, exit:Bool
 							for (choice in key.nodes.choice)
 							{
-								event.addChoice(new Choice(choice.getString("id", ID_GEN_HELPER + "_" + ++ID_GEN_COUNT),
-									choice.getString("text"), choice.getString("type"), choice.getString("condition"),
-									choice.getString("target"),
+								event.addChoice(new Choice(choice.getString("id",
+									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
+									choice.getString("text"), choice.getString("type"),
+									_conditionFactory.create(choice.getString("if")), choice.getString("target"),
 									choice.has.target ? false : !(choice.hasNode.event || choice.hasNode.fight)));
 							}
 						}
@@ -62,9 +70,9 @@ class FabulaXmlParser
 							trace("impossible to add a choice without a parent event");
 							break;
 						}
-						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_" + ++ID_GEN_COUNT),
-							key.getString("text"), key.getString("type"), key.getString("condition"),
-							key.getString("target"),
+						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
+							key.getString("text"), key.getString("type"),
+							_conditionFactory.create(key.getString("if")), key.getString("target"),
 							key.has.target ? false : !(key.hasNode.event || key.hasNode.fight)));
 				}
 			}

@@ -1,5 +1,8 @@
 package fabula;
 
+import fabula.condition.ConditionCollection;
+import fabula.condition.ConditionFactory;
+
 class Event
 {
 	/**
@@ -49,7 +52,7 @@ class Event
 	 */
 	public var choices:Array<Choice>;
 
-	public var conditions:Array<Condition>;
+	public var conditions:ConditionCollection;
 
 	/**
 	 * 
@@ -69,6 +72,8 @@ class Event
 		this.speaker = speaker;
 		this.listeners = listeners;
 		this.environment;
+
+		ConditionFactory.helperList.set(this.id, EVENT);
 	}
 
 	public function addChoice(choice:Choice)

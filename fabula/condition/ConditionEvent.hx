@@ -6,19 +6,19 @@ package fabula.condition;
  */
 class ConditionEvent extends Condition<String>
 {
-	var _manager:Fabula;
+	var _achievedListID:Array<String>;
 	var _affirmation:Bool;
 
-	public function new(manager:Fabula, condition:String, affirmation:Bool = true)
+	public function new(condition:String, achievedListID:Array<String>, affirmation:Bool = true)
 	{
 		_affirmation = affirmation;
-		_manager = manager;
+		_achievedListID = achievedListID;
 		super(condition, EVENT);
 	}
 
 	override public function test():Bool
 	{
-		for (id in _manager.achievedListID)
+		for (id in _achievedListID)
 		{
 			if (id == condition)
 				return _affirmation;

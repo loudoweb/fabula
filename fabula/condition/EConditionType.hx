@@ -6,13 +6,13 @@ package fabula.condition;
  */
 enum EConditionType
 {
-	INVENTORY;
 	EVENT;
+	VARIABLE;
+	INVENTORY;
 	HAS_CHARACTER;
 	IS_CHARACTER;
 	TRAIT;
 	ATTRIBUTS;
 	SKILLS;
-	VARIABLE;
 	CUSTOM(type:String);
 }

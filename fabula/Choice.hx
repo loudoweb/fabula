@@ -1,5 +1,8 @@
 package fabula;
 
+import fabula.condition.ConditionCollection;
+import fabula.condition.ConditionFactory;
+
 /**
  * ...
  * @author Loudo
@@ -23,14 +26,15 @@ class Choice
 	/**
 	 * If a condition is set, the choice will appear only if criteria is met
 	 */
-	public var condition:String;
+	public var condition:ConditionCollection;
 
 	/**
 	 * If there is no outcome set, it should exit the event, or select the next event in the sequence
 	 */
 	public var isExit:Bool;
 
-	public function new(id:String, text:String, type:String, ?condition:String, ?target:String, ?exit:Bool = false)
+	public function new(id:String, text:String, type:String, ?condition:ConditionCollection, ?target:String,
+			?exit:Bool = false)
 	{
 		this.id = id;
 		this.text = text != "" && text != null ? text : id;
@@ -38,5 +42,7 @@ class Choice
 		this.target = target;
 		this.condition = condition;
 		this.isExit = exit;
+
+		ConditionFactory.helperList.set(this.id, EVENT);
 	}
 }

@@ -1,9 +1,16 @@
 package fabula;
 
+import haxe.macro.Expr.Case;
+import fabula.condition.Variable.EVariableType;
+import fabula.condition.VariableCollection;
+import fabula.condition.VariableString;
+import fabula.condition.VariableInt;
+import fabula.condition.VariableFloat;
+
 class Sequence
 {
 	public var id:String;
-	public var variables:Array<Variable>;
+	public var variables:VariableCollection;
 	public var sequence:Array<Event>;
 
 	public var current:Int;
@@ -16,11 +23,19 @@ class Sequence
 		numCompleted = 0;
 	}
 
-	public function addVariable(id:String, type:String, startingValue:String)
+	public function addVariable(id:String, type:EVariableType, startingValue:String)
 	{
 		if (variables == null)
-			variables = [];
-		variables.push(new Variable(id, type, startingValue));
+			variables = new VariableCollection();
+		switch (type)
+		{
+			case STRING:
+				variables.push(new VariableString(id, startingValue));
+			case INT:
+				variables.push(new VariableInt(id, startingValue));
+			case FLOAT:
+				variables.push(new VariableFloat(id, startingValue));
+		}
 	}
 
 	public function addSequence(sequence:Array<Event>)
