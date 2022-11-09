@@ -54,17 +54,20 @@ class Event
 
 	public var conditions:ConditionCollection;
 
+	var _cacheChoices:Array<Choice>;
+
 	/**
 	 * 
 	 * @param id id of the event
 	 * @param text text of the event
 	 * @param once Can be played only once
 	 */
-	public function new(id:String, text:String, weight:Int = 1, once:Bool = false, ?speaker:String, ?listeners:String,
-			?environment:String)
+	public function new(id:String, text:String, ?conditions:ConditionCollection, weight:Int = 1, once:Bool = false,
+			?speaker:String, ?listeners:String, ?environment:String)
 	{
 		this.id = id;
 		this.text = text;
+		this.conditions = conditions;
 
 		this.once = once;
 		this.count = 0;
@@ -76,10 +79,25 @@ class Event
 		ConditionFactory.helperList.set(this.id, EVENT);
 	}
 
+	public function getChoices():Array<Choice>
+	{
+		_cacheChoices = []; // TODO empty
+		for (i in 0...choices.length)
+		{
+			if (choices[i].condition.test())
+				_cacheChoices.push(choices[i]);
+		}
+		// TODO default continue choice
+		return _cacheChoices;
+	}
+
 	public function addChoice(choice:Choice)
 	{
 		if (choices == null)
+		{
 			choices = [];
+			_cacheChoices = [];
+		}
 		choices.push(choice);
 	}
 }
