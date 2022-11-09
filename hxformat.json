@@ -1,0 +1,36 @@
+{
+  "lineEnds": {
+    "leftCurly": "both",
+    "rightCurly": "both",
+    "objectLiteralCurly": {
+      "leftCurly": "after"
+    },
+    "emptyCurly": "noBreak"
+  },
+  "sameLine": {
+    "ifElse": "keep",
+    "doWhile": "next",
+    "tryBody": "next",
+    "tryCatch": "next"
+  },
+  "indentation": {
+    "character": "tab"
+  },
+  "wrapping": {
+    "methodChain": {
+      "defaultWrap": "fillLine",
+      "defaultLocation": "afterLast",
+      "rules": []
+    },
+    "maxLineLength": 120
+  },
+  "whitespace": {
+    "parenConfig": {
+      "funcParamParens": {
+        "openingPolicy": "noneBefore",
+        "closingPolicy": "none",
+        "removeInnerWhenEmpty": true
+      }
+    }
+  }
+}
