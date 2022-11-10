@@ -64,7 +64,11 @@ class Sequence
 			current++;
 			if (current < sequence.length)
 			{
-				return sequence[current];
+				var nextSeq = sequence[current];
+				if (nextSeq.testConditions())
+					return nextSeq;
+				else
+					return getNextEvent();
 			} else
 			{
 				numCompleted++;

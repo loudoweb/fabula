@@ -91,6 +91,13 @@ class Event
 		return _cacheChoices;
 	}
 
+	public function testConditions():Bool
+	{
+		if (conditions == null)
+			return true;
+		return conditions.test();
+	}
+
 	public function addChoice(choice:Choice)
 	{
 		if (choices == null)

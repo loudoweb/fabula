@@ -48,8 +48,9 @@ class FabulaXmlParser
 							key.att.value);
 					case "event":
 						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT),
-							key.getString("text"), key.getInt("weight", 1), key.getBool("once", false),
-							key.getString("speaker"), key.getString("listeners"), key.getString("environment"));
+							key.getString("text"), _conditionFactory.create(key.getString("if")),
+							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
+							key.getString("listeners"), key.getString("environment"));
 
 						if (key.hasNode.choice)
 						{

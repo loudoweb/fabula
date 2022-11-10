@@ -31,6 +31,12 @@ class Variable<T>
 		return false;
 	}
 
+	public function convert(value:String):T
+	{
+		throw "[Fabula > variable] This method needs to be overriden";
+		return null;
+	}
+
 	public function reset()
 	{
 		this.value = this.startingValue;

@@ -17,4 +17,9 @@ class VariableInt extends Variable<Int>
 			return true;
 		return false;
 	}
+
+	override function convert(value:String):Int
+	{
+		return Std.parseInt(value);
+	}
 }

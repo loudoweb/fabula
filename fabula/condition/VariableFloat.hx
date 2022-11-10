@@ -17,4 +17,9 @@ class VariableFloat extends Variable<Float>
 			return true;
 		return false;
 	}
+
+	override function convert(value:String):Float
+	{
+		return Std.parseFloat(value);
+	}
 }

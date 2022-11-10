@@ -17,4 +17,9 @@ class VariableString extends Variable<String>
 			return true;
 		return false;
 	}
+
+	override function convert(value:String):String
+	{
+		return value;
+	}
 }

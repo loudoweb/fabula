@@ -13,10 +13,18 @@ class ConditionFactory
 	 */
 	static public var helperList = new StringMap<EConditionType>();
 
-	static public var fabula:Fabula;
+	public var fabula:Fabula;
 
-	public function new() {}
+	public function new(fabula:Fabula)
+	{
+		this.fabula = fabula;
+	}
 
+	/**
+	 * Creates a collection of conditions for an event or a choice. That could be also use outside the event/dialogue system.
+	 * @param raw String from xml that describes the condition
+	 * @return ConditionCollection
+	 */
 	public function create(raw:String):ConditionCollection
 	{
 		var values:Array<String>;
@@ -55,18 +63,28 @@ class ConditionFactory
 	function addToCollection(collection:ConditionCollection, value:String):Void
 	{
 		// handle negative
-		var affirmation = value.indexOf('!') == 0;
-		if (!affirmation)
+		var negation = value.indexOf('!') == 0;
+		if (negation)
 			value = value.substr(1);
-		// TODO find among all existing elements of the game built by xml what kind of condition is it using a helper list?
+
+		var vdec = value.split("=");
+		var match = value;
+		if (vdec.length > 1)
+		{
+			value = vdec[0];
+			match = vdec[1];
+		}
+
 		if (helperList.exists(value))
 		{
 			switch (helperList.get(value))
 			{
 				case EVENT:
-					collection.add(new ConditionEvent(value, fabula.achievedListID, affirmation));
+					collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
 				case VARIABLE:
-					collection.add(new ConditionVariable(value, null, affirmation)); // TODO
+					trace(fabula.achievedListID);
+					trace(fabula.getVar);
+					collection.add(new ConditionVariable(value, match, fabula.getVar, !negation)); // TODO
 				default:
 					throw "[Fabula > Condition] To use other condition type, please override ConditionFactory class and create a Condition class for this type";
 			}

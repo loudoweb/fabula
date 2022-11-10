@@ -1,5 +1,6 @@
 package fabula;
 
+import fabula.condition.Variable;
 import fabula.condition.ConditionFactory;
 import haxe.ds.StringMap;
 
@@ -46,7 +47,7 @@ class Fabula
 		_encountersID = [];
 		_textsID = [];
 		achievedListID = [];
-		conditionFactory = new ConditionFactory();
+		conditionFactory = new ConditionFactory(this);
 
 		_sequences = [];
 
@@ -93,5 +94,10 @@ class Fabula
 				return _sequences[i];
 		}
 		return null;
+	}
+
+	public function getVar(name:String):Variable<Dynamic>
+	{
+		return _sequences[0].variables.get(name);
 	}
 }

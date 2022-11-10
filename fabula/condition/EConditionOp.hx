@@ -3,7 +3,7 @@ package fabula.condition;
 /**
  * @author Loudo
  */
-@:enum abstract EConditionOp(String) from String to String
+@:enum abstract EConditionOp(String)
 {
 	public var GREATER = ">";
 	public var LOWER = "<";
@@ -13,4 +13,30 @@ package fabula.condition;
 	public var DIFFERENT = "!";
 	public var NOT_IN = "!in";
 	public var IN = "in";
+
+	@:from
+	static public function fromString(s:String)
+	{
+		switch (s)
+		{
+			case ">":
+				return GREATER;
+			case "<":
+				return LOWER;
+			case ">=":
+				return GREATER_EQUAL;
+			case "<=":
+				return LOWER_EQUAL;
+			case "=":
+				return EQUAL;
+			case "!":
+				return DIFFERENT;
+			case "!in":
+				return NOT_IN;
+			case "in":
+				return IN;
+			default:
+				return null;
+		}
+	}
 }
