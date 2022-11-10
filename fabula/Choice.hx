@@ -29,7 +29,7 @@ class Choice
 	public var condition:ConditionCollection;
 
 	/**
-	 * If there is no outcome set, it should exit the event, or select the next event in the sequence
+	 * A choice can exit the sequence
 	 */
 	public var isExit:Bool;
 

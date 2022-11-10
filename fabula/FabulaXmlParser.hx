@@ -49,8 +49,8 @@ class FabulaXmlParser
 					case "event":
 						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT),
 							key.getString("text"), _conditionFactory.create(key.getString("if")),
-							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
-							key.getString("listeners"), key.getString("environment"));
+							key.getBool("exit", false), key.getInt("weight", 1), key.getBool("once", false),
+							key.getString("speaker"), key.getString("listeners"), key.getString("environment"));
 
 						if (key.hasNode.choice)
 						{
@@ -61,8 +61,10 @@ class FabulaXmlParser
 									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 									choice.getString("text"), choice.getString("type"),
 									_conditionFactory.create(choice.getString("if")), choice.getString("target"),
-									!(choice.has.target || choice.hasNode.event || choice.hasNode.fight
-										|| choice.getBool("exit", false))));
+									choice.getBool("exit", false)));
+
+								// TODO child event using recursivity method (then replace parent target with child id + add parent id in child if)
+								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
 							}
 						}
 						events.push(event);
@@ -75,7 +77,7 @@ class FabulaXmlParser
 						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 							key.getString("text"), key.getString("type"),
 							_conditionFactory.create(key.getString("if")), key.getString("target"),
-							!(key.has.target || key.hasNode.event || key.hasNode.fight || key.getBool("exit", false))));
+							key.getBool("exit", false)));
 				}
 			}
 

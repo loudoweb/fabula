@@ -57,8 +57,22 @@ class Sequence
 		return sequence[0];
 	}
 
-	public function getNextEvent():Event
+	/**
+	 * Call this method to get the next method (apply conditions and exit)
+	 * @param ignoreExit use internally, don't use
+	 * @return Event
+	 */
+	public function getNextEvent(ignoreExit:Bool = false):Event
 	{
+		if (!ignoreExit)
+		{
+			if (sequence[current].isExit)
+			{
+				numCompleted++;
+				trace("sequence completed");
+				return null;
+			}
+		}
 		if (current + 1 <= sequence.length)
 		{
 			current++;
@@ -68,7 +82,7 @@ class Sequence
 				if (nextSeq.testConditions())
 					return nextSeq;
 				else
-					return getNextEvent();
+					return getNextEvent(true);
 			} else
 			{
 				numCompleted++;
@@ -78,6 +92,12 @@ class Sequence
 		return null;
 	}
 
+	/**
+	 * Jump to a specific event (usually because a choice has a specific target event set)
+	 * @param index index of the event in the sequence (from save? debug?)
+	 * @param id id of the event (choice target)
+	 * @return Event
+	 */
 	public function getEvent(?index:Int, ?id:String):Event
 	{
 		if (index == null)
