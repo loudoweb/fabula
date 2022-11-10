@@ -107,6 +107,21 @@ class Event
 		return _cacheChoices;
 	}
 
+	public function selectChoice(?index:Int, ?id:String):Choice
+	{
+		if (index != null)
+			return _cacheChoices[index];
+		else if (id != null)
+		{
+			for (i in 0...choices.length)
+			{
+				if (choices[i].id == id)
+					return choices[i];
+			}
+		}
+		return null;
+	}
+
 	public function testConditions():Bool
 	{
 		if (conditions == null)

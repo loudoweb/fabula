@@ -11,15 +11,18 @@ class Sequence
 {
 	public var id:String;
 	public var variables:VariableCollection;
-	public var sequence:Array<Event>;
+	public var events:Array<Event>;
 
 	public var current:Int;
 	public var numCompleted:Int;
 
-	public function new(id:String)
+	var _achievedListID:Array<String>;
+
+	public function new(id:String, achievedListID:Array<String>)
 	{
 		this.id = id;
-		current = 0;
+		this._achievedListID = achievedListID;
+		current = -1;
 		numCompleted = 0;
 	}
 
@@ -38,23 +41,21 @@ class Sequence
 		}
 	}
 
-	public function addSequence(sequence:Array<Event>)
+	public function addSequence(events:Array<Event>)
 	{
-		if (this.sequence != null)
+		if (this.events != null)
 			trace("WARNING a new sequence will replace an old sequence");
-		this.sequence = sequence;
+		this.events = events;
 	}
 
-	public function start():Event
+	public function start():Void
 	{
-		current = 0;
+		current = -1;
 
 		for (i in 0...variables.length)
 		{
 			variables[i].reset();
 		}
-
-		return sequence[0];
 	}
 
 	/**
@@ -64,24 +65,26 @@ class Sequence
 	 */
 	public function getNextEvent(ignoreExit:Bool = false):Event
 	{
-		if (!ignoreExit)
+		if (!ignoreExit && current > -1)
 		{
-			if (sequence[current].isExit)
+			if (events[current].isExit)
 			{
 				numCompleted++;
 				trace("sequence completed");
 				return null;
 			}
 		}
-		if (current + 1 <= sequence.length)
+		if (current + 1 <= events.length)
 		{
 			current++;
-			if (current < sequence.length)
+			if (current < events.length)
 			{
-				var nextSeq = sequence[current];
-				if (nextSeq.testConditions())
-					return nextSeq;
-				else
+				var nextEvent = events[current];
+				if (nextEvent.testConditions())
+				{
+					_achievedListID.push(nextEvent.id);
+					return nextEvent;
+				} else
 					return getNextEvent(true);
 			} else
 			{
@@ -103,15 +106,15 @@ class Sequence
 		if (index == null)
 			index = current;
 		if (id == null)
-			return sequence[current];
+			return events[current];
 		else
 		{
-			for (i in 0...sequence.length)
+			for (i in 0...events.length)
 			{
-				if (sequence[i].id == id)
+				if (events[i].id == id)
 				{
 					current = i;
-					return sequence[i];
+					return events[i];
 				}
 			}
 		}

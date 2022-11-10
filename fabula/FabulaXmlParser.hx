@@ -16,7 +16,8 @@ class FabulaXmlParser
 
 	static var _conditionFactory:ConditionFactory;
 
-	public static function parse(raw:String, conditionFactory:ConditionFactory):{sequences:Array<Sequence>}
+	public static function parse(raw:String, conditionFactory:ConditionFactory,
+			achievedListID:Array<String>):{sequences:Array<Sequence>}
 	{
 		_conditionFactory = conditionFactory;
 
@@ -37,7 +38,7 @@ class FabulaXmlParser
 
 			var events:Array<Event> = [];
 			var event:Event = null;
-			var seq = new Sequence(seqName);
+			var seq = new Sequence(seqName, achievedListID);
 
 			for (key in sequence.elements)
 			{

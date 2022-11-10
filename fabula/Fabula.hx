@@ -23,7 +23,7 @@ class Fabula
 	public var achievedListID(default, null):Array<String>;
 	public var conditionFactory(default, null):ConditionFactory;
 
-	public var currentSequenceId(default, null):String;
+	public var currentSequence(default, null):Sequence;
 
 	// Different lists are stored so you can pick up an event/dial on a particular list or from all:
 	// quest list is a special list for main events
@@ -62,7 +62,7 @@ class Fabula
 	function init(raw:String):Void
 	{
 		// TODO JSON parser?
-		var elements = FabulaXmlParser.parse(raw, conditionFactory);
+		var elements = FabulaXmlParser.parse(raw, conditionFactory, achievedListID);
 		arrayMerge(_sequences, elements.sequences);
 	}
 
@@ -88,26 +88,50 @@ class Fabula
 		}
 	}
 
-	public function getSequence(id:String, updateCurrentSequence:Bool = true):Sequence
+	public function selectSequence(id:String, start:Bool = true):Sequence
 	{
 		for (i in 0..._sequences.length)
 		{
 			if (_sequences[i].id == id)
 			{
-				if (updateCurrentSequence)
-					currentSequenceId = id;
-				return _sequences[i];
+				var seq = _sequences[i];
+				if (start)
+				{
+					currentSequence = seq;
+					currentSequence.start();
+				}
+				return seq;
 			}
 		}
 		return null;
 	}
 
+	public function getNextEvent():Event
+	{
+		return currentSequence.getNextEvent();
+	}
+
+	public function getCurrentEvent():Event
+	{
+		return currentSequence.events[currentSequence.current];
+	}
+
+	public function selectChoice(?choice:Choice, ?id:String)
+	{
+		if(choice == null)
+			choice = currentSequence.events[currentSequence.current].selectChoice(id);
+		if (choice != null)
+		{
+			achievedListID.push(id);
+			// TODO variables
+		}
+	}
+
 	public function getVar(name:String):Variable<Dynamic>
 	{
-		var seq = getSequence(currentSequenceId, false);
-		if (seq != null)
+		if (currentSequence != null)
 		{
-			var vari = seq.variables.get(name);
+			var vari = currentSequence.variables.get(name);
 			if (vari != null)
 				return vari;
 			// TODO global vars

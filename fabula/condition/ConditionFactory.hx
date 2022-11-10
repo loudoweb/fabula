@@ -82,9 +82,7 @@ class ConditionFactory
 				case EVENT:
 					collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
 				case VARIABLE:
-					trace(fabula.achievedListID);
-					trace(fabula.getVar);
-					collection.add(new ConditionVariable(value, match, fabula.getVar, !negation)); // TODO
+					collection.add(new ConditionVariable(value, match, fabula.getVar, !negation));
 				default:
 					throw "[Fabula > Condition] To use other condition type, please override ConditionFactory class and create a Condition class for this type";
 			}
