@@ -23,6 +23,8 @@ class Fabula
 	public var achievedListID(default, null):Array<String>;
 	public var conditionFactory(default, null):ConditionFactory;
 
+	public var currentSequenceId(default, null):String;
+
 	// Different lists are stored so you can pick up an event/dial on a particular list or from all:
 	// quest list is a special list for main events
 	var _questsID:Array<String>;
@@ -86,18 +88,32 @@ class Fabula
 		}
 	}
 
-	public function getSequence(id:String):Sequence
+	public function getSequence(id:String, updateCurrentSequence:Bool = true):Sequence
 	{
 		for (i in 0..._sequences.length)
 		{
 			if (_sequences[i].id == id)
+			{
+				if (updateCurrentSequence)
+					currentSequenceId = id;
 				return _sequences[i];
+			}
 		}
 		return null;
 	}
 
 	public function getVar(name:String):Variable<Dynamic>
 	{
-		return _sequences[0].variables.get(name);
+		var seq = getSequence(currentSequenceId, false);
+		if (seq != null)
+		{
+			var vari = seq.variables.get(name);
+			if (vari != null)
+				return vari;
+			// TODO global vars
+		}
+		return null;
 	}
+
+	public function updateVar() {}
 }
