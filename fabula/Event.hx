@@ -18,6 +18,11 @@ class Event
 	public var text:String;
 
 	/**
+	 * Determine if this event should end a sequence
+	 */
+	public var isExit:Bool;
+
+	/**
 	 * Can be played only once
 	 */
 	public var once:Bool;
@@ -62,19 +67,20 @@ class Event
 	 * @param text text of the event
 	 * @param once Can be played only once
 	 */
-	public function new(id:String, text:String, ?conditions:ConditionCollection, weight:Int = 1, once:Bool = false,
-			?speaker:String, ?listeners:String, ?environment:String)
+	public function new(id:String, text:String, conditions:ConditionCollection = null, isExit:Bool = false,
+			weight:Int = 1, once:Bool = false, ?speaker:String, ?listeners:String, ?environment:String)
 	{
 		this.id = id;
 		this.text = text;
 		this.conditions = conditions;
 
+		this.isExit = isExit;
 		this.once = once;
 		this.count = 0;
 
 		this.speaker = speaker;
 		this.listeners = listeners;
-		this.environment;
+		this.environment = environment;
 
 		ConditionFactory.helperList.set(this.id, EVENT);
 	}
@@ -87,7 +93,17 @@ class Event
 			if (choices[i].condition.test())
 				_cacheChoices.push(choices[i]);
 		}
-		// TODO default continue choice
+		// TODO use general Fabula parameter AND use random text list for the following text's choices
+		if (_cacheChoices.length == 0)
+		{
+			if (isExit)
+			{
+				_cacheChoices.push(new Choice("EXIT", "Quitter", "quit", true));
+			} else
+			{
+				_cacheChoices.push(new Choice("EXIT", "Continuer", "continue"));
+			}
+		}
 		return _cacheChoices;
 	}
 

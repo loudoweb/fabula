@@ -61,7 +61,8 @@ class FabulaXmlParser
 									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 									choice.getString("text"), choice.getString("type"),
 									_conditionFactory.create(choice.getString("if")), choice.getString("target"),
-									choice.has.target ? false : !(choice.hasNode.event || choice.hasNode.fight)));
+									!(choice.has.target || choice.hasNode.event || choice.hasNode.fight
+										|| choice.getBool("exit", false))));
 							}
 						}
 						events.push(event);
@@ -74,7 +75,7 @@ class FabulaXmlParser
 						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 							key.getString("text"), key.getString("type"),
 							_conditionFactory.create(key.getString("if")), key.getString("target"),
-							key.has.target ? false : !(key.hasNode.event || key.hasNode.fight)));
+							!(key.has.target || key.hasNode.event || key.hasNode.fight || key.getBool("exit", false))));
 				}
 			}
 
