@@ -52,9 +52,12 @@ class Sequence
 	{
 		current = -1;
 
-		for (i in 0...variables.length)
+		if (variables != null)
 		{
-			variables[i].reset();
+			for (i in 0...variables.length)
+			{
+				variables[i].reset();
+			}
 		}
 	}
 
@@ -65,7 +68,7 @@ class Sequence
 	 */
 	public function getNextEvent(ignoreExit:Bool = false):Event
 	{
-		if (!ignoreExit && current > -1)
+		if (!ignoreExit && current > -1 && current < events.length)
 		{
 			if (events[current].isExit)
 			{
