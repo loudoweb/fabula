@@ -109,14 +109,17 @@ class Event
 
 	public function selectChoice(?index:Int, ?id:String):Choice
 	{
-		if (index != null)
-			return _cacheChoices[index];
-		else if (id != null)
+		if (choices != null)
 		{
-			for (i in 0...choices.length)
+			if (index != null)
+				return _cacheChoices[index];
+			else if (id != null)
 			{
-				if (choices[i].id == id)
-					return choices[i];
+				for (i in 0...choices.length)
+				{
+					if (choices[i].id == id)
+						return choices[i];
+				}
 			}
 		}
 		return null;
