@@ -88,10 +88,13 @@ class Event
 	public function getChoices():Array<Choice>
 	{
 		_cacheChoices = []; // TODO empty
-		for (i in 0...choices.length)
+		if (choices != null)
 		{
-			if (choices[i].condition == null || choices[i].condition.test())
-				_cacheChoices.push(choices[i]);
+			for (i in 0...choices.length)
+			{
+				if (choices[i].condition == null || choices[i].condition.test())
+					_cacheChoices.push(choices[i]);
+			}
 		}
 		// TODO use general Fabula parameter AND use random text list for the following text's choices
 		if (_cacheChoices.length == 0)
