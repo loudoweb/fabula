@@ -118,6 +118,7 @@ class Fabula
 
 	public function selectChoice(?choice:Choice, ?id:String)
 	{
+		// update guard to check if sequence completed
 		if (choice == null && currentSequence != null && currentSequence.current < currentSequence.events.length)
 			choice = currentSequence.events[currentSequence.current].selectChoice(id);
 		if (choice != null)

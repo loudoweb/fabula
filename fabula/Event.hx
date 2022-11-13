@@ -90,7 +90,7 @@ class Event
 		_cacheChoices = []; // TODO empty
 		for (i in 0...choices.length)
 		{
-			if (choices[i].condition.test())
+			if (choices[i].condition == null || choices[i].condition.test())
 				_cacheChoices.push(choices[i]);
 		}
 		// TODO use general Fabula parameter AND use random text list for the following text's choices
