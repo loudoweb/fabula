@@ -104,24 +104,25 @@ class Event
 				_cacheChoices.push(new Choice("EXIT", "Quitter", "quit", true));
 			} else
 			{
-				_cacheChoices.push(new Choice("EXIT", "Continuer", "continue"));
+				_cacheChoices.push(new Choice("CONTINUE", "Continuer", "continue"));
 			}
 		}
 		return _cacheChoices;
 	}
 
-	public function selectChoice(?index:Int, ?id:String):Choice
+	public function selectChoice(?index:Int, ?id:String, selectFromAll:Bool = false):Choice
 	{
-		if (choices != null)
+		var _choiceArray = selectFromAll ? choices : _cacheChoices;
+		if (_choiceArray != null)
 		{
 			if (index != null)
-				return _cacheChoices[index];
+				return _choiceArray[index];
 			else if (id != null)
 			{
-				for (i in 0...choices.length)
+				for (i in 0..._choiceArray.length)
 				{
-					if (choices[i].id == id)
-						return choices[i];
+					if (_choiceArray[i].id == id)
+						return _choiceArray[i];
 				}
 			}
 		}

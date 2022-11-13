@@ -39,7 +39,6 @@ class FabulaXmlParser
 			var events:Array<Event> = [];
 			var event:Event = null;
 			var seq = new Sequence(seqName, achievedListID);
-
 			for (key in sequence.elements)
 			{
 				switch (key.name)
@@ -81,7 +80,20 @@ class FabulaXmlParser
 							key.getBool("exit", false)));
 				}
 			}
+			// add isExit to last event and its choices
+			if (event != null)
+			{
+				event.isExit = true;
+				if (event.choices != null)
+				{
+					for (choice in event.choices)
+					{
+						choice.isExit = true;
+					}
+				}
+			}
 
+			// add the events and the sequence
 			seq.addSequence(events);
 			sequences.push(seq);
 		}

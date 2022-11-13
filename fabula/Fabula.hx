@@ -116,7 +116,7 @@ class Fabula
 		return currentSequence.events[currentSequence.current];
 	}
 
-	public function selectChoice(?choice:Choice, ?id:String)
+	public function selectChoice(?choice:Choice, ?id:String):Choice
 	{
 		// update guard to check if sequence completed
 		if (choice == null && currentSequence != null && currentSequence.current < currentSequence.events.length)
@@ -126,6 +126,7 @@ class Fabula
 			achievedListID.push(id);
 			// TODO variables
 		}
+		return choice;
 	}
 
 	public function getVar(name:String):Variable<Dynamic>
