@@ -90,6 +90,10 @@ class ConditionFactory
 				default:
 					throw "[Fabula > Condition] To use other condition type, please override ConditionFactory class and create a Condition class for this type";
 			}
+		} else
+		{
+			// if condition doesn't exist, we use ConditionEvent by default
+			collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
 		}
 	}
 }

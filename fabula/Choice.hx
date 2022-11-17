@@ -42,7 +42,6 @@ class Choice
 		this.target = target;
 		this.condition = condition;
 		this.isExit = exit;
-		// TODO we should add to the helperList in an init method in Fabula.hx. Otherwise condition could not find the appropriate id
 		ConditionFactory.helperList.set(this.id, EVENT);
 		// TODO variables
 	}

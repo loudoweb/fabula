@@ -6,7 +6,7 @@ package fabula.condition;
  */
 enum EConditionType
 {
-	EVENT;
+	EVENT; // DEFAULT
 	VARIABLE;
 	INVENTORY;
 	HAS_CHARACTER;

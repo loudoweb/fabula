@@ -39,6 +39,8 @@ class FabulaXmlParser
 			var events:Array<Event> = [];
 			var event:Event = null;
 			var seq = new Sequence(seqName, achievedListID);
+			seq.addConditions(_conditionFactory.create(sequence.getString("if")));
+
 			for (key in sequence.elements)
 			{
 				switch (key.name)

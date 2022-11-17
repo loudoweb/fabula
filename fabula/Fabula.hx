@@ -88,6 +88,13 @@ class Fabula
 		}
 	}
 
+	/**
+	 * 
+	 * Get a particular sequence.
+	 * @param id 
+	 * @param start true if you want to check conditions, start from beginning and reset variables. false to get a sequence bypassing conditions and without activating it (to check stuff manually, debug purpose etc.)
+	 * @return Sequence return sequence if found and conditions met
+	 */
 	public function selectSequence(id:String, start:Bool = true):Sequence
 	{
 		for (i in 0..._sequences.length)
@@ -97,8 +104,14 @@ class Fabula
 				var seq = _sequences[i];
 				if (start)
 				{
-					currentSequence = seq;
-					currentSequence.start();
+					if (seq.conditions == null || seq.conditions.test())
+					{
+						currentSequence = seq;
+						currentSequence.start();
+					} else
+					{
+						return null;
+					}
 				}
 				return seq;
 			}
@@ -106,6 +119,10 @@ class Fabula
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return Event. Null if current event is the last one.
+	 */
 	public function getNextEvent():Event
 	{
 		return currentSequence.getNextEvent();
@@ -116,6 +133,12 @@ class Fabula
 		return currentSequence.events[currentSequence.current];
 	}
 
+	/**
+	 * Apply an user choice to the sequence, add it to the achieved list and set variables
+	 * @param choice 
+	 * @param id 
+	 * @return Choice
+	 */
 	public function selectChoice(?choice:Choice, ?id:String):Choice
 	{
 		// update guard to check if sequence completed

@@ -1,5 +1,6 @@
 package fabula;
 
+import fabula.condition.ConditionCollection;
 import haxe.macro.Expr.Case;
 import fabula.condition.Variable.EVariableType;
 import fabula.condition.VariableCollection;
@@ -12,6 +13,7 @@ class Sequence
 	public var id:String;
 	public var variables:VariableCollection;
 	public var events:Array<Event>;
+	public var conditions:ConditionCollection;
 
 	public var current:Int;
 	public var numCompleted:Int;
@@ -24,6 +26,11 @@ class Sequence
 		this._achievedListID = achievedListID;
 		current = -1;
 		numCompleted = 0;
+	}
+
+	public function addConditions(conditions:ConditionCollection)
+	{
+		this.conditions = conditions;
 	}
 
 	public function addVariable(id:String, type:EVariableType, startingValue:String)
