@@ -34,7 +34,11 @@ class ConditionFactory
 		{
 			var collection = new ConditionCollection();
 
-			values = raw.split("&");
+			// allow alternative for AND operation because & character is invalid in xml attribute
+			if (raw.indexOf(",") != -1)
+				values = raw.split(",");
+			else
+				values = raw.split("&");
 
 			for (value in values)
 			{
