@@ -36,6 +36,8 @@ class Fabula
 	var _sequences:Array<Sequence>;
 	var _randomEncounters:Array<Event>;
 
+	var _achievedCallback:String->Void;
+
 	/**
 	 * Fabula is a sequencial or branch event/dialog system.
 	 * Different systems can be used to run through a storyline.
@@ -43,12 +45,13 @@ class Fabula
 	 * A tool could help homogenize xml but not planned yet.
 	 * @param files You can use more than one file.
 	 */
-	public function new(files:Array<String>)
+	public function new(files:Array<String>, ?achievedCallback:String->Void)
 	{
 		_questsID = [];
 		_encountersID = [];
 		_textsID = [];
 		achievedListID = [];
+		_achievedCallback = achievedCallback;
 		conditionFactory = new ConditionFactory(this);
 
 		_sequences = [];
@@ -125,7 +128,14 @@ class Fabula
 	 */
 	public function getNextEvent():Event
 	{
-		return currentSequence.getNextEvent();
+		var nextEvent = currentSequence.getNextEvent();
+		if (nextEvent != null)
+		{
+			achievedListID.push(nextEvent.id);
+			if (_achievedCallback != null)
+				_achievedCallback(nextEvent.id);
+		}
+		return nextEvent;
 	}
 
 	public function getCurrentEvent():Event
@@ -147,6 +157,8 @@ class Fabula
 		if (choice != null)
 		{
 			achievedListID.push(id);
+			if (_achievedCallback != null)
+				_achievedCallback(id);
 			// TODO variables
 		}
 		return choice;

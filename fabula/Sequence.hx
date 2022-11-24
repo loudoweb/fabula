@@ -18,12 +18,9 @@ class Sequence
 	public var current:Int;
 	public var numCompleted:Int;
 
-	var _achievedListID:Array<String>;
-
-	public function new(id:String, achievedListID:Array<String>)
+	public function new(id:String)
 	{
 		this.id = id;
-		this._achievedListID = achievedListID;
 		current = -1;
 		numCompleted = 0;
 	}
@@ -92,7 +89,6 @@ class Sequence
 				var nextEvent = events[current];
 				if (nextEvent.testConditions())
 				{
-					_achievedListID.push(nextEvent.id);
 					return nextEvent;
 				} else
 					return getNextEvent(true);
