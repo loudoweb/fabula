@@ -52,7 +52,7 @@ class FabulaXmlParser
 						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT), getText(key),
 							_conditionFactory.create(key.getString("if")), key.getBool("exit", false),
 							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
-							key.getString("listeners"), key.getString("environment"));
+							key.getString("listeners"), key.getString("environment"), key.getString("target"));
 
 						if (key.hasNode.choice)
 						{

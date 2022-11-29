@@ -59,6 +59,11 @@ class Event
 
 	public var conditions:ConditionCollection;
 
+	/**
+	 * Optionnal target
+	 */
+	public var target:Null<String>;
+
 	var _cacheChoices:Array<Choice>;
 
 	/**
@@ -68,7 +73,7 @@ class Event
 	 * @param once Can be played only once
 	 */
 	public function new(id:String, text:String, conditions:ConditionCollection = null, isExit:Bool = false,
-			weight:Int = 1, once:Bool = false, ?speaker:String, ?listeners:String, ?environment:String)
+			weight:Int = 1, once:Bool = false, ?speaker:String, ?listeners:String, ?environment:String, ?target:String)
 	{
 		this.id = id;
 		this.text = text;
@@ -81,6 +86,8 @@ class Event
 		this.speaker = speaker;
 		this.listeners = listeners;
 		this.environment = environment;
+
+		this.target = target;
 
 		ConditionFactory.helperList.set(this.id, EVENT);
 	}
@@ -101,10 +108,10 @@ class Event
 		{
 			if (isExit)
 			{
-				_cacheChoices.push(new Choice("EXIT", "Quitter", "quit", true));
+				_cacheChoices.push(new Choice("EXIT", "Quitter", "quit", target, true));
 			} else
 			{
-				_cacheChoices.push(new Choice("CONTINUE", "Continuer", "continue"));
+				_cacheChoices.push(new Choice("CONTINUE", "Continuer", "continue", target));
 			}
 		}
 		return _cacheChoices;

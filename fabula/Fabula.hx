@@ -153,7 +153,10 @@ class Fabula
 	{
 		// update guard to check if sequence completed
 		if (choice == null && currentSequence != null && currentSequence.current < currentSequence.events.length)
+		{
 			choice = currentSequence.events[currentSequence.current].selectChoice(id);
+			currentSequence.nextTarget = choice.target;
+		}
 		if (choice != null)
 		{
 			achievedListID.push(id);

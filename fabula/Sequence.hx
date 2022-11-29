@@ -15,6 +15,8 @@ class Sequence
 	public var events:Array<Event>;
 	public var conditions:ConditionCollection;
 
+	public var nextTarget:Null<String>;
+
 	public var current:Int;
 	public var numCompleted:Int;
 
@@ -23,6 +25,7 @@ class Sequence
 		this.id = id;
 		current = -1;
 		numCompleted = 0;
+		nextTarget = null;
 	}
 
 	public function addConditions(conditions:ConditionCollection)
@@ -55,6 +58,7 @@ class Sequence
 	public function start():Void
 	{
 		current = -1;
+		nextTarget = null;
 
 		if (variables != null)
 		{
@@ -81,8 +85,23 @@ class Sequence
 				return null;
 			}
 		}
+
 		if (current + 1 <= events.length)
 		{
+			// target overwrites next event in the queue
+			if (current >= 0)
+			{
+				if (nextTarget != null && nextTarget != "")
+				{
+					var target = nextTarget;
+					nextTarget = null;
+					return getEvent(target);
+				} else if (events[current].target != null && events[current].target != "")
+				{
+					return getEvent(events[current].target);
+				}
+			}
+			// if no target, we find the next event in queue
 			current++;
 			if (current < events.length)
 			{
