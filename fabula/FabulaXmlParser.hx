@@ -49,10 +49,10 @@ class FabulaXmlParser
 						seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
 							key.att.value);
 					case "event":
-						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT),
-							key.getString("text"), _conditionFactory.create(key.getString("if")),
-							key.getBool("exit", false), key.getInt("weight", 1), key.getBool("once", false),
-							key.getString("speaker"), key.getString("listeners"), key.getString("environment"));
+						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT), getText(key),
+							_conditionFactory.create(key.getString("if")), key.getBool("exit", false),
+							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
+							key.getString("listeners"), key.getString("environment"));
 
 						if (key.hasNode.choice)
 						{
@@ -60,10 +60,9 @@ class FabulaXmlParser
 							for (choice in key.nodes.choice)
 							{
 								event.addChoice(new Choice(choice.getString("id",
-									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
-									choice.getString("text"), choice.getString("type"),
-									_conditionFactory.create(choice.getString("if")), choice.getString("target"),
-									choice.getBool("exit", false)));
+									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(choice),
+									choice.getString("type"), _conditionFactory.create(choice.getString("if")),
+									choice.getString("target"), choice.getBool("exit", false)));
 
 								// TODO child event using recursivity method (then replace parent target with child id + add parent id in child if)
 								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
@@ -77,9 +76,8 @@ class FabulaXmlParser
 							break;
 						}
 						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
-							key.getString("text"), key.getString("type"),
-							_conditionFactory.create(key.getString("if")), key.getString("target"),
-							key.getBool("exit", false)));
+							getText(key), key.getString("type"), _conditionFactory.create(key.getString("if")),
+							key.getString("target"), key.getBool("exit", false)));
 				}
 			}
 			// add isExit to last event and its choices
@@ -108,20 +106,13 @@ class FabulaXmlParser
 		return {sequences: sequences};
 	}
 
-	public static function parseEvent(xml:Access):Event
+	static function getText(element:Access):String
 	{
-		return new Event(xml.getString("id", ID_GEN_HELPER + ID_GEN_COUNT++), xml.getString("text"),
-			xml.getBool("once", false));
-
-		// add sub events by browsing choices
-		/*if (event.hasNode.choice)
-			{
-				for (choice in event.nodes.choice)
-				{
-					if (choice.hasNode.event && !isEventListExist(choice.node.event.att.id)) {
-						initEvent(choice.node.event);
-					}
-				}
-		}*/
+		var text = element.getString("text");
+		if (text == "" && element.hasNode.text)
+		{
+			text = element.node.text.innerData;
+		}
+		return text;
 	}
 }
