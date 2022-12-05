@@ -62,7 +62,7 @@ class FabulaXmlParser
 								event.addChoice(new Choice(choice.getString("id",
 									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(choice),
 									choice.getString("type"), _conditionFactory.create(choice.getString("if")),
-									choice.getString("target"), choice.getBool("exit", false)));
+									choice.getString("target"), choice.getBool("exit", event.isExit)));
 
 								// TODO child event using recursivity method (then replace parent target with child id + add parent id in child if)
 								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
@@ -77,7 +77,7 @@ class FabulaXmlParser
 						}
 						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 							getText(key), key.getString("type"), _conditionFactory.create(key.getString("if")),
-							key.getString("target"), key.getBool("exit", false)));
+							key.getString("target"), key.getBool("exit", event.isExit)));
 				}
 			}
 			// add isExit to last event and its choices
