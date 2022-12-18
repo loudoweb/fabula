@@ -92,6 +92,24 @@ class Fabula
 	}
 
 	/**
+	 * Reset all data.
+	 */
+	public function reset()
+	{
+		achievedListID.splice(0, achievedListID.length);
+		for (seq in _sequences)
+		{
+			if (seq.variables != null)
+			{
+				for (i in 0...seq.variables.length)
+				{
+					seq.variables[i].reset();
+				}
+			}
+		}
+	}
+
+	/**
 	 * 
 	 * Get a particular sequence.
 	 * @param id 
