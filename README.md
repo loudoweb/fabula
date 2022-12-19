@@ -4,12 +4,24 @@ Engine for stories, events and dialogs parsed from xml.
 WIP: RC planned for spring 2023
 
 ## sample xml
+
+> Why xml? 
+
+I personnaly prefer xml over json, especially for large content, I find it more readable, and it needs less scrolling:)
+Also, I've a test a json and the file was heavier...
+But we can imagine to create a json parser in the future.
+
+> Yeah, but isn't it better to use a visual graph node tool to make your story?
+
+Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, etc. And for big projects, lot of people seems to use Excel. But firstly, we can still create such a tool in the future (or creating converters for existing tools). And lastly, we can imagine using an Excel to xml converter to save some time on big projects, so narrative designer can write on Excel and developers just have to convert.
+
+
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <data>
     <sequence id="Talk_to_kid">
         <event speaker="kid_sad" if="kid_angry" text="I won't talk to you anymore..." exit="true"/>
-        <event speaker="kid" text="Hi, have you seen my new toy? I love it!"/>
+        <event speaker="kid" if="!kid_happy" text="Hi, have you seen my new toy? I love it!"/>
         <event speaker="kid" text="Do you want to play with me?">
             <choice id="kid_angry" text="Your toy looks like crap!"/>
             <choice id="kid_happy" text="Yes, I love it!" target="kid_happy"/>
@@ -33,9 +45,30 @@ The **exit** attribute, tells Fabula that your sequence is finished. But by defa
 
 To create branching narrative, you can use conditions to an event using the **if** attribute. Or your can use the **target** attribute to jump into a specific event.
 
-If you don't set any **choice** for your event. Fabula will create a default "continue" or "quit" choice for your depending if it's right in the middle of the sequence or if it's an exit event.
+If you don't set any **choice** for your event. Fabula will create an optional default "continue" or "quit" choice for your depending if it's right in the middle of the sequence or if it's an exit event. The default continue or exit choices are optionnal, because some games just invite players to click on the dialog box instead of the choice, so it's up to you!
 
+This is the transcript of the dialog:
 
-
-
+**Variant 1:**  
+*click on kid:*  
+Hi, have you seen my new toy? I love it!  
+    Continue  
+Do you want to play with me?  
+    Your toy looks like crap!  
+You're so mean!  
+  
+*click on kid again:*  
+I won't talk to you anymore...  
+  
+**Variant 2:**  
+*click on kid:*  
+Hi, have you seen my new toy? I love it!  
+    Continue  
+Do you want to play with me?  
+    Yes, I love it!  
+Thanks! **Let's play!**  
+  
+*click on kid again:*  
+Do you want to play with me?  
+    etc.  
 
