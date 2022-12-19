@@ -49,26 +49,16 @@ If you don't set any **choice** for your event. Fabula will create an optional d
 
 This is the transcript of the dialog:
 
-**Variant 1:**  
-*click on kid:*  
-Hi, have you seen my new toy? I love it!  
-    Continue  
-Do you want to play with me?  
-    Your toy looks like crap!  
-You're so mean!  
-  
-*click on kid again:*  
-I won't talk to you anymore...  
-  
-**Variant 2:**  
-*click on kid:*  
-Hi, have you seen my new toy? I love it!  
-    Continue  
-Do you want to play with me?  
-    Yes, I love it!  
-Thanks! **Let's play!**  
-  
-*click on kid again:*  
-Do you want to play with me?  
-    etc.  
+| **Variant 1:**   | **Variant 2:**  |
+| --------  | ------------------- |
+| ==> *click on kid:* <== | ==> *click on kid:* <==  |
+| Hi, have you seen my new toy? I love it!    | Hi, have you seen my new toy? I love it!    |
+| => Continue    |  =>  Continue    |
+| Do you want to play with me?   | Do you want to play with me?    |
+|  =>  Your toy looks like crap!    |  =>  Yes, I love it!   |
+| You're so mean!   |  Thanks! **Let's play!**    |
+|   |   |
+| ==> *click on kid again:* <==    |  ==> *click on kid again:* <==   |
+| I won't talk to you anymore...  |  Do you want to play with me?   |
+|   |   =>   etc.    |
 
