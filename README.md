@@ -3,7 +3,7 @@ Engine for stories, events and dialogs parsed from xml.
 
 WIP: RC planned for spring 2023
 
-## sample xml
+## Sample xml
 
 > Why xml? 
 
@@ -61,4 +61,30 @@ This is the transcript of the dialog:
 | ==> *click on kid again:* <==    |  ==> *click on kid again:* <==   |
 | I won't talk to you anymore...  |  Do you want to play with me?   |
 |   |   =>   etc.    |
+
+## Getting started
+
+### Using Haxe Language
+
+Install the library
+
+`haxelib install fabula`
+
+```haxe
+var story = new fabula.Fabula([xml]);
+var seq = story.selectSequence("Talk_to_kid");
+var event = seq.getNextEvent();
+trace(event.text);
+```
+
+### Using Javascript
+
+download the js minified code in [the dist commonjs folder](https://github.com/loudoweb/fabula/blob/master/dist/commonjs/fabula.min.js)
+
+```javascript
+var story = new fabula.Fabula([xml]);
+var seq = story.selectSequence("Talk_to_kid");
+var event = seq.getNextEvent();
+console.log(event.text);
+```
 
