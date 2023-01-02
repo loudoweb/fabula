@@ -1,0 +1,12 @@
+-lib fabula
+-lib kadabra-utils
+-D csharp
+-D desktop
+--no-inline
+--macro include("fabula")
+-D no-compilation
+-D real-position
+#could be solve problem on Unity?
+-D erase-generics 
+--cs dist/csharp
+

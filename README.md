@@ -9,7 +9,7 @@ WIP: RC planned for spring 2023
 
 I personnaly prefer xml over json, especially for large content, I find it more readable, and it needs less scrolling:)
 Also, I've a test a json and the file was heavier...
-But we can imagine to create a json parser in the future.
+But we can imagine to create a json parser in the future in we find a correct json format.
 
 > Yeah, but isn't it better to use a visual graph node tool to make your story?
 

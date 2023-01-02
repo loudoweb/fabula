@@ -1,0 +1,14 @@
+{
+    "name": "fabula",
+    "license": "MIT",
+    "tags": ["story", "dialogues", "procgen"],
+    "classPath": "src",
+    "description": "Engine for stories, events and dialogs parsed from xml.",
+    "contributors": ["loudoweb"],
+    "releasenote": "See repository",
+    "version": "0.8.0",
+    "url": "https://github.com/loudoweb/fabula",
+    "dependencies": {
+      "kadabra-utils": ""
+    }
+  }

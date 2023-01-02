@@ -17,6 +17,7 @@ enum EPlayingType
 	DRAW;
 }
 
+#if commonjs @:expose #end
 class Fabula
 {
 	// list of achieved event/dialog

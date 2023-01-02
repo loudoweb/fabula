@@ -1,0 +1,13 @@
+-lib genes
+-D genes.unchanged_no_rewrite
+#-D js-source-map
+--times
+-D macro-times
+
+-lib fabula
+-lib kadabra-utils
+-D html5
+--no-inline
+--macro include("fabula")
+--js dist/npm/fabula.js
+
