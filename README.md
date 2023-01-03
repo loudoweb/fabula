@@ -1,19 +1,26 @@
 # fabula
-Engine for stories, events and dialogs parsed from xml.
+Cross-platform Engine for stories, events and dialogs parsed from xml for video games.
 
-WIP: RC planned for spring 2023
+### Genesis
 
-## Sample xml
+This engine has been originally coded for my own tactical rpg procgen narrative game Graal Seeker at [Lugludum](https://www.lugludum.com) back in 2014. I've only decided to extract the code and make it an open source library in...2022. Since then I've successfuly used it in a recent point&click serious game.
+
+### Status
+
+Currently in development. Most of my original code still isn't there. Then I'll add new features :)
+**WIP: RC planned for 2023**
+
+## writing your story on xml
 
 > Why xml? 
 
 I personnaly prefer xml over json, especially for large content, I find it more readable, and it needs less scrolling:)
 Also, I've a test a json and the file was heavier...
-But we can imagine to create a json parser in the future in we find a correct json format.
+But we can imagine to create a json parser in the future if we find a correct json format.
 
 > Yeah, but isn't it better to use a visual graph node tool to make your story?
 
-Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, etc. And for big projects, lot of people seems to use Excel. But firstly, we can still create such a tool in the future (or creating converters for existing tools). And lastly, we can imagine using an Excel to xml converter to save some time on big projects, so narrative designer can write on Excel and developers just have to convert.
+Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, clicking here and there, etc. And for big projects, lot of people seems to use Excel. But firstly, we can still create such a tool in the future (or creating converters for existing tools). And lastly, we can imagine using an Excel to xml converter to save some time on big projects, so narrative designer can write on Excel and developers just have to convert.
 
 
 ```xml
@@ -41,7 +48,7 @@ You can set a text directly using the **text** attribute. But if needed, you can
 
 All events or choices **id** can be used in condition using the **if** attribute. Ids are optional and Fabula will create ids for you to help you debugging using the following nomenclature $SEQUENCEID + "_E" for event or "_C" for choice + ordered number. External conditions could be used soon in the system. You can also monitor the id of the choice chosen in real time to do whatever you want. In my sample, I've set the **goto** prefix to tell my own Fabula wrapper to change the scene of the game. Fabula here, just tells you the id, it's up to you to do whatever you want in your game engine.
 
-The **exit** attribute, tells Fabula that your sequence is finished. But by default, your sequence ends when the player reached the last event of the sequence.
+The **exit** attribute, tells Fabula that your sequence is finished. But by default, your sequence ends when the player reached the last event of the sequence, Fabula always move forward by default.
 
 To create branching narrative, you can use conditions to an event using the **if** attribute. Or your can use the **target** attribute to jump into a specific event.
 
@@ -71,15 +78,21 @@ Install the library
 `haxelib install fabula`
 
 ```haxe
+//parse all your xml files
 var story = new fabula.Fabula([xml]);
+//select a sequence
 var seq = story.selectSequence("Talk_to_kid");
+//find the first event
 var event = seq.getNextEvent();
+//display the text
 trace(event.text);
 ```
 
 ### Using Javascript
 
-download the js minified code in [the dist commonjs folder](https://github.com/loudoweb/fabula/blob/master/dist/commonjs/fabula.min.js)
+This js library is automatically generated from the original Haxe code.
+
+Download the js minified code in [the dist commonjs folder](https://github.com/loudoweb/fabula/blob/master/dist/commonjs/fabula.min.js) and add it to your html page.
 
 ```javascript
 var story = new fabula.Fabula([xml]);
@@ -88,3 +101,8 @@ var event = seq.getNextEvent();
 console.log(event.text);
 ```
 
+## Contribute
+
+You can contribute by testing the project, giving feedback (consider opening a thread in [Discussions](https://github.com/loudoweb/fabula/discussions) or an [issue](https://github.com/loudoweb/fabula/issues) if it's a bug) or by making Pull Request.
+
+This library uses the [Haxe language](https://haxe.org) (version >= 4.1.5), which is a high-level strictly-typed language that can transpile to many other languages. To build the generated ports to other languages you can compile the **hxml** files.
