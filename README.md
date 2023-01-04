@@ -115,25 +115,20 @@ You have to execute the hxml file that compiles to the language you want.
 
 You will need some libraries depending on your target.
 
-**common js**
+- **common js**
 
-file : js.hxml
+    - file : js.hxml
+    - dependency: `npm install uglify-js -g` and `haxelib install uglifyjs`
+    - status : test in progress
 
-dependency: `npm install uglify-js -g` and `haxelib install uglifyjs`
+- **js modules**
 
-status : test in progress
+    - file : js_modules.hxml
+    - dependency: `haxelib install genes`
+    - status : not tested
 
-**js modules**
+- **csharp**
 
-file : js_modules.hxml
-
-dependency: `haxelib install genes`
-
-status : not tested
-
-**csharp**
-file : csharp.hxml
-
-dependency: `haxelib install hxcs`
-
-status : not tested
+    - file : csharp.hxml
+    - dependency: `haxelib install hxcs`
+    - status : not tested
