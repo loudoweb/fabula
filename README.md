@@ -106,3 +106,34 @@ console.log(event.text);
 You can contribute by testing the project, giving feedback (consider opening a thread in [Discussions](https://github.com/loudoweb/fabula/discussions) or an [issue](https://github.com/loudoweb/fabula/issues) if it's a bug) or by making Pull Request.
 
 This library uses the [Haxe language](https://haxe.org) (version >= 4.1.5), which is a high-level strictly-typed language that can transpile to many other languages. To build the generated ports to other languages you can compile the **hxml** files.
+
+### Transpile to other languages
+
+You have to execute the hxml file that compiles to the language you want.
+
+`haxe compile/js.hxml`
+
+You will need some libraries depending on your target.
+
+**common js**
+
+file : js.hxml
+
+dependency: `npm install uglify-js -g` and `haxelib install uglifyjs`
+
+status : test in progress
+
+**js modules**
+
+file : js_modules.hxml
+
+dependency: `haxelib install genes`
+
+status : not tested
+
+**csharp**
+file : csharp.hxml
+
+dependency: `haxelib install hxcs`
+
+status : not tested
