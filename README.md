@@ -73,6 +73,8 @@ This is the transcript of the dialog:
 
 ### Using Haxe Language
 
+This library is written in Haxe which is a cross-platform language. With Haxe you can target javascript, c++, etc.
+
 Install the library
 
 `haxelib install fabula`
@@ -84,6 +86,7 @@ var story = new fabula.Fabula([xml]);
 var seq = story.selectSequence("Talk_to_kid");
 //find the first event
 var event = seq.getNextEvent();
+//end reached if event null
 //display the text
 trace(event.text);
 ```
@@ -109,9 +112,14 @@ This library uses the [Haxe language](https://haxe.org) (version >= 4.1.5), whic
 
 ### Transpile to other languages
 
-You have to execute the hxml file that compiles to the language you want.
+If you don't code with Haxe. You can still generate a port in the language you want as soon it is supported by Haxe (JavaScript, C++, C#, Python, Lua, PHP, Flash).
+It would be better to make proper ports to have cleaner files but using those generated ports guarantees you are using the last version of the fabula api.
 
-`haxe compile/js.hxml`
+To get the last api port, you have to execute the hxml file that compiles to the language you want to use.  
+
+e.g: `haxe compile/js.hxml`
+
+In order to do that, first you need to [download and install haxe](https://haxe.org/download/).
 
 You will need some libraries depending on your target.
 
