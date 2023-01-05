@@ -35,13 +35,13 @@
 		</annotation>
 		<complexType>
 			<choice minOccurs="0" maxOccurs="1">
-				<element name="text" type="tns:text" />
+				<element ref="tns:text" />
 			</choice>
 			<attribute name="id" type="tns:string-min-len-1" />
 			<attribute name="text" type="string" />
 			<attribute name="type" type="string" />
             <attribute name="target" type="tns:string-min-len-1" />
-			<attribute name="isExit" type="boolean" />
+			<attribute name="exit" type="boolean" />
 			<attributeGroup ref="tns:conditional" />
 		</complexType>
 	</element>
@@ -52,8 +52,8 @@
 		</annotation>
 		<complexType>
 			<choice minOccurs="0" maxOccurs="unbounded">
-				<element name="text" type="tns:text" />
-				<element name="choice" type="tns:choice" />
+				<element ref="tns:text" />
+				<element ref="tns:choice" />
 			</choice>
 			<attribute name="id" type="tns:string-min-len-1" />
 			<attribute name="text" type="tns:string-min-len-1" />
@@ -61,7 +61,7 @@
 			<attribute name="listeners" type="tns:string-min-len-1" />
 			<attribute name="environment" type="tns:string-min-len-1" />
 			<attribute name="target" type="tns:string-min-len-1" />
-			<attribute name="isExit" type="boolean" />
+			<attribute name="exit" type="boolean" />
 			<attribute name="once" type="boolean" />
 			<attribute name="weight" type="tns:natural-number" />
 			<attributeGroup ref="tns:conditional" />
@@ -74,9 +74,9 @@
 		</annotation>
 		<complexType>
 			<choice minOccurs="1" maxOccurs="unbounded">
-				<element name="event" type="tns:event" />
-				<element name="choice" type="tns:choice" />
-				<element name="variable" type="tns:variable" />
+				<element ref="tns:event" />
+				<element ref="tns:choice" />
+				<element ref="tns:variable" />
 			</choice>
 			<attribute name="id" type="tns:string-min-len-1" use="required" />
 			<attributeGroup ref="tns:conditional" />
