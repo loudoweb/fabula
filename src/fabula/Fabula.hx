@@ -200,4 +200,33 @@ class Fabula
 	}
 
 	public function updateVar() {}
+
+	/**
+	 * 
+	 * WIP: count words
+	 * TODO don't count variable and html tag
+	 * TODO take into account nbsp
+	 */
+	public function countWords():Int
+	{
+		var count = 0;
+		for (seq in _sequences)
+		{
+			if (seq.events != null)
+			{
+				for (event in seq.events)
+				{
+					count += event.text.split(" ").length;
+					if (event.choices != null)
+					{
+						for (choice in event.choices)
+						{
+							count += choice.text.split(" ").length;
+						}
+					}
+				}
+			}
+		}
+		return count;
+	}
 }
