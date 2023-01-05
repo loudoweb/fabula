@@ -1,0 +1,113 @@
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loudoweb.fr/app/fabula/0.8.1" xmlns:tns="http://www.loudoweb.fr/app/fabula/0.8.1" elementFormDefault="qualified" version="0.8.1" attributeFormDefault="unqualified">
+
+    
+
+    <element name="text">
+        <annotation>
+			<documentation>Text that can use any special character forbidden in xml attributes. For example can use this to embellish your text with bold, color, etc.</documentation>
+		</annotation>
+	</element>
+
+    <element name="variable">
+        <annotation>
+			<documentation>Define a variable (wip)</documentation>
+		</annotation>
+        <complexType>
+			<attribute name="id" type="tns:string-min-len-1" />
+			<attribute name="type">
+                <simpleType>
+					<restriction base="string">
+						<enumeration value="int" />
+						<enumeration value="string" />
+						<enumeration value="bool" />
+						<enumeration value="enum" />
+					</restriction>
+				</simpleType>
+            </attribute>
+            <attribute name="value" type="string" />
+		</complexType>
+	</element>
+
+    <element name="choice">
+        <annotation>
+			<documentation>Text or anything to display that is meant to be interactive. A choice stops the narrative flow and waits for user input.</documentation>
+		</annotation>
+		<complexType>
+			<choice minOccurs="0" maxOccurs="1">
+				<element name="text" type="tns:text" />
+			</choice>
+			<attribute name="id" type="tns:string-min-len-1" />
+			<attribute name="text" type="string" />
+			<attribute name="type" type="string" />
+            <attribute name="target" type="tns:string-min-len-1" />
+			<attribute name="isExit" type="boolean" />
+			<attributeGroup ref="tns:conditional" />
+		</complexType>
+	</element>
+
+    <element name="event">
+        <annotation>
+			<documentation>Text and data to display. Could be an event or a dialogue.</documentation>
+		</annotation>
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="text" type="tns:text" />
+				<element name="choice" type="tns:choice" />
+			</choice>
+			<attribute name="id" type="tns:string-min-len-1" />
+			<attribute name="text" type="tns:string-min-len-1" />
+			<attribute name="speaker" type="tns:string-min-len-1" />
+			<attribute name="listeners" type="tns:string-min-len-1" />
+			<attribute name="environment" type="tns:string-min-len-1" />
+			<attribute name="target" type="tns:string-min-len-1" />
+			<attribute name="isExit" type="boolean" />
+			<attribute name="once" type="boolean" />
+			<attribute name="weight" type="tns:natural-number" />
+			<attributeGroup ref="tns:conditional" />
+		</complexType>
+	</element>
+
+    <element name="sequence">
+        <annotation>
+			<documentation>A sequence of linear or branching narrative that goes forward until it reaches the end or an exit event.</documentation>
+		</annotation>
+		<complexType>
+			<choice minOccurs="1" maxOccurs="unbounded">
+				<element name="event" type="tns:event" />
+				<element name="choice" type="tns:choice" />
+				<element name="variable" type="tns:variable" />
+			</choice>
+			<attribute name="id" type="tns:string-min-len-1" use="required" />
+			<attributeGroup ref="tns:conditional" />
+		</complexType>
+	</element>
+	
+	<element name="data">
+		<annotation>
+			<documentation>Root element of Fabula markup language.</documentation>
+		</annotation>
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="tns:sequence" maxOccurs="unbounded" minOccurs="1"/>
+			</choice>
+		</complexType>
+	</element>
+
+	<attributeGroup name="conditional">
+		<attribute type="string" name="if"></attribute>
+	</attributeGroup>
+
+	<simpleType name="natural-number">
+		<restriction base="string">
+			<pattern value="[0-9]+" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="string-min-len-1">
+		<restriction base="string">
+			<minLength value="1" />
+		</restriction>
+	</simpleType>
+	
+</schema>
