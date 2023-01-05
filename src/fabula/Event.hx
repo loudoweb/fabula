@@ -117,21 +117,20 @@ class Event
 		return _cacheChoices;
 	}
 
-	public function selectChoice(?index:Int, ?id:String, selectFromAll:Bool = false):Choice
+	public function selectChoice(?id:String, ?index:Int, selectFromAll:Bool = false):Choice
 	{
 		var _choiceArray = selectFromAll ? choices : _cacheChoices;
 		if (_choiceArray != null)
 		{
-			if (index != null)
-				return _choiceArray[index];
-			else if (id != null)
+			if (id != null)
 			{
 				for (i in 0..._choiceArray.length)
 				{
 					if (_choiceArray[i].id == id)
 						return _choiceArray[i];
 				}
-			}
+			} else if (index != null)
+				return _choiceArray[index];
 		}
 		return null;
 	}

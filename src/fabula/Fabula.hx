@@ -168,12 +168,13 @@ class Fabula
 	 * @param id 
 	 * @return Choice
 	 */
-	public function selectChoice(?choice:Choice, ?id:String):Choice
+	public function selectChoice(?id:String, ?index:Int):Choice
 	{
+		var choice:Choice = null;
 		// update guard to check if sequence completed
-		if (choice == null && currentSequence != null && currentSequence.current < currentSequence.events.length)
+		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
-			choice = currentSequence.events[currentSequence.current].selectChoice(id);
+			choice = currentSequence.events[currentSequence.current].selectChoice(id, index);
 			currentSequence.nextTarget = choice.target;
 		}
 		if (choice != null)
