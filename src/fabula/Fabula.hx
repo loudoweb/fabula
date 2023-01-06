@@ -175,7 +175,7 @@ class Fabula
 		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
 			choice = currentSequence.events[currentSequence.current].selectChoice(id, index);
-			currentSequence.nextTarget = choice.target;
+			currentSequence.nextTarget = choice.isExit ? Sequence.EXIT : choice.target;
 		}
 		if (choice != null)
 		{

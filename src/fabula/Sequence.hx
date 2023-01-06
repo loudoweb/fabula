@@ -10,6 +10,11 @@ import fabula.condition.VariableFloat;
 
 class Sequence
 {
+	/**
+	 * Internal tag to make a choice exit a sequence
+	 */
+	@:final inline public static var EXIT = "$$EXIT$$";
+
 	public var id:String;
 	public var variables:VariableCollection;
 	public var events:Array<Event>;
@@ -78,7 +83,7 @@ class Sequence
 	{
 		if (!ignoreExit && current > -1 && current < events.length)
 		{
-			if (events[current].isExit)
+			if (events[current].isExit || (nextTarget == EXIT))
 			{
 				numCompleted++;
 				trace("sequence completed");

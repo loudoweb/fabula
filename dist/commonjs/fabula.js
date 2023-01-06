@@ -466,15 +466,13 @@ fabula_Event.prototype = {
 		}
 		return this._cacheChoices;
 	}
-	,selectChoice: function(index,id,selectFromAll) {
+	,selectChoice: function(id,index,selectFromAll) {
 		if(selectFromAll == null) {
 			selectFromAll = false;
 		}
 		var _choiceArray = selectFromAll ? this.choices : this._cacheChoices;
 		if(_choiceArray != null) {
-			if(index != null) {
-				return _choiceArray[index];
-			} else if(id != null) {
+			if(id != null) {
 				var _g = 0;
 				var _g1 = _choiceArray.length;
 				while(_g < _g1) {
@@ -483,6 +481,8 @@ fabula_Event.prototype = {
 						return _choiceArray[i];
 					}
 				}
+			} else if(index != null) {
+				return _choiceArray[index];
 			}
 		}
 		return null;
@@ -602,10 +602,11 @@ fabula_Fabula.prototype = {
 	,getCurrentEvent: function() {
 		return this.currentSequence.events[this.currentSequence.current];
 	}
-	,selectChoice: function(choice,id) {
-		if(choice == null && this.currentSequence != null && this.currentSequence.current < this.currentSequence.events.length) {
-			choice = this.currentSequence.events[this.currentSequence.current].selectChoice(null,id);
-			this.currentSequence.nextTarget = choice.target;
+	,selectChoice: function(id,index) {
+		var choice = null;
+		if(this.currentSequence != null && this.currentSequence.current < this.currentSequence.events.length) {
+			choice = this.currentSequence.events[this.currentSequence.current].selectChoice(id,index);
+			this.currentSequence.nextTarget = choice.isExit ? "$$EXIT$$" : choice.target;
 		}
 		if(choice != null) {
 			this.achievedListID.push(id);
@@ -625,6 +626,34 @@ fabula_Fabula.prototype = {
 		return null;
 	}
 	,updateVar: function() {
+	}
+	,countWords: function() {
+		var count = 0;
+		var _g = 0;
+		var _g1 = this._sequences;
+		while(_g < _g1.length) {
+			var seq = _g1[_g];
+			++_g;
+			if(seq.events != null) {
+				var _g2 = 0;
+				var _g3 = seq.events;
+				while(_g2 < _g3.length) {
+					var event = _g3[_g2];
+					++_g2;
+					count += event.text.split(" ").length;
+					if(event.choices != null) {
+						var _g4 = 0;
+						var _g5 = event.choices;
+						while(_g4 < _g5.length) {
+							var choice = _g5[_g4];
+							++_g4;
+							count += choice.text.split(" ").length;
+						}
+					}
+				}
+			}
+		}
+		return count;
 	}
 	,__class__: fabula_Fabula
 };
@@ -754,7 +783,7 @@ fabula_Sequence.prototype = {
 	}
 	,addSequence: function(events) {
 		if(this.events != null) {
-			console.log("fabula/Sequence.hx:54:","WARNING a new sequence will replace an old sequence");
+			console.log("fabula/Sequence.hx:59:","WARNING a new sequence will replace an old sequence");
 		}
 		this.events = events;
 	}
@@ -775,9 +804,9 @@ fabula_Sequence.prototype = {
 			ignoreExit = false;
 		}
 		if(!ignoreExit && this.current > -1 && this.current < this.events.length) {
-			if(this.events[this.current].isExit) {
+			if(this.events[this.current].isExit || this.nextTarget == "$$EXIT$$") {
 				this.numCompleted++;
-				console.log("fabula/Sequence.hx:84:","sequence completed");
+				console.log("fabula/Sequence.hx:89:","sequence completed");
 				return null;
 			}
 		}
@@ -801,7 +830,7 @@ fabula_Sequence.prototype = {
 				}
 			} else {
 				this.numCompleted++;
-				console.log("fabula/Sequence.hx:117:","sequence completed");
+				console.log("fabula/Sequence.hx:122:","sequence completed");
 			}
 		}
 		return null;
@@ -2038,6 +2067,7 @@ Xml.Comment = 3;
 Xml.DocType = 4;
 Xml.ProcessingInstruction = 5;
 Xml.Document = 6;
+fabula_Sequence.EXIT = "$$EXIT$$";
 fabula_condition_ConditionFactory.helperList = new haxe_ds_StringMap();
 fabula_condition_EConditionOp.GREATER = ">";
 fabula_condition_EConditionOp.LOWER = "<";
