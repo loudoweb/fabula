@@ -16,12 +16,21 @@ Currently in development. Most of my original code still isn't there. Then I'll 
 
 I personnaly prefer xml over json, especially for large content, I find it more readable, and it needs less scrolling:)
 Also, I've a test a json and the file was heavier...
-But we can imagine to create a json parser in the future if we find a correct json format.
+Finally we can imagine to create a json parser in the future if we find a correct json format.
 
 > Yeah, but isn't it better to use a visual graph node tool to make your story?
 
-Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, clicking here and there, etc. And for big projects, lot of people seems to use Excel. But firstly, we can still create such a tool in the future (or creating converters for existing tools). And lastly, we can imagine using an Excel to xml converter to save some time on big projects, so narrative designer can write on Excel and developers just have to convert.
+Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, clicking here and there, etc. Firstly, we can still create such a tool in the future (or creating converters for existing tools). 
 
+> I'm afraid that xml is too verbose
+
+If programmers are used to xml, xml may seem heavy and wordy for writers. So we can imagine in the future, an Excel to xml converter to save some time, so narrative designer can write on Excel and developers just have to convert.
+
+> What about Ink?
+
+Ink is very powerful and packed up with different features. It's moreover far more complete than the current version of Fabula. That being said, you need to learn its scripting language and if you don't use it often, it can take some time to jump in. On the other and, using xml is closer to a natural language since you use keyword such as **event**, **choice** and **if** instead of special characters like *, and you are easily lost when using multiple conditionals in the same line. So I think Fabula is more straigh forward. Finally, to compete with Ink and its tools Inkly, Fabula needs a set of tools to write easily without a hitch.
+
+Here is a taste of the xml, remember that you can [unlock autocompletion](#autocompletion-with-xsd) on your IDE.
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -42,7 +51,21 @@ Well, despite the fact it's harder to visualise the story with xml than with a g
 </data>
 ```
 
-For each event, you can set a **speaker**, **listeners** and an **environment**. It's up to you to display anything. Fabula just helps you describe your story! So you could combine a character name and its pose the way you want.
+You can test this story [here](https://loudoweb.github.io/fabula/dist/commonjs/tester.html).
+
+### autocompletion with xsd
+
+On VSCode and some other softwares you can have autocompletion + validation on your xml using the xsd schema. Just write your root xml tag like that:
+
+```xml
+<data xmlns="http://www.loudoweb.fr/app/fabula/0.8.1"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.8.1 http://www.loudoweb.fr/app/fabula/fabula-0.8.1.xsd">
+</data>
+```
+### how it's work
+
+For each event, you can set a **speaker**, **listeners** and an **environment**. It's up to you to display anything. Fabula just helps you describe your story and gives you an api to navigate through it! So you could combine a character name and its pose the way you want.
 
 You can set a text directly using the **text** attribute. But if needed, you can use a text child node to use xml/markup to spice up your text.
 
@@ -50,9 +73,9 @@ All events or choices **id** can be used in condition using the **if** attribute
 
 The **exit** attribute, tells Fabula that your sequence is finished. But by default, your sequence ends when the player reached the last event of the sequence, Fabula always move forward by default.
 
-To create branching narrative, you can use conditions to an event using the **if** attribute. Or your can use the **target** attribute to jump into a specific event.
+To create branching narrative, you can use conditions to an event using the **if** attribute. Or your can use the **target** attribute to jump into a specific event. When using these attributes, you need to set an **id** of an event or a choice.
 
-If you don't set any **choice** for your event. Fabula will create an optional default "continue" or "quit" choice for your depending if it's right in the middle of the sequence or if it's an exit event. The default continue or exit choices are optionnal, because some games just invite players to click on the dialog box instead of the choice, so it's up to you!
+If you don't set any **choice** for your event, Fabula will create an optional default "continue" or "quit" choice for your depending if it's right in the middle of the sequence or if it's an exit event. The default continue or exit choices are optionnal, because some games just invite players to click on the dialog box instead of the choice, so it's up to you!
 
 This is the transcript of the dialog:
 
@@ -69,16 +92,6 @@ This is the transcript of the dialog:
 | I won't talk to you anymore...  |  Do you want to play with me?   |
 |   |   =>   etc.    |
 
-### autocompletion with xsd
-
-On VSCode and some other softwares you can have autocompletion + validation on your xml using the xsd schema. Just write your root xml tag like that:
-
-```xml
-<data xmlns="http://www.loudoweb.fr/app/fabula/0.8.1"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.8.1 http://www.loudoweb.fr/app/fabula/fabula-0.8.1.xsd">
-</data>
-```
 
 ## Getting started
 
@@ -138,16 +151,10 @@ You will need some libraries depending on your target.
 
     - file : js.hxml
     - dependency: `npm install uglify-js -g` and `haxelib install uglifyjs`
-    - status : test in progress
+    - status : - [x]
 
 - **js modules**
 
     - file : js_modules.hxml
     - dependency: `haxelib install genes`
-    - status : not tested
-
-- **csharp**
-
-    - file : csharp.hxml
-    - dependency: `haxelib install hxcs`
     - status : not tested
