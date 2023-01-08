@@ -16,11 +16,11 @@ Currently in development. Most of my original code still isn't there. Then I'll 
 
 I personnaly prefer xml over json, especially for large content, I find it more readable, and it needs less scrolling:)
 Also, I've a test a json and the file was heavier...
-Finally we can imagine to create a json parser in the future if we find a correct json format.
+Finally we can imagine to create a json parser in the future if we find a correct json format, but only when after reaching v1.0.0.
 
 > Yeah, but isn't it better to use a visual graph node tool to make your story?
 
-Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, clicking here and there, etc. Firstly, we can still create such a tool in the future (or creating converters for existing tools). 
+Well, despite the fact it's harder to visualise the story with xml than with a graph node tool. It's faster to create the xml file, especially for small projects, than opening a graph node tool, creating all the boxes, copy pasting the texts, clicking here and there, etc. Anyway, we can still create such a tool in the future (or creating converters for existing tools). 
 
 > I'm afraid that xml is too verbose
 
@@ -28,7 +28,7 @@ If programmers are used to xml, xml may seem heavy and wordy for writers. So we 
 
 > What about Ink?
 
-Ink is very powerful and packed up with different features. It's moreover far more complete than the current version of Fabula. That being said, you need to learn its scripting language and if you don't use it often, it can take some time to jump in. On the other and, using xml is closer to a natural language since you use keyword such as **event**, **choice** and **if** instead of special characters like *, and you are easily lost when using multiple conditionals in the same line. So I think Fabula is more straigh forward. Finally, to compete with Ink and its tools Inkly, Fabula needs a set of tools to write easily without a hitch.
+Ink is very powerful and packed up with different features. It's moreover far more complete than the current version of Fabula. That being said, you need to learn its scripting language and if you don't use it often, it can take some time to jump in. On the other and, using xml is closer to a natural language since you use keyword such as **event**, **choice** and **if** instead of special characters like *, - or +, and you are easily lost when using multiple conditionals in the same line. So I think Fabula is more straigh forward. Finally, to compete with Ink and its tools Inkly, Fabula needs a set of tools to write easily without a hitch.
 
 Here is a taste of the xml, remember that you can [unlock autocompletion](#autocompletion-with-xsd) on your IDE.
 
@@ -109,10 +109,23 @@ var story = new fabula.Fabula([xml]);
 //select a sequence
 var seq = story.selectSequence("Talk_to_kid");
 //find the first event
-var event = seq.getNextEvent();
+var event = story.getNextEvent();
 //end reached if event null
 //display the text
 trace(event.text);
+//loop through all available choices (fabula test all conditions for you)
+for (choice in event.getChoices())
+{
+   trace(choice.text)
+}
+//handle click on choice
+function onChoiceClick(id:String){
+    //inform fabula on the choice so it can validate the choice in the history tree
+    story.selectChoice(id);
+    //then you can move on to the next event
+    story.getNextEvent();
+    //etc.
+}
 ```
 
 ### Using Javascript
@@ -124,8 +137,9 @@ Download the js minified code in [the dist commonjs folder](https://github.com/l
 ```javascript
 var story = new fabula.Fabula([xml]);
 var seq = story.selectSequence("Talk_to_kid");
-var event = seq.getNextEvent();
+var event = story.getNextEvent();
 console.log(event.text);
+//as you can see it's very close to the haxe version...
 ```
 
 ## Contribute
