@@ -159,7 +159,7 @@ class Fabula
 
 	public function getCurrentEvent():Event
 	{
-		return currentSequence.events[currentSequence.current];
+		return currentSequence.getEvent();
 	}
 
 	/**
@@ -174,7 +174,7 @@ class Fabula
 		// update guard to check if sequence completed
 		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
-			choice = currentSequence.events[currentSequence.current].selectChoice(id, index);
+			choice = currentSequence.getEvent().selectChoice(id, index);
 			currentSequence.nextTarget = choice.isExit ? Sequence.EXIT : choice.target;
 		}
 		if (choice != null)

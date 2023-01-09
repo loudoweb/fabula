@@ -37,28 +37,31 @@ class FabulaXmlParser
 			ID_GEN_COUNT = 0;
 
 			var events:Array<Event> = [];
-			var event:Event = null;
+			var branches:Array<Event> = [];
 			var seq = new Sequence(seqName);
 			seq.addConditions(_conditionFactory.create(sequence.getString("if")));
 
-			parseEvents(sequence, seq, events, event);
+			var event = parseEvents(sequence, seq, events, branches);
 			
-			// add isExit to last event and its choices
+			// add isExit to last event or its choices
 			if (event != null)
 			{
 				trace(event.id);
-				event.isExit = true;
+				
 				if (event.choices != null)
 				{
 					for (choice in event.choices)
 					{
-						choice.isExit = true;
+						if(choice.target == null)
+							choice.isExit = true;
 					}
+				}else{
+					event.isExit = true;
 				}
 			}
 
 			// add the events and the sequence
-			seq.addSequence(events);
+			seq.addSequence(events, branches);
 			sequences.push(seq);
 		}
 
@@ -70,8 +73,10 @@ class FabulaXmlParser
 		return {sequences: sequences};
 	}
 
-	static function parseEvents(sequence:Access, seq:Sequence, events:Array<Event>, event:Event, ?parent:Choice):Void
+	static function parseEvents(sequence:Access, seq:Sequence, events:Array<Event>, branches:Array<Event>, ?parent:Choice):Event
 		{
+			var event:Event = null;
+
 			for (key in sequence.elements)
 			{
 				switch (key.name)
@@ -112,13 +117,16 @@ class FabulaXmlParser
 								// nested event
 								if(choice.hasNode.event)
 								{
-									parseEvents(choice, seq, events, event, _choice);
+									parseEvents(choice, seq, events, branches, _choice);
 								}
 								
 								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
 							}
 						}
-						events.push(event);
+						if(parent == null)
+							events.push(event);
+						else
+							branches.push(event);
 					case "choice":
 						if (event == null)
 						{
@@ -130,6 +138,7 @@ class FabulaXmlParser
 							key.getString("target"), key.getBool("exit", event.isExit)));
 				}
 			}
+			return event;
 		}
 
 	static function getText(element:Access):String
