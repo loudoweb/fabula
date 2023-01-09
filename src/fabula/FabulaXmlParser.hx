@@ -37,9 +37,45 @@ class FabulaXmlParser
 			ID_GEN_COUNT = 0;
 
 			var events:Array<Event> = [];
-			var event:Event = null;
+			var branches:Array<Event> = [];
 			var seq = new Sequence(seqName);
 			seq.addConditions(_conditionFactory.create(sequence.getString("if")));
+
+			var event = parseEvents(sequence, seq, events, branches);
+			
+			// add isExit to last event or its choices
+			if (event != null)
+			{
+				trace(event.id);
+				
+				if (event.choices != null)
+				{
+					for (choice in event.choices)
+					{
+						if(choice.target == null)
+							choice.isExit = true;
+					}
+				}else{
+					event.isExit = true;
+				}
+			}
+
+			// add the events and the sequence
+			seq.addSequence(events, branches);
+			sequences.push(seq);
+		}
+
+		// random
+		for (list in _xml.nodes.list)
+		{
+			trace("coucou list");
+		}
+		return {sequences: sequences};
+	}
+
+	static function parseEvents(sequence:Access, seq:Sequence, events:Array<Event>, branches:Array<Event>, ?parent:Choice):Event
+		{
+			var event:Event = null;
 
 			for (key in sequence.elements)
 			{
@@ -49,26 +85,48 @@ class FabulaXmlParser
 						seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
 							key.att.value);
 					case "event":
-						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT), getText(key),
-							_conditionFactory.create(key.getString("if")), key.getBool("exit", false),
+						var _id:String = key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT);
+						var _if:String;
+						if(parent == null)
+						{
+							//normal case
+							_if = key.getString("if");
+						}else{
+							//if event has choice has parent, we set choice target and event condition here
+							_if = parent.id;
+							parent.target = _id;
+						}
+
+						event = new Event(_id, getText(key),
+							_conditionFactory.create(_if), key.getBool("exit", false),
 							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
 							key.getString("listeners"), key.getString("environment"), key.getString("target"));
 
 						if (key.hasNode.choice)
 						{
-							// id:String, text:String, type:String, target:String, exit:Bool
 							for (choice in key.nodes.choice)
 							{
-								event.addChoice(new Choice(choice.getString("id",
-									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(choice),
-									choice.getString("type"), _conditionFactory.create(choice.getString("if")),
-									choice.getString("target"), choice.getBool("exit", event.isExit)));
 
-								// TODO child event using recursivity method (then replace parent target with child id + add parent id in child if)
+								var _choice = new Choice(choice.getString("id",
+								ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(choice),
+								choice.getString("type"), _conditionFactory.create(choice.getString("if")),
+								choice.getString("target"), choice.getBool("exit", event.isExit));
+
+								event.addChoice(_choice);
+
+								// nested event
+								if(choice.hasNode.event)
+								{
+									parseEvents(choice, seq, events, branches, _choice);
+								}
+								
 								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
 							}
 						}
-						events.push(event);
+						if(parent == null)
+							events.push(event);
+						else
+							branches.push(event);
 					case "choice":
 						if (event == null)
 						{
@@ -80,31 +138,8 @@ class FabulaXmlParser
 							key.getString("target"), key.getBool("exit", event.isExit)));
 				}
 			}
-			// add isExit to last event and its choices
-			if (event != null)
-			{
-				event.isExit = true;
-				if (event.choices != null)
-				{
-					for (choice in event.choices)
-					{
-						choice.isExit = true;
-					}
-				}
-			}
-
-			// add the events and the sequence
-			seq.addSequence(events);
-			sequences.push(seq);
+			return event;
 		}
-
-		// random
-		for (list in _xml.nodes.list)
-		{
-			trace("coucou list");
-		}
-		return {sequences: sequences};
-	}
 
 	static function getText(element:Access):String
 	{

@@ -18,17 +18,20 @@ class Sequence
 	public var id:String;
 	public var variables:VariableCollection;
 	public var events:Array<Event>;
+	public var branches:Array<Event>;
 	public var conditions:ConditionCollection;
 
 	public var nextTarget:Null<String>;
 
 	public var current:Int;
+	public var currentId:Null<String>;
 	public var numCompleted:Int;
 
 	public function new(id:String)
 	{
 		this.id = id;
 		current = -1;
+		currentId = null;
 		numCompleted = 0;
 		nextTarget = null;
 	}
@@ -53,17 +56,19 @@ class Sequence
 		}
 	}
 
-	public function addSequence(events:Array<Event>)
+	public function addSequence(events:Array<Event>, branches:Array<Event>)
 	{
-		if (this.events != null)
+		if (this.events != null || this.branches != null)
 			trace("WARNING a new sequence will replace an old sequence");
 		this.events = events;
+		this.branches = branches;
 	}
 
 	public function start():Void
 	{
 		current = -1;
 		nextTarget = null;
+		currentId = null;
 
 		if (variables != null)
 		{
@@ -86,7 +91,7 @@ class Sequence
 			if (events[current].isExit || (nextTarget == EXIT))
 			{
 				numCompleted++;
-				trace("sequence completed");
+				trace("[Fabula] sequence completed");
 				return null;
 			}
 		}
@@ -113,6 +118,7 @@ class Sequence
 				var nextEvent = events[current];
 				if (nextEvent.testConditions())
 				{
+					currentId = nextEvent.id;
 					return nextEvent;
 				} else
 					return getNextEvent(true);
@@ -127,27 +133,37 @@ class Sequence
 
 	/**
 	 * Jump to a specific event (usually because a choice has a specific target event set)
-	 * @param index index of the event in the sequence (from save? debug?)
-	 * @param id id of the event (choice target)
-	 * @return Event
+	 * @param id id of the event. If null returns current event
+	 * @return Event.
 	 */
-	public function getEvent(?index:Int, ?id:String):Event
+	public function getEvent(?id:String):Event
 	{
-		if (index == null)
-			index = current;
+
 		if (id == null)
-			return events[current];
-		else
 		{
-			for (i in 0...events.length)
+			id = currentId;
+		}
+		
+		//main events flow
+		for (i in 0...events.length)
+		{
+			if (events[i].id == id)
 			{
-				if (events[i].id == id)
-				{
-					current = i;
-					return events[i];
-				}
+				current = i;
+				currentId = id;
+				return events[i];
 			}
 		}
+		//branches events flow
+		for (i in 0...branches.length)
+		{
+			if (branches[i].id == id)
+			{
+				currentId = id;
+				return branches[i];
+			}
+		}
+		
 		return null;
 	}
 }
