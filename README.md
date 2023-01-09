@@ -51,6 +51,30 @@ Here is a taste of the xml, remember that you can [unlock autocompletion](#autoc
 </data>
 ```
 
+** New in 0.10.0 **
+You can now use nested event which can sometimes make story more readable.
+```xml
+?xml version="1.0" encoding="utf-8" ?>
+<data>
+    <sequence id="Talk_to_kid">
+        <event speaker="kid_sad" if="kid_angry" text="I won't talk to you anymore..." exit="true"/>
+        <event speaker="kid" if="!kid_happy" text="Hi, have you seen my new toy? I love it!"/>
+        <event speaker="kid" text="Do you want to play with me?">
+            <choice id="kid_angry" text="Your toy looks like crap!">
+                <event speaker="kid_angry" text="You're so mean!" exit="true"/>
+            </choice>
+            <choice id="kid_happy" text="Yes, I love it!">
+                <event speaker="kid_happy" exit="true">
+                    <text><![CDATA[Thanks! <font color="#2281AB">Let's play!</font>]]></text>
+                </event>
+            </choice>
+            <choice id="goto_elsewhere" text="Leave him alone" exit="true"/>
+        </event>
+    </sequence>
+</data>
+```
+
+
 You can test this story [here](https://loudoweb.github.io/fabula/dist/commonjs/tester.html).
 
 ### autocompletion with xsd

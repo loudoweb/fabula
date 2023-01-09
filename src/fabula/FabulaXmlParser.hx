@@ -41,48 +41,12 @@ class FabulaXmlParser
 			var seq = new Sequence(seqName);
 			seq.addConditions(_conditionFactory.create(sequence.getString("if")));
 
-			for (key in sequence.elements)
-			{
-				switch (key.name)
-				{
-					case "variable":
-						seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
-							key.att.value);
-					case "event":
-						event = new Event(key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT), getText(key),
-							_conditionFactory.create(key.getString("if")), key.getBool("exit", false),
-							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
-							key.getString("listeners"), key.getString("environment"), key.getString("target"));
-
-						if (key.hasNode.choice)
-						{
-							// id:String, text:String, type:String, target:String, exit:Bool
-							for (choice in key.nodes.choice)
-							{
-								event.addChoice(new Choice(choice.getString("id",
-									ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(choice),
-									choice.getString("type"), _conditionFactory.create(choice.getString("if")),
-									choice.getString("target"), choice.getBool("exit", event.isExit)));
-
-								// TODO child event using recursivity method (then replace parent target with child id + add parent id in child if)
-								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
-							}
-						}
-						events.push(event);
-					case "choice":
-						if (event == null)
-						{
-							trace("impossible to add a choice without a parent event");
-							break;
-						}
-						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
-							getText(key), key.getString("type"), _conditionFactory.create(key.getString("if")),
-							key.getString("target"), key.getBool("exit", event.isExit)));
-				}
-			}
+			parseEvents(sequence, seq, events, event);
+			
 			// add isExit to last event and its choices
 			if (event != null)
 			{
+				trace(event.id);
 				event.isExit = true;
 				if (event.choices != null)
 				{
@@ -105,6 +69,68 @@ class FabulaXmlParser
 		}
 		return {sequences: sequences};
 	}
+
+	static function parseEvents(sequence:Access, seq:Sequence, events:Array<Event>, event:Event, ?parent:Choice):Void
+		{
+			for (key in sequence.elements)
+			{
+				switch (key.name)
+				{
+					case "variable":
+						seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
+							key.att.value);
+					case "event":
+						var _id:String = key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT);
+						var _if:String;
+						if(parent == null)
+						{
+							//normal case
+							_if = key.getString("if");
+						}else{
+							//if event has choice has parent, we set choice target and event condition here
+							_if = parent.id;
+							parent.target = _id;
+						}
+
+						event = new Event(_id, getText(key),
+							_conditionFactory.create(_if), key.getBool("exit", false),
+							key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
+							key.getString("listeners"), key.getString("environment"), key.getString("target"));
+
+						if (key.hasNode.choice)
+						{
+							for (choice in key.nodes.choice)
+							{
+
+								var _choice = new Choice(choice.getString("id",
+								ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(choice),
+								choice.getString("type"), _conditionFactory.create(choice.getString("if")),
+								choice.getString("target"), choice.getBool("exit", event.isExit));
+
+								event.addChoice(_choice);
+
+								// nested event
+								if(choice.hasNode.event)
+								{
+									parseEvents(choice, seq, events, event, _choice);
+								}
+								
+								// TODO type should be autocompleted when child is fight or exit or event or when condition attached
+							}
+						}
+						events.push(event);
+					case "choice":
+						if (event == null)
+						{
+							trace("impossible to add a choice without a parent event");
+							break;
+						}
+						event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
+							getText(key), key.getString("type"), _conditionFactory.create(key.getString("if")),
+							key.getString("target"), key.getBool("exit", event.isExit)));
+				}
+			}
+		}
 
 	static function getText(element:Access):String
 	{
