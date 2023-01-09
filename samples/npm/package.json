@@ -1,0 +1,22 @@
+{
+  "name": "fabula",
+  "version": "0.8.0",
+  "description": "Cross-platform Engine for stories, events and dialogs parsed from xml for video games.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx webpack serve --no-client-overlay --open",
+    "prod": "npx webpack build --mode=production"
+  },
+  "author": "Lugludum",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/lugludum/fabula#readme",
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "html-webpack-tags-plugin": "^3.0.2",
+    "signals": "^1.0.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
