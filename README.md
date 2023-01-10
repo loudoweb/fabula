@@ -81,9 +81,7 @@ You can test this story [here](https://loudoweb.github.io/fabula/samples/commonj
 On VSCode and some other softwares you can have autocompletion + validation on your xml using the xsd schema. Just write your root xml tag like that:
 
 ```xml
-<data xmlns="http://www.loudoweb.fr/app/fabula/0.8.1"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.8.1 http://www.loudoweb.fr/app/fabula/fabula-0.8.1.xsd">
+<data xmlns="http://www.loudoweb.fr/app/fabula/0.10.0" xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.10.0 http://www.loudoweb.fr/app/fabula/fabula-0.10.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 </data>
 ```
 ### how it's work
