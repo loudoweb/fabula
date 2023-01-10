@@ -16,7 +16,7 @@ Currently in development. Most of my original code still isn't there. Then I'll 
 
 I personnaly prefer xml over json, especially for large content, I find it more readable, and it needs less scrolling:)
 Also, I've a test a json and the file was heavier...
-Finally we can imagine to create a json parser in the future if we find a correct json format, but only when after reaching v1.0.0.
+Finally we can imagine to create a json parser in the future if we find a correct json format, but only when after reaching v1.0.0. Also, yaml may be a good fit. But for now I'm heavily focused on xml.
 
 > Yeah, but isn't it better to use a visual graph node tool to make your story?
 
@@ -54,7 +54,7 @@ Here is a taste of the xml, remember that you can [unlock autocompletion](#autoc
 ** New in 0.10.0 **
 You can now use nested event which can sometimes make story more readable.
 ```xml
-?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <data>
     <sequence id="Talk_to_kid">
         <event speaker="kid_sad" if="kid_angry" text="I won't talk to you anymore..." exit="true"/>
@@ -74,8 +74,7 @@ You can now use nested event which can sometimes make story more readable.
 </data>
 ```
 
-
-You can test this story [here](https://loudoweb.github.io/fabula/dist/commonjs/tester.html).
+You can test this story [here](https://loudoweb.github.io/fabula/samples/commonjs/index.html).
 
 ### autocompletion with xsd
 
@@ -97,7 +96,7 @@ All events or choices **id** can be used in condition using the **if** attribute
 
 The **exit** attribute, tells Fabula that your sequence is finished. But by default, your sequence ends when the player reached the last event of the sequence, Fabula always move forward by default.
 
-To create branching narrative, you can use conditions to an event using the **if** attribute. Or your can use the **target** attribute to jump into a specific event. When using these attributes, you need to set an **id** of an event or a choice.
+To create branching narrative, you can use conditions to an event using the **if** attribute. Or your can use the **target** attribute to jump into a specific event. When using these attributes, you need to set an **id** of an event or a choice. You can also add an event in the choice tag (nested event) but beware of duplicate content.
 
 If you don't set any **choice** for your event, Fabula will create an optional default "continue" or "quit" choice for your depending if it's right in the middle of the sequence or if it's an exit event. The default continue or exit choices are optionnal, because some games just invite players to click on the dialog box instead of the choice, so it's up to you!
 
@@ -152,6 +151,8 @@ function onChoiceClick(id:String){
 }
 ```
 
+You can see the full [Haxe Sample](https://github.com/loudoweb/fabula/tree/master/samples/haxe)
+
 ### Using Javascript
 
 This js library is automatically generated from the original Haxe code.
@@ -189,10 +190,14 @@ You will need some libraries depending on your target.
 
     - file : js.hxml
     - dependency: `npm install uglify-js -g` and `haxelib install uglifyjs`
-    - status : - [x]
+    - status : OK
+    - [Sample](https://github.com/loudoweb/fabula/tree/master/samples/commonjs)
 
 - **js modules**
 
+This version allows you to have all classes in separated files for better debugging. You can use something like webpack to compile everything in one file. There is no release in npm registry yet so you have to copy paste the files in your projects.
+
     - file : js_modules.hxml
     - dependency: `haxelib install genes`
-    - status : not tested
+    - status : OK
+    - [Sample](https://github.com/loudoweb/fabula/tree/master/samples/npm)
