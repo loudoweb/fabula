@@ -1,0 +1,3 @@
+-lib fabula
+-D tools
+--macro fabula.tools.FabulaTools.createLocFiles("file.xml", "output.xml", "output.csv")

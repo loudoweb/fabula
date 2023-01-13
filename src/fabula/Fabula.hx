@@ -34,6 +34,7 @@ class Fabula
 	// small part of texts that you can merge in a event/dialog randomly
 	var _textsID:Array<String>;
 
+	#if tools public #end
 	var _sequences:Array<Sequence>;
 	var _randomEncounters:Array<Event>;
 

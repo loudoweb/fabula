@@ -19,4 +19,11 @@ class Condition<T>
 	{
 		throw "[Condition] Override test function";
 	}
+
+	#if tools
+	public function toString():String
+	{
+		return Std.string(condition);
+	}
+	#end
 }
