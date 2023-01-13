@@ -113,6 +113,20 @@ This is the transcript of the dialog:
 | I won't talk to you anymore...  |  Do you want to play with me?   |
 |   |   =>   etc.    |
 
+## Localization
+
+The localization tool is currently in development. It will generate a csv file and a lighter xml file shared by all languages without any text. Here is a sample of the csv.
+
+|ID            |TEXT                                    |
+|--------------|----------------------------------------|
+|Talk_to_kid_E1|I won't talk to you anymore...          |
+|Talk_to_kid_E2|Hi, have you seen my new toy? I love it!|
+|Talk_to_kid_E3|Do you want to play with me?            |
+|kid_angry     |Your toy looks like crap!               |
+|kid_happy     |Yes, I love it!                         |
+|goto_elsewhere|Leave him alone                         |
+|Talk_to_kid_E5|You're so mean!                         |
+|Talk_to_kid_E7|Thanks!\n <font color="#2281AB">Let's play!</font>  |
 
 ## Getting started
 
