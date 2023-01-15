@@ -20,6 +20,9 @@ enum EPlayingType
 #if commonjs @:expose #end
 class Fabula
 {
+	public static var CONTINUE:String = "Continue";
+	public static var QUIT:String = "Quit";
+
 	// list of achieved event/dialog
 	public var achievedListID(default, null):Array<String>;
 	public var conditionFactory(default, null):ConditionFactory;

@@ -108,10 +108,10 @@ class Event
 		{
 			if (isExit)
 			{
-				_cacheChoices.push(new Choice("EXIT", "Quitter", "quit", target, true));
+				_cacheChoices.push(new Choice("EXIT", Fabula.QUIT, "quit", target, true));
 			} else
 			{
-				_cacheChoices.push(new Choice("CONTINUE", "Continuer", "continue", target));
+				_cacheChoices.push(new Choice("CONTINUE", Fabula.CONTINUE, "continue", target));
 			}
 		}
 		return _cacheChoices;
