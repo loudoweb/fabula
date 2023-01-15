@@ -1,5 +1,6 @@
 package fabula.tools;
 
+#if sys
 import fabula.Sequence;
 import fabula.Sequence;
 import fabula.Fabula;
@@ -120,3 +121,4 @@ class FabulaTools
 		sys.io.File.saveContent(outputCSV, csv.toString());
 	}
 }
+#end

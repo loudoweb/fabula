@@ -7,13 +7,11 @@ package fabula.condition;
 class ConditionEvent extends Condition<String>
 {
 	var _achievedListID:Array<String>;
-	var _affirmation:Bool;
 
 	public function new(condition:String, achievedListID:Array<String>, affirmation:Bool = true)
 	{
-		_affirmation = affirmation;
 		_achievedListID = achievedListID;
-		super(condition, EVENT);
+		super(condition, EVENT, affirmation);
 	}
 
 	override public function test():Bool
