@@ -1,5 +1,5 @@
 
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loudoweb.fr/app/fabula/0.10.0" xmlns:tns="http://www.loudoweb.fr/app/fabula/0.10.0" elementFormDefault="qualified" version="0.10.0" attributeFormDefault="unqualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.loudoweb.fr/app/fabula/0.12.0" xmlns:tns="http://www.loudoweb.fr/app/fabula/0.12.0" elementFormDefault="qualified" version="0.12.0" attributeFormDefault="unqualified">
     <element name="text">
         <annotation>
 			<documentation>Text that can use any special character forbidden in xml attributes. For example can use this to embellish your text with bold, color, etc.</documentation>
