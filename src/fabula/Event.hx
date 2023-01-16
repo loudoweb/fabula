@@ -137,9 +137,11 @@ class Event
 
 	public function testConditions():Bool
 	{
+		var hasOnceLimit = once && count >= 1;
 		if (conditions == null)
-			return true;
-		return conditions.test();
+			return !hasOnceLimit;
+
+		return !hasOnceLimit && conditions.test();
 	}
 
 	public function addChoice(choice:Choice)

@@ -91,7 +91,7 @@ class Sequence
 			if (events[current].isExit || (nextTarget == EXIT))
 			{
 				numCompleted++;
-				trace("[Fabula] sequence completed");
+				trace('[Fabula] sequence $id completed');
 				return null;
 			}
 		}
@@ -138,13 +138,12 @@ class Sequence
 	 */
 	public function getEvent(?id:String):Event
 	{
-
 		if (id == null)
 		{
 			id = currentId;
 		}
-		
-		//main events flow
+
+		// main events flow
 		for (i in 0...events.length)
 		{
 			if (events[i].id == id)
@@ -154,7 +153,7 @@ class Sequence
 				return events[i];
 			}
 		}
-		//branches events flow
+		// branches events flow
 		for (i in 0...branches.length)
 		{
 			if (branches[i].id == id)
@@ -163,7 +162,7 @@ class Sequence
 				return branches[i];
 			}
 		}
-		
+
 		return null;
 	}
 }

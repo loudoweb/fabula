@@ -2,3 +2,4 @@
 -D js-source-map
 --js index.js
 --main Main
+--resource ../file.xml@xml

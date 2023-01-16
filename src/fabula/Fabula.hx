@@ -111,6 +111,11 @@ class Fabula
 					seq.variables[i].reset();
 				}
 			}
+
+			for (event in seq.events)
+			{
+				event.count = 0;
+			}
 		}
 	}
 
@@ -154,6 +159,7 @@ class Fabula
 		var nextEvent = currentSequence.getNextEvent();
 		if (nextEvent != null)
 		{
+			nextEvent.count++;
 			achievedListID.push(nextEvent.id);
 			if (_achievedCallback != null)
 				_achievedCallback(nextEvent.id);
