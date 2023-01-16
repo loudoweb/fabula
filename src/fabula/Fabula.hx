@@ -192,7 +192,19 @@ class Fabula
 		// update guard to check if sequence completed
 		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
+			//
 			choice = currentSequence.getEvent().selectChoice(id, index);
+			if (choice.variables != null)
+			{
+				for (i in 0...currentSequence.variables.length)
+				{
+					if (choice.variables.exists(currentSequence.variables[i].id))
+					{
+						currentSequence.variables[i].set(choice.variables.get(currentSequence.variables[i].id));
+					}
+				}
+			}
+			// configure next target
 			currentSequence.nextTarget = choice.isExit ? Sequence.EXIT : choice.target;
 		}
 		if (choice != null)

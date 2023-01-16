@@ -98,8 +98,10 @@ class FabulaXmlParser
 			switch (key.name)
 			{
 				case "variable":
-					seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
-						key.att.value);
+					// need this because of recursivity
+					if (sequence.name == "sequence")
+						seq.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()),
+							key.att.value);
 				case "event":
 					var _id:String = key.getString("id", ID_GEN_HELPER + "_E" + ++ID_GEN_COUNT);
 					var _if:String;
@@ -127,6 +129,14 @@ class FabulaXmlParser
 								_conditionFactory.create(choice.getString("if")), choice.getString("target"),
 								choice.getBool("exit", event.isExit), choice.getInt("limit"));
 
+							if (choice.hasNode.variable)
+							{
+								for (vari in choice.nodes.variable)
+								{
+									_choice.addVariable(vari.att.id, vari.att.value);
+								}
+							}
+
 							event.addChoice(_choice);
 
 							// nested event
@@ -148,9 +158,18 @@ class FabulaXmlParser
 						trace("impossible to add a choice without a parent event");
 						break;
 					}
-					event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
-						getText(key), key.getString("type"), _conditionFactory.create(key.getString("if")),
-						key.getString("target"), key.getBool("exit", event.isExit), key.getInt("limit")));
+					var _choice = new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT), getText(key),
+						key.getString("type"), _conditionFactory.create(key.getString("if")), key.getString("target"),
+						key.getBool("exit", event.isExit), key.getInt("limit"));
+
+					if (key.hasNode.variable)
+					{
+						for (vari in key.nodes.variable)
+						{
+							_choice.addVariable(vari.att.id, vari.att.value);
+						}
+					}
+					event.addChoice(_choice);
 			}
 		}
 		return event;

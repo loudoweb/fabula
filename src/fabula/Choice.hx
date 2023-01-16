@@ -1,5 +1,6 @@
 package fabula;
 
+import haxe.ds.StringMap;
 import fabula.condition.ConditionCollection;
 import fabula.condition.ConditionFactory;
 
@@ -43,6 +44,8 @@ class Choice
 	 */
 	public var isExit:Bool;
 
+	public var variables:StringMap<String>;
+
 	/**
 	 * A choice is a clickable element in your game that the player has to click to continue the sequence.
 	 * @param id event id
@@ -65,5 +68,14 @@ class Choice
 		this.count = 0;
 		ConditionFactory.helperList.set(this.id, EVENT);
 		// TODO variables
+	}
+
+	public function addVariable(id:String, content:String)
+	{
+		if (variables == null)
+		{
+			variables = new StringMap<String>();
+		}
+		variables.set(id, content);
 	}
 }

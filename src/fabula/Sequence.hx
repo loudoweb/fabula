@@ -1,5 +1,6 @@
 package fabula;
 
+import fabula.condition.VariableEnum;
 import fabula.condition.ConditionCollection;
 import haxe.macro.Expr.Case;
 import fabula.condition.Variable.EVariableType;
@@ -7,6 +8,7 @@ import fabula.condition.VariableCollection;
 import fabula.condition.VariableString;
 import fabula.condition.VariableInt;
 import fabula.condition.VariableFloat;
+import fabula.condition.VariableBool;
 
 class Sequence
 {
@@ -53,6 +55,10 @@ class Sequence
 				variables.push(new VariableInt(id, startingValue));
 			case FLOAT:
 				variables.push(new VariableFloat(id, startingValue));
+			case BOOL:
+				variables.push(new VariableBool(id, startingValue));
+			case ENUM:
+				variables.push(new VariableEnum(id, startingValue));
 		}
 	}
 

@@ -13,9 +13,9 @@ abstract VariableCollection(Array<Variable<Dynamic>>)
 	}
 
 	@:arrayAccess
-	inline function getUserByIndex(id:Int)
+	inline function getByIndex(index:Int)
 	{
-		return this[id];
+		return this[index];
 	}
 
 	public function get(id:String)

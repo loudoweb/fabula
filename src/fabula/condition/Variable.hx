@@ -6,6 +6,8 @@ enum EVariableType
 {
 	STRING;
 	INT;
+	ENUM;
+	BOOL;
 	FLOAT;
 }
 
