@@ -115,7 +115,7 @@ class FabulaXmlParser
 					}
 
 					event = new Event(_id, getText(key), _conditionFactory.create(_if), key.getBool("exit", false),
-						key.getInt("weight", 1), key.getBool("once", false), key.getString("speaker"),
+						key.getInt("weight", 1), key.getInt("limit"), key.getString("speaker"),
 						key.getString("listeners"), key.getString("environment"), key.getString("target"));
 
 					if (key.hasNode.choice)
@@ -125,7 +125,7 @@ class FabulaXmlParser
 							var _choice = new Choice(choice.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 								getText(choice), choice.getString("type"),
 								_conditionFactory.create(choice.getString("if")), choice.getString("target"),
-								choice.getBool("exit", event.isExit));
+								choice.getBool("exit", event.isExit), choice.getInt("limit"));
 
 							event.addChoice(_choice);
 
@@ -150,7 +150,7 @@ class FabulaXmlParser
 					}
 					event.addChoice(new Choice(key.getString("id", ID_GEN_HELPER + "_C" + ++ID_GEN_COUNT),
 						getText(key), key.getString("type"), _conditionFactory.create(key.getString("if")),
-						key.getString("target"), key.getBool("exit", event.isExit)));
+						key.getString("target"), key.getBool("exit", event.isExit), key.getInt("limit")));
 			}
 		}
 		return event;

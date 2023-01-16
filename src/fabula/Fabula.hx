@@ -115,6 +115,14 @@ class Fabula
 			for (event in seq.events)
 			{
 				event.count = 0;
+
+				if (event.choices != null)
+				{
+					for (choice in event.choices)
+					{
+						choice.count = 0;
+					}
+				}
 			}
 		}
 	}
