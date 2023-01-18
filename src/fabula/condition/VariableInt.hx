@@ -22,4 +22,25 @@ class VariableInt extends Variable<Int>
 	{
 		return Std.parseInt(value);
 	}
+
+	override function compare(operation:EConditionOp, targetValue:Int):Bool
+	{
+		switch (operation)
+		{
+			case EQUAL:
+				return value == targetValue;
+			case DIFFERENT:
+				return value != targetValue;
+			case GREATER:
+				return value > targetValue;
+			case GREATER_EQUAL:
+				return value >= targetValue;
+			case LOWER:
+				return value < targetValue;
+			case LOWER_EQUAL:
+				return value <= targetValue;
+			default:
+				return false;
+		}
+	}
 }

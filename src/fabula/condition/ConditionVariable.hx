@@ -1,7 +1,7 @@
 package fabula.condition;
 
 /**
- * Test if a value of a variable
+ * Test a value of a variable
  * @author Loudo
  */
 class ConditionVariable extends Condition<String>
@@ -12,9 +12,11 @@ class ConditionVariable extends Condition<String>
 
 	public function new(name:String, match:String, getVar:String->Variable<Dynamic>, affirmation:Bool = true)
 	{
-		_getVar = getVar;
+		super(name, VARIABLE, affirmation);
 
+		_getVar = getVar;
 		_operation = match.charAt(0);
+
 		if (_operation != null)
 		{
 			_targetValue = match.substr(1);
@@ -27,22 +29,11 @@ class ConditionVariable extends Condition<String>
 			_operation = EQUAL;
 			_targetValue = match;
 		}
-
-		super(name, VARIABLE, affirmation);
 	}
 
 	override public function test():Bool
 	{
 		var vari = _getVar(condition);
-		var targetValue = vari.convert(_targetValue);
-		switch (_operation)
-		{
-			case EQUAL:
-				return vari.value == targetValue;
-			case DIFFERENT:
-				return vari.value != targetValue;
-			default:
-				return false;
-		}
+		return vari.compare(_operation, _targetValue);
 	}
 }

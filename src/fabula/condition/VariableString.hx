@@ -22,4 +22,21 @@ class VariableString extends Variable<String>
 	{
 		return value;
 	}
+
+	override function compare(operation:EConditionOp, targetValue:String):Bool
+	{
+		switch (operation)
+		{
+			case EQUAL:
+				return value == targetValue;
+			case DIFFERENT:
+				return value != targetValue;
+			case IN:
+				return value.indexOf(targetValue) != -1;
+			case NOT_IN:
+				return value.indexOf(targetValue) == -1;
+			default:
+				return false;
+		}
+	}
 }

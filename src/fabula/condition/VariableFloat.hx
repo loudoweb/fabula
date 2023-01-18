@@ -22,4 +22,25 @@ class VariableFloat extends Variable<Float>
 	{
 		return Std.parseFloat(value);
 	}
+
+	override function compare(operation:EConditionOp, targetValue:Float):Bool
+	{
+		switch (operation)
+		{
+			case EQUAL:
+				return value == targetValue;
+			case DIFFERENT:
+				return value != targetValue;
+			case GREATER:
+				return value > targetValue;
+			case GREATER_EQUAL:
+				return value >= targetValue;
+			case LOWER:
+				return value < targetValue;
+			case LOWER_EQUAL:
+				return value <= targetValue;
+			default:
+				return false;
+		}
+	}
 }

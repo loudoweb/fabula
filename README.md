@@ -10,7 +10,7 @@ This engine has been originally coded for my own tactical rpg procgen narrative 
 Currently in development. Most of my original code still isn't there. Then I'll add new features :)
 **WIP: RC planned for 2023**
 
-## writing your story on xml
+## writing your story with xml
 
 > Why xml? 
 
@@ -90,7 +90,7 @@ For each event, you can set a **speaker**, **listeners** and an **environment**.
 
 You can set a text directly using the **text** attribute. But if needed, you can use a text child node to use xml/markup to spice up your text.
 
-All events or choices **id** can be used in condition using the **if** attribute. Ids are optional and Fabula will create ids for you to help you debugging using the following nomenclature $SEQUENCEID + "_E" for event or "_C" for choice + ordered number. External conditions could be used soon in the system. You can also monitor the id of the choice chosen in real time to do whatever you want. In my sample, I've set the **goto** prefix to tell my own Fabula wrapper to change the scene of the game. Fabula here, just tells you the id, it's up to you to do whatever you want in your game engine.
+All events or choices **id** can be used in condition using the **if** attribute. Ids are optional but global and Fabula will create ids for you to help you debugging using the following nomenclature $SEQUENCEID + "_E" for event or "_C" for choice + ordered number. You can also uses [variables](#variables) in your condition. External conditions could be used soon in the system. You can also monitor the id of the choice chosen in real time to do whatever you want. In my sample, I've set the **goto** prefix to tell my own Fabula wrapper to change the scene of the game. Fabula here, just tells you the id, it's up to you to do whatever you want in your game engine.
 
 The **exit** attribute, tells Fabula that your sequence is finished. But by default, your sequence ends when the player reached the last event of the sequence, Fabula always move forward by default.
 
@@ -112,6 +112,51 @@ This is the transcript of the dialog:
 | ==> *click on kid again:* <==    |  ==> *click on kid again:* <==   |
 | I won't talk to you anymore...  |  Do you want to play with me?   |
 |   |   =>   etc.    |
+
+## Conditions
+
+You can add a condition in an event or a choice adding the **if** attribute.
+If you have more than one condition you can use AND or OR conditions.
+AND conditions can be used by separating values with a comma (or with **&** but it makes the xml invalid).
+OR conditions can be used by separating values with **|** but please note that the parser is limited right now so you can't handle priority between conditions with brackets. When mixing AND and OR conditions, OR are executed as a part of a AND block, the opposite isn't possible yet and will be introduced when bracket parser will be done.
+
+## Variables
+
+You can declare a variable in a sequence like that:
+```xml
+<variable id="myInt" type="int" value="0"/>
+<variable id="myStr" type="string" value="John Doe"/>
+<variable id="myBoolean" type="bool" value="true"/>
+<variable id="myFloat" type="float" value="1.0"/>
+<variable id="myEnum" type="enum" value="one,two,three"/>
+```
+
+Then you can update it in a choice:
+```xml
+<variable id="myBoolean" value="false"/>
+```
+
+An enum always takes the first value before the comma. Here the default value is **one**. You can set it using three method.
+Using the string:
+```xml
+<variable id="myEnum" value="two"/>
+```
+Using the index:
+```xml
+<variable id="myEnum" value="1"/>
+```
+
+Using increment or decrement (todo):
+```xml
+<variable id="myEnum" value="+"/>
+<variable id="myEnum" value="-"/>
+<variable id="myEnum" value="+2"/>
+```
+
+Finally you use it in a condition:
+```xml
+<event if="myBoolean,myInt>=1"/>
+```
 
 ## Localization
 

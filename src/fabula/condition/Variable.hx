@@ -1,5 +1,6 @@
 package fabula.condition;
 
+import fabula.condition.EConditionOp;
 import fabula.condition.ConditionFactory;
 
 enum EVariableType
@@ -37,6 +38,19 @@ class Variable<T>
 	{
 		throw "[Fabula > variable] This method needs to be overriden";
 		return null;
+	}
+
+	public function compare(operation:EConditionOp, targetValue:T):Bool
+	{
+		switch (operation)
+		{
+			case EQUAL:
+				return value == targetValue;
+			case DIFFERENT:
+				return value != targetValue;
+			default:
+				return false;
+		}
 	}
 
 	public function reset()

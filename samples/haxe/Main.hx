@@ -35,7 +35,13 @@ class Main
 
 	static function next()
 	{
+		for (i in 0...story.currentSequence.variables.length)
+		{
+			trace(story.currentSequence.variables[i].value);
+		}
+
 		event = story.getNextEvent();
+
 		if (event != null)
 		{
 			divLabel = Browser.document.createDivElement();

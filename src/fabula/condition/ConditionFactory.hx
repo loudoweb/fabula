@@ -86,6 +86,9 @@ class ConditionFactory
 				case EVENT:
 					collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
 				case VARIABLE:
+					// if it's a boolean, here is a hack to use it without explicitely mention true or false in the xml
+					if (value == match)
+						match = "true";
 					collection.add(new ConditionVariable(value, match, fabula.getVar, !negation));
 				default:
 					throw "[Fabula > Condition] To use other condition type, please override ConditionFactory class and create a Condition class for this type";
