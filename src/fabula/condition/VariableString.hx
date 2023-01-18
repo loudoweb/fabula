@@ -33,8 +33,6 @@ class VariableString extends Variable<String>
 				return value != targetValue;
 			case IN:
 				return value.indexOf(targetValue) != -1;
-			case NOT_IN:
-				return value.indexOf(targetValue) == -1;
 			default:
 				return false;
 		}

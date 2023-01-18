@@ -13,6 +13,8 @@ class ConditionFactory
 	 */
 	static public var helperList = new StringMap<EConditionType>();
 
+	static public var regexp:EReg = ~/([a-zA-Z0-9_-]+)(=|!=|>=|<=|<|>|\(in:)?([a-zA-Z0-9_-]*)/g;
+
 	public var fabula:Fabula;
 
 	public function new(fabula:Fabula)
@@ -71,12 +73,26 @@ class ConditionFactory
 		if (negation)
 			value = value.substr(1);
 
-		var vdec = value.split("=");
-		var match = value;
-		if (vdec.length > 1)
+		var hasMatch = regexp.match(value);
+		var match:Null<Dynamic> = null;
+		var operation:Null<String> = null;
+		if (hasMatch)
 		{
-			value = vdec[0];
-			match = vdec[1];
+			value = regexp.matched(1);
+			operation = regexp.matched(2);
+			match = regexp.matched(3);
+		}
+
+		if (match == "" || match == null)
+		{
+			operation = "=";
+			match = true;
+		} else if (operation == "(in:")
+		{
+			operation = "in";
+			var temp = value;
+			value = match;
+			match = temp;
 		}
 
 		if (helperList.exists(value))
@@ -86,10 +102,7 @@ class ConditionFactory
 				case EVENT:
 					collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
 				case VARIABLE:
-					// if it's a boolean, here is a hack to use it without explicitely mention true or false in the xml
-					if (value == match)
-						match = "true";
-					collection.add(new ConditionVariable(value, match, fabula.getVar, !negation));
+					collection.add(new ConditionVariable(value, operation, match, fabula.getVar, !negation));
 				default:
 					throw "[Fabula > Condition] To use other condition type, please override ConditionFactory class and create a Condition class for this type";
 			}
