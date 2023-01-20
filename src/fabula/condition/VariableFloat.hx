@@ -11,11 +11,42 @@ class VariableFloat extends Variable<Float>
 
 	override public function set(value:String):Bool
 	{
-		var temp = this.value;
-		this.value = Std.parseFloat(value);
+		var temp:Float = this.value;
+
+		switch (value)
+		{
+			case "+" | "++":
+				this.value++;
+			case "-" | "--":
+				this.value--;
+			case extract(_) => result:
+				switch (result.operation)
+				{
+					case "+":
+						this.value += result.subValue;
+					case "-":
+						this.value -= result.subValue;
+					default:
+						this.value = result.subValue;
+				}
+		}
 		if (temp != this.value)
 			return true;
 		return false;
+	}
+
+	function extract(str:String):{operation:String, subValue:Float}
+	{
+		var operation = str.charAt(0);
+		var subValue = 0.0;
+		if (operation == "+" || operation == "-")
+		{
+			subValue = Std.parseFloat(str.substring(1));
+		} else
+		{
+			subValue = Std.parseFloat(str);
+		}
+		return {operation: operation, subValue: subValue};
 	}
 
 	override function convert(value:String):Float
