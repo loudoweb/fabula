@@ -146,11 +146,10 @@ Using the index:
 <variable id="myEnum" value="1"/>
 ```
 
-Using increment or decrement (todo):
+Using increment or decrement:
 ```xml
 <variable id="myEnum" value="+"/>
 <variable id="myEnum" value="-"/>
-<variable id="myEnum" value="+2"/>
 ```
 
 Finally you use it in a condition:

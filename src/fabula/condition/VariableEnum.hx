@@ -20,17 +20,42 @@ class VariableEnum extends Variable<String>
 		if (index == null)
 		{
 			if (value == options.toString())
-				value = options[0];
-
-			if (options.indexOf(value) == -1)
 			{
-				trace('[Fabula > Variable] $value not in options of $id');
-				return false;
+				// force to first option if all options set
+				value = options[0];
+			}
+			if (value == "+")
+			{
+				var index = options.indexOf(this.value) + 1;
+				if (index < options.length)
+				{
+					value = options[index];
+				} else
+				{
+					return false;
+				}
+			} else if (value == "-")
+			{
+				var index = options.indexOf(this.value) - 1;
+				if (index >= 0)
+				{
+					value = options[index];
+				} else
+				{
+					return false;
+				}
+			} else
+			{
+				if (options.indexOf(value) == -1)
+				{
+					trace('[Fabula > Variable] $value not in options of $id');
+					return false;
+				}
 			}
 			this.value = value;
 		} else
 		{
-			if (index >= options.length)
+			if (index >= options.length || index < 0)
 			{
 				trace('[Fabula > Variable] $index not in length of $id');
 				return false;
