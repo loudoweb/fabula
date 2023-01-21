@@ -7,9 +7,10 @@ enum EVariableType
 {
 	STRING;
 	INT;
-	ENUM;
-	BOOL;
 	FLOAT;
+	BOOL;
+	ENUM;
+	CYCLE;
 }
 
 class Variable<T>

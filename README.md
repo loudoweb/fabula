@@ -81,7 +81,7 @@ You can test this story [here](https://loudoweb.github.io/fabula/samples/commonj
 On VSCode and some other softwares you can have autocompletion + validation on your xml using the xsd schema. Just write your root xml tag like that:
 
 ```xml
-<data xmlns="http://www.loudoweb.fr/app/fabula/0.13.0" xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.13.0 http://www.loudoweb.fr/app/fabula/fabula-0.13.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<data xmlns="http://www.loudoweb.fr/app/fabula/0.14.0" xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.14.0 http://www.loudoweb.fr/app/fabula/fabula-0.14.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 </data>
 ```
 ### how it's work
@@ -128,7 +128,8 @@ You can declare a variable in a sequence like that:
 <variable id="myStr" type="string" value="John Doe"/>
 <variable id="myBoolean" type="bool" value="true"/>
 <variable id="myFloat" type="float" value="1.0"/>
-<variable id="myEnum" type="enum" value="one,two,three"/>
+<variable id="myEnum" type="enum" value="start,middle,end"/>
+<variable id="myCycle" type="cycle" value="spring,summer,autumn,winter"/>
 ```
 
 Then you can update it in a choice:
@@ -136,10 +137,10 @@ Then you can update it in a choice:
 <variable id="myBoolean" value="false"/>
 ```
 
-An enum always takes the first value before the comma. Here the default value is **one**. You can set it using three method.
+Enum and Cycles always take the first value before the comma. Here the default value is **start** and **spring**. The difference is that Cycle variables start again from first value when it reaches the end. You can set it using three method.
 Using the string:
 ```xml
-<variable id="myEnum" value="two"/>
+<variable id="myEnum" value="middle"/>
 ```
 Using the index:
 ```xml
