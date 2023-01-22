@@ -23,8 +23,8 @@ class Fabula
 	public static var CONTINUE:String = "Continue";
 	public static var QUIT:String = "Quit";
 
-	// list of achieved event/dialog
-	public var achievedListID(default, null):Array<String>;
+	// list of completed event/dialog
+	public var completedID(default, null):Array<String>;
 	public var conditionFactory(default, null):ConditionFactory;
 
 	public var currentSequence(default, null):Sequence;
@@ -43,7 +43,7 @@ class Fabula
 	var _sequences:Array<Sequence>;
 	var _randomEncounters:Array<Event>;
 
-	var _achievedCallback:String->Void;
+	var _completedCallback:String->Void;
 
 	/**
 	 * Fabula is a sequencial or branch event/dialog system.
@@ -52,13 +52,13 @@ class Fabula
 	 * A tool could help homogenize xml but not planned yet.
 	 * @param files You can use more than one file.
 	 */
-	public function new(files:Array<String>, ?achievedCallback:String->Void)
+	public function new(files:Array<String>, ?completedCallback:String->Void)
 	{
 		_questsID = [];
 		_encountersID = [];
 		_textsID = [];
-		achievedListID = [];
-		_achievedCallback = achievedCallback;
+		completedID = [];
+		_completedCallback = completedCallback;
 		conditionFactory = new ConditionFactory(this);
 
 		_sequences = [];
@@ -103,7 +103,7 @@ class Fabula
 	 */
 	public function reset()
 	{
-		achievedListID.splice(0, achievedListID.length);
+		completedID.splice(0, completedID.length);
 		for (seq in _sequences)
 		{
 			if (seq.variables != null)
@@ -113,6 +113,8 @@ class Fabula
 					seq.variables[i].reset();
 				}
 			}
+
+			seq.completedID.splice(0, seq.completedID.length);
 
 			for (event in seq.events)
 			{
@@ -170,9 +172,10 @@ class Fabula
 		if (nextEvent != null)
 		{
 			nextEvent.count++;
-			achievedListID.push(nextEvent.id);
-			if (_achievedCallback != null)
-				_achievedCallback(nextEvent.id);
+			completedID.push(nextEvent.id);
+			currentSequence.completedID.push(nextEvent.id);
+			if (_completedCallback != null)
+				_completedCallback(nextEvent.id);
 		}
 		return nextEvent;
 	}
@@ -183,7 +186,7 @@ class Fabula
 	}
 
 	/**
-	 * Apply an user choice to the sequence, add it to the achieved list and set variables
+	 * Apply an user choice to the sequence, add it to the completed list and set variables
 	 * @param choice 
 	 * @param id 
 	 * @return Choice
@@ -213,10 +216,10 @@ class Fabula
 		}
 		if (choice != null)
 		{
-			achievedListID.push(id);
-			if (_achievedCallback != null)
-				_achievedCallback(id);
-			// TODO push achieved sequence id
+			completedID.push(id);
+			currentSequence.completedID.push(id);
+			if (_completedCallback != null)
+				_completedCallback(id);
 		}
 		return choice;
 	}
@@ -259,6 +262,25 @@ class Fabula
 			out = variables.get(name);
 		}
 		return out;
+	}
+
+	/**
+	 * Check if ID of event or choice is completed
+	 * @param id 
+	 * @return Bool
+	 */
+	public function isIDCompleted(id:String):Bool
+	{
+		if (id.charAt(0) == ".")
+		{
+			// check if completed in current sequence context
+			return currentSequence.completedID.indexOf(id.substring(1)) != -1;
+		} else
+		{
+			// check if completed globally
+			return completedID.indexOf(id) != -1;
+		}
+		return false;
 	}
 
 	/**

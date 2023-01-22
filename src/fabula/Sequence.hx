@@ -20,6 +20,7 @@ class Sequence
 	@:final inline public static var EXIT = "$$EXIT$$";
 
 	public var id:String;
+	public var completedID:Array<String>;
 	public var variables:VariableCollection;
 	public var events:Array<Event>;
 	public var branches:Array<Event>;
@@ -38,6 +39,7 @@ class Sequence
 		currentId = null;
 		numCompleted = 0;
 		nextTarget = null;
+		completedID = [];
 	}
 
 	public function addConditions(conditions:ConditionCollection)
@@ -79,7 +81,7 @@ class Sequence
 		current = -1;
 		nextTarget = null;
 		currentId = null;
-
+		// reset variables
 		if (variables != null)
 		{
 			for (i in 0...variables.length)
@@ -87,6 +89,8 @@ class Sequence
 				variables[i].reset();
 			}
 		}
+		// reset internal completed IDs
+		completedID.splice(0, completedID.length);
 	}
 
 	/**

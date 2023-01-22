@@ -100,7 +100,7 @@ class ConditionFactory
 			switch (helperList.get(value))
 			{
 				case EVENT:
-					collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
+					collection.add(new ConditionEvent(value, fabula.isIDCompleted, !negation));
 				case VARIABLE:
 					collection.add(new ConditionVariable(value, operation, match, fabula.getVar, !negation));
 				default:
@@ -109,7 +109,7 @@ class ConditionFactory
 		} else
 		{
 			// if condition doesn't exist, we use ConditionEvent by default
-			collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
+			collection.add(new ConditionEvent(value, fabula.isIDCompleted, !negation));
 		}
 	}
 }
