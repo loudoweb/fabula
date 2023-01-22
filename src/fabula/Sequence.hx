@@ -1,6 +1,6 @@
 package fabula;
 
-import fabula.condition.VariableCycle.VariablCycle;
+import fabula.condition.VariableCycle;
 import fabula.condition.Variable;
 import fabula.condition.VariableEnum;
 import fabula.condition.ConditionCollection;
@@ -62,7 +62,7 @@ class Sequence
 			case ENUM:
 				variables.push(new VariableEnum(id, startingValue));
 			case CYCLE:
-				variables.push(new VariablCycle(id, startingValue));
+				variables.push(new VariableCycle(id, startingValue));
 		}
 	}
 

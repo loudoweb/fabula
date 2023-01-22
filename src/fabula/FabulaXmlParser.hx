@@ -16,15 +16,20 @@ class FabulaXmlParser
 
 	static var _conditionFactory:ConditionFactory;
 
-	public static function parse(raw:String, conditionFactory:ConditionFactory,
-			achievedListID:Array<String>):{sequences:Array<Sequence>}
+	public static function parse(raw:String, fabula:Fabula):{sequences:Array<Sequence>}
 	{
-		_conditionFactory = conditionFactory;
+		_conditionFactory = fabula.conditionFactory;
 
 		_xml = new Access(Xml.parse(raw).firstElement());
 
+		// global variables
+		for (key in _xml.nodes.variable)
+		{
+			fabula.addVariable(key.att.id, Type.createEnum(EVariableType, key.att.type.toUpperCase()), key.att.value);
+		}
+
+		// sequences
 		var sequences:Array<Sequence> = [];
-		// sequencial
 		for (sequence in _xml.nodes.sequence)
 		{
 			if (!sequence.has.id)
@@ -80,7 +85,7 @@ class FabulaXmlParser
 			}
 		}
 
-		// random
+		// random TODO
 		for (list in _xml.nodes.list)
 		{
 			trace("coucou list");

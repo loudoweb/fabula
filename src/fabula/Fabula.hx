@@ -1,7 +1,7 @@
 package fabula;
 
-import fabula.condition.Variable;
-import fabula.condition.ConditionFactory;
+import fabula.condition.Variable.EVariableType;
+import fabula.condition.*;
 import haxe.ds.StringMap;
 
 enum EEventType
@@ -28,6 +28,8 @@ class Fabula
 	public var conditionFactory(default, null):ConditionFactory;
 
 	public var currentSequence(default, null):Sequence;
+
+	public var variables:VariableCollection;
 
 	// Different lists are stored so you can pick up an event/dial on a particular list or from all:
 	// quest list is a special list for main events
@@ -70,7 +72,7 @@ class Fabula
 	function init(raw:String):Void
 	{
 		// TODO JSON parser?
-		var elements = FabulaXmlParser.parse(raw, conditionFactory, achievedListID);
+		var elements = FabulaXmlParser.parse(raw, this);
 		arrayMerge(_sequences, elements.sequences);
 	}
 
@@ -194,13 +196,15 @@ class Fabula
 		{
 			//
 			choice = currentSequence.getEvent().selectChoice(id, index);
+
 			if (choice.variables != null)
 			{
-				for (i in 0...currentSequence.variables.length)
+				for (key in choice.variables.keys())
 				{
-					if (choice.variables.exists(currentSequence.variables[i].id))
+					var _vari = getVar(key);
+					if (_vari != null)
 					{
-						currentSequence.variables[i].set(choice.variables.get(currentSequence.variables[i].id));
+						_vari.set(choice.variables.get(key));
 					}
 				}
 			}
@@ -212,24 +216,50 @@ class Fabula
 			achievedListID.push(id);
 			if (_achievedCallback != null)
 				_achievedCallback(id);
-			// TODO variables
+			// TODO push achieved sequence id
 		}
 		return choice;
 	}
 
-	public function getVar(name:String):Variable<Dynamic>
+	public function addVariable(id:String, type:EVariableType, startingValue:String)
 	{
-		if (currentSequence != null)
+		if (variables == null)
+			variables = new VariableCollection();
+		switch (type)
 		{
-			var vari = currentSequence.variables.get(name);
-			if (vari != null)
-				return vari;
-			// TODO global vars
+			case STRING:
+				variables.push(new VariableString(id, startingValue));
+			case INT:
+				variables.push(new VariableInt(id, startingValue));
+			case FLOAT:
+				variables.push(new VariableFloat(id, startingValue));
+			case BOOL:
+				variables.push(new VariableBool(id, startingValue));
+			case ENUM:
+				variables.push(new VariableEnum(id, startingValue));
+			case CYCLE:
+				variables.push(new VariableCycle(id, startingValue));
 		}
-		return null;
 	}
 
-	public function updateVar() {}
+	public function getVar(name:String):Variable<Dynamic>
+	{
+		var out:Variable<Dynamic> = null;
+		if (currentSequence != null)
+		{
+			if (currentSequence.variables != null)
+			{
+				out = currentSequence.variables.get(name);
+				if (out != null)
+					return out;
+			}
+		}
+		if (out == null && variables != null)
+		{
+			out = variables.get(name);
+		}
+		return out;
+	}
 
 	/**
 	 * 

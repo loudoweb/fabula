@@ -2,7 +2,7 @@ package fabula.condition;
 
 import fabula.condition.ConditionFactory;
 
-class VariablCycle extends VariableEnum
+class VariableCycle extends VariableEnum
 {
 	public function new(id:String, startingValue:String)
 	{
