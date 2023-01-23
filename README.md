@@ -158,6 +158,19 @@ Finally you use it in a condition:
 <event if="myBoolean,myInt>=1"/>
 ```
 
+You can use equal, numeric or string comparison operators.
+|   Operator            |  Operation     |  Operand Left |  Operand Right  |
+|--------------------|-------------------|---------------|-----------------|
+|=                  |   Equal   |   variable name  |   string, int, float, enum or cycle  |
+|!=                  |   Not Equal   |   variable name   |   string, int, float, enum or cycle    |
+|<                  |   Less than   |   variable name    |   int or float    |
+|>                  |   Greater than   |    variable name    |   int or float    |
+|<=                  |   Less than or Equal   |  variable name   |   int or float    |
+|>=                  |   Greater than or Equal   |  variable name    |   int or float    |
+|(in:)                  |   is string included in variable. E.g: `John(in:myStr)` tests if *John* is in the string *John Doe*   |  string    |   variable name    |
+|!                 |   NOT   |  nothing    |   Logical NOT for all operations. E.g: `!myBool` tests if myBool equals false, `!myInt>=0` tests if myInt is less than 0, `!John(in:myStr)` tests if *John* is **not** in the string *John Doe*  |
+
+
 ## Localization
 
 The localization tool is currently in development. It will generate a csv file and a lighter xml file shared by all languages without any text. Here is a sample of the csv.
