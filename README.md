@@ -90,7 +90,7 @@ For each event, you can set a **speaker**, **listeners** and an **environment**.
 
 You can set a text directly using the **text** attribute. But if needed, you can use a text child node to use xml/markup to spice up your text.
 
-All events or choices **id** can be used in condition using the **if** attribute. Ids are optional but global and Fabula will create ids for you to help you debugging using the following nomenclature $SEQUENCEID + "_E" for event or "_C" for choice + ordered number. You can also uses [variables](#variables) in your condition. External conditions could be used soon in the system. You can also monitor the id of the choice chosen in real time to do whatever you want. In my sample, I've set the **goto** prefix to tell my own Fabula wrapper to change the scene of the game. Fabula here, just tells you the id, it's up to you to do whatever you want in your game engine.
+All events or choices **id** can be used in condition using the **if** attribute. Ids are optional but global and Fabula will create ids for you to help you debugging using the following nomenclature $SEQUENCEID + "_E" for event or "_C" for choice + ordered number. You can also uses [variables](#variables) in your condition. External conditions could be used soon in the system. You can also monitor the id of the choice chosen in real time to do whatever you want. In my sample, I've set the **goto** prefix to tell my own Fabula wrapper to change the scene of the game after the sequence ends. Fabula here, just tells you the id, it's up to you to do whatever you want in your game engine.
 
 The **exit** attribute, tells Fabula that your sequence is finished. But by default, your sequence ends when the player reached the last event of the sequence, Fabula always move forward by default.
 
@@ -115,10 +115,33 @@ This is the transcript of the dialog:
 
 ## Conditions
 
-You can add a condition in an event or a choice adding the **if** attribute.
+You can add a condition in an event or a choice adding the **if** attribute. All event and choices ids are available as a condition. Fabula handles a global historic of completed events and choices that you can use globally. In case you want to test only from the current context of a sequence, you can prefix it with a dot. This distinction allows to reuse sequences because their own historic is always resetted when it starts.
+
+e.g:
+```js
+//testing if a choice has been made globally. That could be in another sequence or the current sequence, but the id should be unique
+if="myChoice"
+//testing if a choice has been made in the current sequence.
+if=".myChoice"
+```
+
 If you have more than one condition you can use AND or OR conditions.
 AND conditions can be used by separating values with a comma (or with **&** but it makes the xml invalid).
 OR conditions can be used by separating values with **|** but please note that the parser is limited right now so you can't handle priority between conditions with brackets. When mixing AND and OR conditions, OR are executed as a part of a AND block, the opposite isn't possible yet and will be introduced when bracket parser will be done.
+
+e.g:
+```js
+//testing one condition that must be true
+if="myCondition"
+//Using logical AND: all conditions must be true
+if="myCondition,myInt>=1"
+//using logical OR: only one condition must be true
+if="myCondition|myInt>=1"
+//mixing AND and OR: myCondition and myCondition3 must be true, and myCondition2 or myInt>=1 must be true
+if="myCondition,myCondition2|myInt>=1,myCondition3"
+//if you want the condition be false, prefix it with !. Here only one condition must be false
+if="!myCondition|!myCondition2"
+```
 
 ## Variables
 
@@ -153,7 +176,7 @@ Using increment or decrement:
 <variable id="myEnum" value="-"/>
 ```
 
-Finally you use it in a condition:
+Finally you use it in a condition, the engine determines itself if it's a event/choice condition or a variable condition:
 ```xml
 <event if="myBoolean,myInt>=1"/>
 ```
