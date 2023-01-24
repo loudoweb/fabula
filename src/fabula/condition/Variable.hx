@@ -63,4 +63,9 @@ class Variable<T>
 	{
 		return '[var $id : v:$value, d:$startingValue]';
 	}
+
+	public function toXMLString():String
+	{
+		return '<variable id="$id" type="$type" value="$startingValue"/>';
+	}
 }
