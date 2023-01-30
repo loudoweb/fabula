@@ -19,12 +19,11 @@ class VariableEnum extends Variable<String>
 		var index = Std.parseInt(value);
 		if (index == null)
 		{
-			if (value == options.toString())
+			if (value == options.join(","))
 			{
 				// force to first option if all options set
 				value = options[0];
-			}
-			if (value == "+")
+			} else if (value == "+")
 			{
 				var index = options.indexOf(this.value) + 1;
 				if (index < options.length)
@@ -46,11 +45,13 @@ class VariableEnum extends Variable<String>
 				}
 			} else
 			{
+				#if !tools
 				if (options.indexOf(value) == -1)
 				{
 					trace('[Fabula > Variable] $value not in options of $id');
 					return false;
 				}
+				#end
 			}
 			this.value = value;
 		} else
@@ -71,5 +72,10 @@ class VariableEnum extends Variable<String>
 	override function convert(value:String):String
 	{
 		return value;
+	}
+
+	override function toXMLString():String
+	{
+		return '<variable id="$id" type="$type" value="${options.join(",")}"/>';
 	}
 }

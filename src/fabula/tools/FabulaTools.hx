@@ -72,17 +72,45 @@ class FabulaTools
 		var sequences:Array<Sequence> = fabula._sequences;
 		var seq_str = "";
 
+		if (fabula.variables != null)
+		{
+			for (v in 0...fabula.variables.length)
+			{
+				seq_str += "\t" + fabula.variables[v].toXMLString() + "\n";
+			}
+		}
+
 		var temp:Xml;
 		for (i in 0...sequences.length)
 		{
-			seq_str = '<sequence id="${sequences[i].id}">\n';
+			seq_str += '<sequence id="${sequences[i].id}">\n';
+
+			if (sequences[i].variables != null)
+			{
+				for (v in 0...sequences[i].variables.length)
+				{
+					seq_str += "\t" + sequences[i].variables[v].toXMLString() + "\n";
+				}
+			}
 
 			for (j in 0...sequences[i].events.length)
 			{
 				var event = sequences[i].events[j];
-				seq_str += '<event id="${event.id}"';
+				seq_str += '\t<event id="${event.id}"';
 				if (event.conditions != null)
 					seq_str += ' if="${event.conditions.toString()}"';
+				if (event.speaker != null && event.speaker != "")
+					seq_str += ' speaker="${event.speaker}"';
+				if (event.listeners != null && event.listeners != "")
+					seq_str += ' listeners="${event.listeners}"';
+				if (event.environment != null && event.environment != "")
+					seq_str += ' environment="${event.environment}"';
+				if (event.limit > 0)
+					seq_str += ' limit="${event.limit}"';
+				if (event.target != null && event.target != "")
+					seq_str += ' target="${event.target}"';
+				if (event.isExit)
+					seq_str += ' exit="true"';
 				seq_str += ">\n";
 
 				csv += '"${event.id}";"${event.text}"\n';
@@ -92,15 +120,17 @@ class FabulaTools
 					for (k in 0...event.choices.length)
 					{
 						var choice = event.choices[k];
-						seq_str += '<choice id="${choice.id}"';
+						seq_str += '\t\t<choice id="${choice.id}"';
 						if (choice.condition != null)
 							seq_str += ' if="${choice.condition.toString()}"';
+						if (choice.isExit)
+							seq_str += ' exit="true"';
 						seq_str += "/>\n";
 
 						csv += '"${choice.id}";"${choice.text}"\n';
 					}
 				}
-				seq_str += '</event>\n';
+				seq_str += '\t</event>\n';
 			}
 			var branches = sequences[i].branches;
 			if (branches != null)
@@ -108,13 +138,44 @@ class FabulaTools
 				for (k in 0...branches.length)
 				{
 					var event = branches[k];
-					seq_str += '<event id="${event.id}"/>\n';
+					seq_str += '\t<event id="${event.id}"';
+					if (event.conditions != null)
+						seq_str += ' if="${event.conditions.toString()}"';
+					if (event.speaker != null && event.speaker != "")
+						seq_str += ' speaker="${event.speaker}"';
+					if (event.listeners != null && event.listeners != "")
+						seq_str += ' listeners="${event.listeners}"';
+					if (event.environment != null && event.environment != "")
+						seq_str += ' environment="${event.environment}"';
+					if (event.limit > 0)
+						seq_str += ' limit="${event.limit}"';
+					if (event.target != null && event.target != "")
+						seq_str += ' target="${event.target}"';
+					if (event.isExit)
+						seq_str += ' exit="true"';
+					seq_str += ">\n";
 					csv += '"${event.id}";"${event.text}"\n';
+
+					if (event.choices != null)
+					{
+						for (k in 0...event.choices.length)
+						{
+							var choice = event.choices[k];
+							seq_str += '\t\t<choice id="${choice.id}"';
+							if (choice.condition != null)
+								seq_str += ' if="${choice.condition.toString()}"';
+							if (choice.isExit)
+								seq_str += ' exit="true"';
+							seq_str += "/>\n";
+
+							csv += '"${choice.id}";"${choice.text}"\n';
+						}
+					}
+					seq_str += '\t</event>\n';
 				}
 			}
 			seq_str += '</sequence>\n';
 		}
-
 		xml.addChild(Xml.parse(seq_str));
 
 		sys.io.File.saveContent(outputXml, xml.toString());

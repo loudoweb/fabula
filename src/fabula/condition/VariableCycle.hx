@@ -17,12 +17,11 @@ class VariableCycle extends VariableEnum
 		var index = Std.parseInt(value);
 		if (index == null)
 		{
-			if (value == options.toString())
+			if (value == options.join(","))
 			{
 				// force to first option if all options set
 				value = options[0];
-			}
-			if (value == "+")
+			} else if (value == "+")
 			{
 				var index = options.indexOf(this.value) + 1;
 				if (index >= options.length)
