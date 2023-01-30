@@ -59,7 +59,7 @@ class FabulaTools
 		return pathToXml;
 	}
 
-	static function createLocFiles(inputXml:String, outputXml:String, outputCSV:String):Void
+	public static function createLocFiles(inputXml:String, outputXml:String, outputCSV:String):Void
 	{
 		var file = sys.io.File.getContent(inputXml);
 		var fabula = new Fabula([file]);
