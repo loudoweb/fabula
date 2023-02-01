@@ -196,7 +196,7 @@ You can use equal, numeric or string comparison operators.
 
 ## Localization
 
-The localization tool is currently in development. It will generate a csv file and a lighter xml file shared by all languages without any text. Here is a sample of the csv.
+The localization tool is currently in development. It will generate a csv file and a lighter xml file shared by all languages without any text. Here is a sample of the csv. 
 
 |ID            |TEXT                                    |
 |--------------|----------------------------------------|
@@ -208,6 +208,12 @@ The localization tool is currently in development. It will generate a csv file a
 |goto_elsewhere|Leave him alone                         |
 |Talk_to_kid_E5|You're so mean!                         |
 |Talk_to_kid_E7|Thanks!\n <font color="#2281AB">Let's play!</font>  |
+
+There are currently 3 ways to use the tool:
+
+1. use a Haxe macro (you need haxe installed) at compile time: `--macro fabula.tools.FabulaTools.createLocFiles("file.xml", "output.xml", "output.csv")`
+2. use the [cli](https://github.com/loudoweb/fabula/tree/master/cli/fabulacli.exe) `fabulacli.exe --export-loc file.xml
+3. convert at runtime using [FabulaTools class](https://github.com/loudoweb/fabula/tree/master/src/fabula/tools/FabulaTools.hx)
 
 ## Getting started
 
