@@ -2,7 +2,7 @@
     <head>
         <meta name="version" content="0.8.0"/>
         <style>
-            #speaker{
+             #speaker{
                 background-color: #709e70;
                 width: 15%;
                 text-align: center;
@@ -37,6 +37,11 @@
                 border: 2px solid #128e92;
                 background-color: cadetblue;
             }
+            .active{
+                border: 2px solid #128e92af;
+                background-color: #5f9ea08c;
+            }
+
             #reset{
                 position: absolute;
                 top: 0;
@@ -52,19 +57,10 @@
                 pointer-events: none;
             }
             #end{
-                text-align: center;
-                letter-spacing: 2.4px;
-                word-spacing: 2px;
-                font-weight: 700;
-                text-decoration: none solid rgb(68, 68, 68);
-                font-variant: small-caps;
-                text-transform: uppercase;
-                animation: move 2s;
-            }
-            @keyframes move {
-                25% {
-                  transform: translatey(-2.8vmin);
-                }
+                height:1%;
+                width:100%;
+                margin: 0.5% 0;
+                background-color:black;
             }
         </style>
     </head>

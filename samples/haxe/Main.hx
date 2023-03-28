@@ -54,7 +54,6 @@ class Main {
         } else {
             var divEnd = Browser.document.createDivElement();
             divEnd.setAttribute('id', 'end');
-            divEnd.innerText = "END...";
 
             divEvent.append(divEnd);
 
