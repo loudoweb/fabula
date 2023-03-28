@@ -1,5 +1,0 @@
--lib fabula
--lib kadabra-utils
--D php7
---main Main
---php ../dist/php
