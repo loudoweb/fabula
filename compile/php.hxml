@@ -1,6 +1,0 @@
--lib fabula
--lib kadabra-utils
--D php7
---macro include("fabula")
-
---php ../dist/php
