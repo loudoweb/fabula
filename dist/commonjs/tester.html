@@ -1,19 +1,171 @@
 <html>
     <head>
         <script src="fabula.js"></script>
+        <meta name="version" content="0.8.0"/>
+        <style>
+            #speaker{
+                background-color: #709e70;
+                width: 15%;
+                text-align: center;
+                border: 2px solid;
+                border-radius: 5px 5px 0px 0px;
+            }
+            #label{
+                background-color: darkseagreen;
+                padding: 1%;
+                width: 60%;
+                border-radius: 0px 5px 0px 5px;
+                box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+            }
+            button{
+                border: none;
+                margin-top: 2%;
+                margin: 0.5%;
+                padding: 1.5%;
+                cursor: pointer;
+            }
+            #play{
+                box-shadow: 3px 4px 0px 0px #899599;
+                background-color:#ededed;
+                border-radius:15px;
+                border:1px solid #bcd6bc;
+                padding:0.5% 3%;
+                text-transform: uppercase;
+            }
+            .choice{
+                border-radius: 5px 5px 5px 0px;
+                box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+                border: 2px solid #128e92;
+                background-color: cadetblue;
+            }
+            .active{
+                border: 2px solid #128e92af;
+                background-color: #5f9ea08c;
+            }
+
+            #reset{
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: #dedede;
+                padding: 10px 30px;
+                border: solid #6c7073 2px;
+                box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+                border-radius: 50px;
+                padding:0.5% 3%;
+            }
+            .noEvent{
+                pointer-events: none;
+            }
+            #end{
+                height:1%;
+                width:100%;
+                margin: 0.5% 0;
+                background-color:black;
+            }
+        </style>
     </head>
     <body>
         <div id="event"></div>
     </body>
     
     <script>
+        var xml = '<?xml version="1.0" encoding="utf-8" ?><data><sequence id="Talk_to_kid"><event speaker="kid_sad" if="kid_angry" text="I won`\'t talk to you anymore..." exit="true"/><event speaker="kid" if="!kid_happy" text="Hi, have you seen my new toy ? I love it!"/><event speaker="kid" text="Do you want to play with me?"><choice id="kid_angry" text="Your toy looks like crap!"/><choice id="kid_happy" text="Yes, I love it!" target="kid_happy"/><choice id="goto_elsewhere" text="Leave him alone" exit="true"/></event><event if="kid_angry" speaker="kid_angry" text="You\'re so mean!" exit="true"/><event id="kid_happy" speaker="kid_happy" ><text><![CDATA[Thanks! <font color="#2281AB">Let\'s play!</font>]]></text></event></sequence></data>'; 
+        var story = new fabula.Fabula([xml]);
+        var seq = story.selectSequence("Talk_to_kid");
+        var event;
+        let divEvent;
+        var divLabel;
+        var divSpeaker;
+        var divChoice;
+        var btnReset;
+        var btnPlay;
+
         window.onload = function()
         {
-            var xml = '<?xml version="1.0" encoding="utf-8" ?><data><sequence id="Talk_to_kid"><event speaker="kid_sad" if="kid_angry" text="I won`\'t talk to you anymore..." exit="true"/><event speaker="kid" if="!kid_happy" text="Hi, have you seen my new toy? I love it!"/><event speaker="kid" text="Do you want to play with me?"><choice id="kid_angry" text="Your toy looks like crap!"/><choice id="kid_happy" text="Yes, I love it!" target="kid_happy"/><choice id="goto_elsewhere" text="Leave him alone" exit="true"/></event><event if="kid_angry" speaker="kid_angry" text="You\'re so mean!" exit="true"/><event id="kid_happy" speaker="kid_happy" ><text><![CDATA[Thanks! <font color="#2281AB">Let\'s play!</font>]]></text></event></sequence></data>'; 
-            var story = new fabula.Fabula([xml]);
+            play();
+        }
+
+        function next(){
+            event = story.getNextEvent();
+            if(event != null){
+                divLabel = document.createElement("div");
+                divLabel.setAttribute('id', 'label');
+                divSpeaker = document.createElement("div");
+                divSpeaker.setAttribute('id', 'speaker');
+                divLabel.innerText = "";
+                divSpeaker.innerText = "";
+
+                divEvent.append(divSpeaker, divLabel);
+
+                divSpeaker.append(event.speaker);
+                divLabel.insertAdjacentHTML('afterbegin', event.text);
+
+                let choices = event.getChoices();
+                for(i in choices)
+                {
+                    var btnChoice = document.createElement('button');
+                    btnChoice.setAttribute('id', choices[i].id);
+                    btnChoice.classList.add('choice');
+                    btnChoice.append(choices[i].text)
+                    divEvent.append(btnChoice);
+                    btnChoice.addEventListener('click', choice);
+                }
+            } else {
+                var divEnd = document.createElement('div');
+                divEnd.setAttribute('id', 'end');
+
+                divEvent.append(divEnd);
+
+                var list;
+                list = document.querySelectorAll(".choice");
+                for (var i = 0; i < list.length; ++i) {
+                    list[i].classList.add('noEvent');
+                }
+                
+                play();
+            }
+        }
+
+        function choice(e){
+            var btnChoice = e.currentTarget;
+            btnChoice.classList.add('active');
+            story.selectChoice(null, btnChoice.id);
+           next();
+        }
+
+        function reset(){
+            btnReset= document.createElement('button');
+            btnReset.setAttribute('id', 'reset');
+            btnReset.innerText = "Reset";
+
+            divEvent.append(btnReset);
+
+            btnReset.addEventListener('click', funcReset);
+        }
+
+        function funcReset(){
+            story.reset();
             var seq = story.selectSequence("Talk_to_kid");
-            var event = seq.getNextEvent();
-            console.log(event.text);
-       }
+            divEvent.innerText = "";
+            play();
+        }
+
+        function play(){
+            divEvent = document.getElementById("event");
+            btnPlay = document.createElement('button');
+            btnPlay.setAttribute('id', 'play');
+            btnPlay.innerText = "Play";
+
+            divEvent.append(btnPlay);
+            btnPlay.addEventListener('click', funcPlay);
+        }
+
+        function funcPlay(){
+            var seq = story.selectSequence("Talk_to_kid");
+            btnPlay.style.display = "none";
+            next();
+            reset();
+        }
     </script>
 </html>

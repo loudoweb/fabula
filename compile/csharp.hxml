@@ -8,5 +8,5 @@
 -D real-position
 #could be solve problem on Unity?
 -D erase-generics 
---cs dist/csharp
+--cs ../dist/csharp
 

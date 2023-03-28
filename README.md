@@ -69,9 +69,22 @@ This is the transcript of the dialog:
 | I won't talk to you anymore...  |  Do you want to play with me?   |
 |   |   =>   etc.    |
 
+### autocompletion with xsd
+
+On VSCode and some other softwares you can have autocompletion + validation on your xml using the xsd schema. Just write your root xml tag like that:
+
+```xml
+<data xmlns="http://www.loudoweb.fr/app/fabula/0.8.1"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.8.1 http://www.loudoweb.fr/app/fabula/fabula-0.8.1.xsd">
+</data>
+```
+
 ## Getting started
 
 ### Using Haxe Language
+
+This library is written in Haxe which is a cross-platform language. With Haxe you can target javascript, c++, etc.
 
 Install the library
 
@@ -84,6 +97,7 @@ var story = new fabula.Fabula([xml]);
 var seq = story.selectSequence("Talk_to_kid");
 //find the first event
 var event = seq.getNextEvent();
+//end reached if event null
 //display the text
 trace(event.text);
 ```
@@ -106,3 +120,34 @@ console.log(event.text);
 You can contribute by testing the project, giving feedback (consider opening a thread in [Discussions](https://github.com/loudoweb/fabula/discussions) or an [issue](https://github.com/loudoweb/fabula/issues) if it's a bug) or by making Pull Request.
 
 This library uses the [Haxe language](https://haxe.org) (version >= 4.1.5), which is a high-level strictly-typed language that can transpile to many other languages. To build the generated ports to other languages you can compile the **hxml** files.
+
+### Transpile to other languages
+
+If you don't code with Haxe. You can still generate a port in the language you want as soon it is supported by Haxe (JavaScript, C++, C#, Python, Lua, PHP, Flash).
+It would be better to make proper ports to have cleaner files but using those generated ports guarantees you are using the last version of the fabula api.
+
+To get the last api port, you have to execute the hxml file that compiles to the language you want to use.  
+
+e.g: `haxe compile/js.hxml`
+
+In order to do that, first you need to [download and install haxe](https://haxe.org/download/).
+
+You will need some libraries depending on your target.
+
+- **common js**
+
+    - file : js.hxml
+    - dependency: `npm install uglify-js -g` and `haxelib install uglifyjs`
+    - status : test in progress
+
+- **js modules**
+
+    - file : js_modules.hxml
+    - dependency: `haxelib install genes`
+    - status : not tested
+
+- **csharp**
+
+    - file : csharp.hxml
+    - dependency: `haxelib install hxcs`
+    - status : not tested

@@ -168,12 +168,13 @@ class Fabula
 	 * @param id 
 	 * @return Choice
 	 */
-	public function selectChoice(?choice:Choice, ?id:String):Choice
+	public function selectChoice(?id:String, ?index:Int):Choice
 	{
+		var choice:Choice = null;
 		// update guard to check if sequence completed
-		if (choice == null && currentSequence != null && currentSequence.current < currentSequence.events.length)
+		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
-			choice = currentSequence.events[currentSequence.current].selectChoice(id);
+			choice = currentSequence.events[currentSequence.current].selectChoice(id, index);
 			currentSequence.nextTarget = choice.target;
 		}
 		if (choice != null)
@@ -199,4 +200,33 @@ class Fabula
 	}
 
 	public function updateVar() {}
+
+	/**
+	 * 
+	 * WIP: count words
+	 * TODO don't count variable and html tag
+	 * TODO take into account nbsp
+	 */
+	public function countWords():Int
+	{
+		var count = 0;
+		for (seq in _sequences)
+		{
+			if (seq.events != null)
+			{
+				for (event in seq.events)
+				{
+					count += event.text.split(" ").length;
+					if (event.choices != null)
+					{
+						for (choice in event.choices)
+						{
+							count += choice.text.split(" ").length;
+						}
+					}
+				}
+			}
+		}
+		return count;
+	}
 }

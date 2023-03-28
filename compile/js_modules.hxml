@@ -9,5 +9,5 @@
 -D html5
 --no-inline
 --macro include("fabula")
---js dist/npm/fabula.js
+--js ../dist/npm/fabula.js
 
