@@ -54,4 +54,16 @@ class ConditionCollection extends Condition<Array<Condition<Dynamic>>>
 		}
 		return true;
 	}
+
+	#if tools
+	override public function toString()
+	{
+		var str = condition[0].toString();
+		for (i in 1...condition.length)
+		{
+			str += "," + condition[i].toString();
+		}
+		return str;
+	}
+	#end
 }

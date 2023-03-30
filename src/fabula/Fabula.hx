@@ -1,7 +1,7 @@
 package fabula;
 
-import fabula.condition.Variable;
-import fabula.condition.ConditionFactory;
+import fabula.condition.Variable.EVariableType;
+import fabula.condition.*;
 import haxe.ds.StringMap;
 
 enum EEventType
@@ -20,11 +20,16 @@ enum EPlayingType
 #if commonjs @:expose #end
 class Fabula
 {
-	// list of achieved event/dialog
-	public var achievedListID(default, null):Array<String>;
+	public static var CONTINUE:String = "Continue";
+	public static var QUIT:String = "Quit";
+
+	// list of completed event/dialog
+	public var completedID(default, null):Array<String>;
 	public var conditionFactory(default, null):ConditionFactory;
 
 	public var currentSequence(default, null):Sequence;
+
+	public var variables:VariableCollection;
 
 	// Different lists are stored so you can pick up an event/dial on a particular list or from all:
 	// quest list is a special list for main events
@@ -34,10 +39,11 @@ class Fabula
 	// small part of texts that you can merge in a event/dialog randomly
 	var _textsID:Array<String>;
 
+	#if tools public #end
 	var _sequences:Array<Sequence>;
 	var _randomEncounters:Array<Event>;
 
-	var _achievedCallback:String->Void;
+	var _completedCallback:String->Void;
 
 	/**
 	 * Fabula is a sequencial or branch event/dialog system.
@@ -46,13 +52,13 @@ class Fabula
 	 * A tool could help homogenize xml but not planned yet.
 	 * @param files You can use more than one file.
 	 */
-	public function new(files:Array<String>, ?achievedCallback:String->Void)
+	public function new(files:Array<String>, ?completedCallback:String->Void)
 	{
 		_questsID = [];
 		_encountersID = [];
 		_textsID = [];
-		achievedListID = [];
-		_achievedCallback = achievedCallback;
+		completedID = [];
+		_completedCallback = completedCallback;
 		conditionFactory = new ConditionFactory(this);
 
 		_sequences = [];
@@ -66,7 +72,7 @@ class Fabula
 	function init(raw:String):Void
 	{
 		// TODO JSON parser?
-		var elements = FabulaXmlParser.parse(raw, conditionFactory, achievedListID);
+		var elements = FabulaXmlParser.parse(raw, this);
 		arrayMerge(_sequences, elements.sequences);
 	}
 
@@ -97,7 +103,7 @@ class Fabula
 	 */
 	public function reset()
 	{
-		achievedListID.splice(0, achievedListID.length);
+		completedID.splice(0, completedID.length);
 		for (seq in _sequences)
 		{
 			if (seq.variables != null)
@@ -105,6 +111,21 @@ class Fabula
 				for (i in 0...seq.variables.length)
 				{
 					seq.variables[i].reset();
+				}
+			}
+
+			seq.completedID.splice(0, seq.completedID.length);
+
+			for (event in seq.events)
+			{
+				event.count = 0;
+
+				if (event.choices != null)
+				{
+					for (choice in event.choices)
+					{
+						choice.count = 0;
+					}
 				}
 			}
 		}
@@ -150,20 +171,22 @@ class Fabula
 		var nextEvent = currentSequence.getNextEvent();
 		if (nextEvent != null)
 		{
-			achievedListID.push(nextEvent.id);
-			if (_achievedCallback != null)
-				_achievedCallback(nextEvent.id);
+			nextEvent.count++;
+			completedID.push(nextEvent.id);
+			currentSequence.completedID.push(nextEvent.id);
+			if (_completedCallback != null)
+				_completedCallback(nextEvent.id);
 		}
 		return nextEvent;
 	}
 
 	public function getCurrentEvent():Event
 	{
-		return currentSequence.events[currentSequence.current];
+		return currentSequence.getEvent();
 	}
 
 	/**
-	 * Apply an user choice to the sequence, add it to the achieved list and set variables
+	 * Apply an user choice to the sequence, add it to the completed list and set variables
 	 * @param choice 
 	 * @param id 
 	 * @return Choice
@@ -174,32 +197,91 @@ class Fabula
 		// update guard to check if sequence completed
 		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
-			choice = currentSequence.events[currentSequence.current].selectChoice(id, index);
-			currentSequence.nextTarget = choice.target;
+			//
+			choice = currentSequence.getEvent().selectChoice(id, index);
+
+			if (choice.variables != null)
+			{
+				for (key in choice.variables.keys())
+				{
+					var _vari = getVar(key);
+					if (_vari != null)
+					{
+						_vari.set(choice.variables.get(key));
+					}
+				}
+			}
+			// configure next target
+			currentSequence.nextTarget = choice.isExit ? Sequence.EXIT : choice.target;
 		}
 		if (choice != null)
 		{
-			achievedListID.push(id);
-			if (_achievedCallback != null)
-				_achievedCallback(id);
-			// TODO variables
+			completedID.push(id);
+			currentSequence.completedID.push(id);
+			if (_completedCallback != null)
+				_completedCallback(id);
 		}
 		return choice;
 	}
 
-	public function getVar(name:String):Variable<Dynamic>
+	public function addVariable(id:String, type:EVariableType, startingValue:String)
 	{
-		if (currentSequence != null)
+		if (variables == null)
+			variables = new VariableCollection();
+		switch (type)
 		{
-			var vari = currentSequence.variables.get(name);
-			if (vari != null)
-				return vari;
-			// TODO global vars
+			case STRING:
+				variables.push(new VariableString(id, startingValue));
+			case INT:
+				variables.push(new VariableInt(id, startingValue));
+			case FLOAT:
+				variables.push(new VariableFloat(id, startingValue));
+			case BOOL:
+				variables.push(new VariableBool(id, startingValue));
+			case ENUM:
+				variables.push(new VariableEnum(id, startingValue));
+			case CYCLE:
+				variables.push(new VariableCycle(id, startingValue));
 		}
-		return null;
 	}
 
-	public function updateVar() {}
+	public function getVar(name:String):Variable<Dynamic>
+	{
+		var out:Variable<Dynamic> = null;
+		if (currentSequence != null)
+		{
+			if (currentSequence.variables != null)
+			{
+				out = currentSequence.variables.get(name);
+				if (out != null)
+					return out;
+			}
+		}
+		if (out == null && variables != null)
+		{
+			out = variables.get(name);
+		}
+		return out;
+	}
+
+	/**
+	 * Check if ID of event or choice is completed
+	 * @param id 
+	 * @return Bool
+	 */
+	public function isIDCompleted(id:String):Bool
+	{
+		if (id.charAt(0) == ".")
+		{
+			// check if completed in current sequence context
+			return currentSequence.completedID.indexOf(id.substring(1)) != -1;
+		} else
+		{
+			// check if completed globally
+			return completedID.indexOf(id) != -1;
+		}
+		return false;
+	}
 
 	/**
 	 * 

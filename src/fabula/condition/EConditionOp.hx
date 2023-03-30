@@ -10,8 +10,7 @@ package fabula.condition;
 	public var GREATER_EQUAL = ">=";
 	public var LOWER_EQUAL = "<=";
 	public var EQUAL = "=";
-	public var DIFFERENT = "!";
-	public var NOT_IN = "!in";
+	public var DIFFERENT = "!=";
 	public var IN = "in";
 
 	@:from
@@ -29,10 +28,8 @@ package fabula.condition;
 				return LOWER_EQUAL;
 			case "=":
 				return EQUAL;
-			case "!":
+			case "!=":
 				return DIFFERENT;
-			case "!in":
-				return NOT_IN;
 			case "in":
 				return IN;
 			default:

@@ -1,2 +1,11 @@
 /dist/csharp
 /dist/npm
+/samples/npm/node_modules
+/samples/haxe/index.js
+/samples/haxe/index.js.map
+/cli/_std
+/cli/haxe
+/cli/hl
+/cli/mcli
+/cli/sys
+/cli/fabulacli.n

@@ -1,5 +1,6 @@
 package fabula;
 
+import fabula.Choice;
 import fabula.condition.ConditionCollection;
 import fabula.condition.ConditionFactory;
 
@@ -23,12 +24,12 @@ class Event
 	public var isExit:Bool;
 
 	/**
-	 * Can be played only once
+	 * Can be played only 'limit' time. E.g: to play only once, limit should equals 1.
 	 */
-	public var once:Bool;
+	public var limit:Int;
 
 	/**
-	 * For statistic purpose or to avoid picking up too many time this event
+	 * To avoid picking up too many time this event, or for statistical purpose
 	 */
 	public var count:Int;
 
@@ -68,19 +69,26 @@ class Event
 
 	/**
 	 * 
-	 * @param id id of the event
+	 * @param id id of the event. Should be unique. You can use this id in conditions and in your localization system to retrieve the text.
 	 * @param text text of the event
-	 * @param once Can be played only once
+	 * @param conditions 
+	 * @param isExit Last event of the sequence.
+	 * @param weight TODO
+	 * @param limit Default 0 means that you can play infinitely. Set to 1 to play once, 2 to play twice, etc.
+	 * @param speaker Help you determine who speaks to display an image.
+	 * @param listeners Help you determine who is also present in the dialog scene.
+	 * @param environment Help you determine the place where the dialog takes place
+	 * @param target Next event id. By Default the next event is the next event in the xml.
 	 */
 	public function new(id:String, text:String, conditions:ConditionCollection = null, isExit:Bool = false,
-			weight:Int = 1, once:Bool = false, ?speaker:String, ?listeners:String, ?environment:String, ?target:String)
+			weight:Int = 1, limit:Int = 0, ?speaker:String, ?listeners:String, ?environment:String, ?target:String)
 	{
 		this.id = id;
 		this.text = text;
 		this.conditions = conditions;
 
 		this.isExit = isExit;
-		this.once = once;
+		this.limit = limit;
 		this.count = 0;
 
 		this.speaker = speaker;
@@ -99,8 +107,13 @@ class Event
 		{
 			for (i in 0...choices.length)
 			{
-				if (choices[i].condition == null || choices[i].condition.test())
-					_cacheChoices.push(choices[i]);
+				var hasOnceLimit = choices[i].limit > 0 && choices[i].count >= choices[i].limit;
+
+				if (!hasOnceLimit)
+				{
+					if (choices[i].condition == null || choices[i].condition.test())
+						_cacheChoices.push(choices[i]);
+				}
 			}
 		}
 		// TODO use general Fabula parameter AND use random text list for the following text's choices
@@ -108,10 +121,10 @@ class Event
 		{
 			if (isExit)
 			{
-				_cacheChoices.push(new Choice("EXIT", "Quitter", "quit", target, true));
+				_cacheChoices.push(new Choice("EXIT", Fabula.QUIT, "quit", target, true));
 			} else
 			{
-				_cacheChoices.push(new Choice("CONTINUE", "Continuer", "continue", target));
+				_cacheChoices.push(new Choice("CONTINUE", Fabula.CONTINUE, "continue", target));
 			}
 		}
 		return _cacheChoices;
@@ -120,6 +133,7 @@ class Event
 	public function selectChoice(?id:String, ?index:Int, selectFromAll:Bool = false):Choice
 	{
 		var _choiceArray = selectFromAll ? choices : _cacheChoices;
+		var selected:Choice = null;
 		if (_choiceArray != null)
 		{
 			if (id != null)
@@ -127,19 +141,26 @@ class Event
 				for (i in 0..._choiceArray.length)
 				{
 					if (_choiceArray[i].id == id)
-						return _choiceArray[i];
+					{
+						selected = _choiceArray[i];
+						break;
+					}
 				}
 			} else if (index != null)
-				return _choiceArray[index];
+				selected = _choiceArray[index];
 		}
-		return null;
+		if (selected != null)
+			selected.count++;
+		return selected;
 	}
 
 	public function testConditions():Bool
 	{
+		var hasOnceLimit = limit > 0 && count >= limit;
 		if (conditions == null)
-			return true;
-		return conditions.test();
+			return !hasOnceLimit;
+
+		return !hasOnceLimit && conditions.test();
 	}
 
 	public function addChoice(choice:Choice)

@@ -1,0 +1,7 @@
+-lib fabula
+-lib mcli
+-cp ../..
+-D use_rtti_doc
+-D tools
+-main FabulaCLI
+-neko fabulacli.n

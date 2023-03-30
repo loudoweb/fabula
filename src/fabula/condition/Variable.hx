@@ -1,5 +1,6 @@
 package fabula.condition;
 
+import fabula.condition.EConditionOp;
 import fabula.condition.ConditionFactory;
 
 enum EVariableType
@@ -7,6 +8,9 @@ enum EVariableType
 	STRING;
 	INT;
 	FLOAT;
+	BOOL;
+	ENUM;
+	CYCLE;
 }
 
 class Variable<T>
@@ -37,6 +41,19 @@ class Variable<T>
 		return null;
 	}
 
+	public function compare(operation:EConditionOp, targetValue:T):Bool
+	{
+		switch (operation)
+		{
+			case EQUAL:
+				return value == targetValue;
+			case DIFFERENT:
+				return value != targetValue;
+			default:
+				return false;
+		}
+	}
+
 	public function reset()
 	{
 		this.value = this.startingValue;
@@ -45,5 +62,10 @@ class Variable<T>
 	public function toString():String
 	{
 		return '[var $id : v:$value, d:$startingValue]';
+	}
+
+	public function toXMLString():String
+	{
+		return '<variable id="$id" type="$type" value="$startingValue"/>';
 	}
 }

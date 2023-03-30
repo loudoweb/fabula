@@ -1,14 +1,14 @@
 {
   "name": "fabula",
-  "version": "0.8.0",
-  "description": "Cross-platform Engine for stories, events and dialogs parsed from xml for video games.",
+  "version": "0.10.0",
+  "description": "Sample of Cross-platform Engine for stories, events and dialogs parsed from xml for video games.",
   "main": "index.js",
   "scripts": {
     "test": "npx webpack serve --no-client-overlay --open",
     "prod": "npx webpack build --mode=production"
   },
   "author": "Lugludum",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/lugludum/fabula#readme",
   "devDependencies": {
     "html-webpack-plugin": "^5.5.0",

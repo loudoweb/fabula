@@ -13,6 +13,8 @@ class ConditionFactory
 	 */
 	static public var helperList = new StringMap<EConditionType>();
 
+	static public var regexp:EReg = ~/([a-zA-Z0-9_-]+)(=|!=|>=|<=|<|>|\(in:)?([a-zA-Z0-9_-]*)/g;
+
 	public var fabula:Fabula;
 
 	public function new(fabula:Fabula)
@@ -71,12 +73,26 @@ class ConditionFactory
 		if (negation)
 			value = value.substr(1);
 
-		var vdec = value.split("=");
-		var match = value;
-		if (vdec.length > 1)
+		var hasMatch = regexp.match(value);
+		var match:Null<Dynamic> = null;
+		var operation:Null<String> = null;
+		if (hasMatch)
 		{
-			value = vdec[0];
-			match = vdec[1];
+			value = regexp.matched(1);
+			operation = regexp.matched(2);
+			match = regexp.matched(3);
+		}
+
+		if (match == "" || match == null)
+		{
+			operation = "=";
+			match = true;
+		} else if (operation == "(in:")
+		{
+			operation = "in";
+			var temp = value;
+			value = match;
+			match = temp;
 		}
 
 		if (helperList.exists(value))
@@ -84,16 +100,16 @@ class ConditionFactory
 			switch (helperList.get(value))
 			{
 				case EVENT:
-					collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
+					collection.add(new ConditionEvent(value, fabula.isIDCompleted, !negation));
 				case VARIABLE:
-					collection.add(new ConditionVariable(value, match, fabula.getVar, !negation));
+					collection.add(new ConditionVariable(value, operation, match, fabula.getVar, !negation));
 				default:
 					throw "[Fabula > Condition] To use other condition type, please override ConditionFactory class and create a Condition class for this type";
 			}
 		} else
 		{
 			// if condition doesn't exist, we use ConditionEvent by default
-			collection.add(new ConditionEvent(value, fabula.achievedListID, !negation));
+			collection.add(new ConditionEvent(value, fabula.isIDCompleted, !negation));
 		}
 	}
 }

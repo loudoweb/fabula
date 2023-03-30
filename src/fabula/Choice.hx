@@ -1,5 +1,6 @@
 package fabula;
 
+import haxe.ds.StringMap;
 import fabula.condition.ConditionCollection;
 import fabula.condition.ConditionFactory;
 
@@ -29,9 +30,21 @@ class Choice
 	public var condition:ConditionCollection;
 
 	/**
+	 * Can be played only 'limit' time. E.g: to play only once, limit should equals 1.
+	 */
+	public var limit:Int;
+
+	/**
+	 *  To avoid picking up too many time this choice, or for statistical purpose
+	 */
+	public var count:Int;
+
+	/**
 	 * A choice can exit the sequence
 	 */
 	public var isExit:Bool;
+
+	public var variables:StringMap<String>;
 
 	/**
 	 * A choice is a clickable element in your game that the player has to click to continue the sequence.
@@ -43,7 +56,7 @@ class Choice
 	 * @param exit Boolean. True to exit the sequence.
 	 */
 	public function new(id:String, text:String, type:String, ?condition:ConditionCollection, ?target:String,
-			?exit:Bool = false)
+			?exit:Bool = false, ?limit:Int = 0)
 	{
 		this.id = id;
 		this.text = text != "" && text != null ? text : id;
@@ -51,7 +64,18 @@ class Choice
 		this.target = target;
 		this.condition = condition;
 		this.isExit = exit;
+		this.limit = limit;
+		this.count = 0;
 		ConditionFactory.helperList.set(this.id, EVENT);
 		// TODO variables
+	}
+
+	public function addVariable(id:String, content:String)
+	{
+		if (variables == null)
+		{
+			variables = new StringMap<String>();
+		}
+		variables.set(id, content);
 	}
 }

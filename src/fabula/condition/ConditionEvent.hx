@@ -6,22 +6,19 @@ package fabula.condition;
  */
 class ConditionEvent extends Condition<String>
 {
-	var _achievedListID:Array<String>;
-	var _affirmation:Bool;
+	var _isCompleted:String->Bool;
 
-	public function new(condition:String, achievedListID:Array<String>, affirmation:Bool = true)
+	public function new(condition:String, isCompleted:String->Bool, affirmation:Bool = true)
 	{
-		_affirmation = affirmation;
-		_achievedListID = achievedListID;
-		super(condition, EVENT);
+		_isCompleted = isCompleted;
+		super(condition, EVENT, affirmation);
 	}
 
 	override public function test():Bool
 	{
-		for (id in _achievedListID)
+		if (_isCompleted(condition))
 		{
-			if (id == condition)
-				return _affirmation;
+			return _affirmation;
 		}
 		return !_affirmation;
 	}
