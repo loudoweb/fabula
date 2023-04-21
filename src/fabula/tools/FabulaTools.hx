@@ -1,13 +1,13 @@
 package fabula.tools;
 
-#if sys
-import fabula.Sequence;
-import fabula.Sequence;
+#if tools
 import fabula.Fabula;
+import fabula.Sequence;
+import fabula.Sequence;
+import haxe.Serializer;
 import haxe.io.Bytes;
 import haxe.io.Output;
 import haxe.macro.Expr;
-import haxe.Serializer;
 import sys.FileSystem;
 import sys.io.FileOutput;
 
