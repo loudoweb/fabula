@@ -100,6 +100,10 @@ class Event
 		ConditionFactory.helperList.set(this.id, EVENT);
 	}
 
+	/**
+	 * Get all choices that meet the condition in the current thread.
+	 * @return Array<Choice>
+	 */
 	public function getChoices():Array<Choice>
 	{
 		_cacheChoices = []; // TODO empty
@@ -130,8 +134,22 @@ class Event
 		return _cacheChoices;
 	}
 
+	/**
+	 * Get a choice from id or index
+	 * @param id id of the choice
+	 * @param index index of the choice (use it alternatively to id)
+	 * @param selectFromAll default to false, set to true if you want to get a choice from the whole list of choices (i.e., a choice that doesn't necessarily met its condition)
+	 * @return Choice null if not found
+	 */
 	public function selectChoice(?id:String, ?index:Int, selectFromAll:Bool = false):Choice
 	{
+		#if php
+		// as php forget the thread, you need to be sure to have generated the choices
+		if (_cacheChoices == null || _cacheChoices.length == 0)
+		{
+			getChoices();
+		}
+		#end
 		var _choiceArray = selectFromAll ? choices : _cacheChoices;
 		var selected:Choice = null;
 		if (_choiceArray != null)
@@ -146,7 +164,7 @@ class Event
 						break;
 					}
 				}
-			} else if (index != null)
+			} else if (index != null && index < _choiceArray.length)
 				selected = _choiceArray[index];
 		}
 		if (selected != null)

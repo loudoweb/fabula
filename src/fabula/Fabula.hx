@@ -1,7 +1,7 @@
 package fabula;
 
-import fabula.condition.Variable.EVariableType;
 import fabula.condition.*;
+import fabula.condition.Variable.EVariableType;
 import haxe.ds.StringMap;
 
 enum EEventType
@@ -163,7 +163,7 @@ class Fabula
 	}
 
 	/**
-	 * 
+	 * Get the next event.
 	 * @return Event. Null if current event is the last one.
 	 */
 	public function getNextEvent():Event
@@ -186,10 +186,10 @@ class Fabula
 	}
 
 	/**
-	 * Apply an user choice to the sequence, add it to the completed list and set variables
-	 * @param choice 
-	 * @param id 
-	 * @return Choice
+	 * Apply an user choice to the current event of the sequence, add it to the completed list and set variables.
+	 * @param id id of the choice
+	 * @param index index of the choice (use it alternatively to id)
+	 * @return Choice null if not found
 	 */
 	public function selectChoice(?id:String, ?index:Int):Choice
 	{
@@ -197,30 +197,31 @@ class Fabula
 		// update guard to check if sequence completed
 		if (currentSequence != null && currentSequence.current < currentSequence.events.length)
 		{
-			//
 			choice = currentSequence.getEvent().selectChoice(id, index);
 
-			if (choice.variables != null)
+			if (choice != null)
 			{
-				for (key in choice.variables.keys())
+				if (choice.variables != null)
 				{
-					var _vari = getVar(key);
-					if (_vari != null)
+					for (key in choice.variables.keys())
 					{
-						_vari.set(choice.variables.get(key));
+						var _vari = getVar(key);
+						if (_vari != null)
+						{
+							_vari.set(choice.variables.get(key));
+						}
 					}
 				}
+				// configure next target
+				currentSequence.nextTarget = choice.isExit ? Sequence.EXIT : choice.target;
+
+				completedID.push(choice.id);
+				currentSequence.completedID.push(choice.id);
+				if (_completedCallback != null)
+					_completedCallback(choice.id);
 			}
-			// configure next target
-			currentSequence.nextTarget = choice.isExit ? Sequence.EXIT : choice.target;
 		}
-		if (choice != null)
-		{
-			completedID.push(id);
-			currentSequence.completedID.push(id);
-			if (_completedCallback != null)
-				_completedCallback(id);
-		}
+
 		return choice;
 	}
 
