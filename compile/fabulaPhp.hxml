@@ -2,4 +2,5 @@
 -lib kadabra-utils
 -D php7
 --main Main
+--no-traces
 --php ../dist/php

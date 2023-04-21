@@ -71,8 +71,6 @@
     <script>
         var btnPlay;
         var btnReset;
-        var eventID;
-        var eventArray = [];
         
         //active play function on load
         window.onload = function() {
@@ -81,31 +79,24 @@
 
         var xhr = new XMLHttpRequest();
 
-        //Get dialogue datas
+        //Get dialog datas
         function getEventData() {
             xhr.open("GET", "main.php", true);
             xhr.onreadystatechange = handleEventData;
             xhr.send();
         }
 
-        /*
-        * This function get datas from php file and updates the HTML page
-        * If there is an event, we can create the dialogue
-        * Else it's dialogue end, and button play appears
-        */
         function handleEventData() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 console.log(xhr.responseText);
                 
+                //Get datas from PHP
                 var json = JSON.parse(xhr.responseText);
-                var event = JSON.parse(json.event);
+                var speaker = JSON.parse(json.speaker);
+                var label = JSON.parse(json.label);
 
-                //get event id and stock in eventArray
-                eventID = event.id;
-                eventArray.push(eventID);
-                console.log(event, eventArray);
-
-                if(event != null) {
+                //Create speaker dialog
+                if(speaker != null) {
                     var choice = JSON.parse(json.choice);
                     var divLabel = document.createElement("div");
                     divLabel.setAttribute('id', 'label');
@@ -117,9 +108,10 @@
                     divSpeaker.innerText = "";
 
                     document.getElementById("event").append(divSpeaker, divLabel);
-                    divSpeaker.innerHTML = event.speaker;
-                    divLabel.innerHTML = event.text;
+                    divSpeaker.innerHTML = speaker;
+                    divLabel.innerHTML = label;
 
+                    //create choices
                     for(i in choice)
                     {
                         var btnChoice = document.createElement('button');
@@ -130,17 +122,11 @@
                         btnChoice.addEventListener('click', makeChoice);
                     }
                 } else {
+                    //if dialog ends we can show the end
                     var divEnd = document.createElement('div');
                     divEnd.setAttribute('id', 'end');
 
                     divEvent.append(divEnd);
-
-                    var list;
-                    list = document.querySelectorAll(".choice");
-                    for (var i = 0; i < list.length; ++i) {
-                        list[i].classList.add('noEvent');
-                    }
-                    
                     play();
                 }
             }
@@ -148,14 +134,19 @@
 
         //when click choice, send post request for next sequence with choice ID
         function makeChoice(e){
+            var list;
+            list = document.querySelectorAll(".choice");
+            for (var i = 0; i < list.length; ++i) {
+                list[i].classList.add('noEvent'); //can't click other choices
+            }
+                    
             var btnChoice = e.currentTarget;
             id = btnChoice.id;
-            console.log(btnChoice.id);
             btnChoice.classList.add('active');
             xhr.open("POST", "main.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = handleChoiceResponse;
-            xhr.send("id="+id, "eventID="+eventID);
+            xhr.send("id="+id);
         }
 
         //we get the next sequence with server response
@@ -165,7 +156,7 @@
             }
         }
 
-        //add button play and call funcPlay for start dialogue
+        //add button play and call funcPlay for start dialog
         function play(){
             btnPlay = document.createElement('button');
             btnPlay.setAttribute('id', 'play');
@@ -175,7 +166,7 @@
             btnPlay.addEventListener('click', funcPlay);
         }
 
-        //start dialogue and reset the others
+        //start dialog and reset the others
         function funcPlay(){
             btnPlay.style.display = "none";
             getEventData();
@@ -193,7 +184,7 @@
             btnReset.addEventListener('click', funcReset);
         }
 
-        //reset all dialogues
+        //reset all dialog
         function funcReset(){
             document.getElementById("event").innerText = "";
             play();

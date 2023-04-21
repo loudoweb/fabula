@@ -9,7 +9,6 @@ use \php\_Boot\HxAnon;
 use \haxe\xml\_Access\HasAttribAccess_Impl_;
 use \php\Boot;
 use \haxe\Exception;
-use \haxe\Log;
 use \haxe\xml\_Access\NodeListAccess_Impl_;
 use \fabula\condition\EVariableType;
 use \haxe\xml\_Access\AttribAccess_Impl_;
@@ -94,13 +93,6 @@ class FabulaXmlParser {
 			++$_g;
 			#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:35: lines 35-39
 			if (!HasAttribAccess_Impl_::resolve($sequence, "id")) {
-				#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:37: characters 5-10
-				(Log::$trace)("id attribute is mandatory in the sequence tag", new HxAnon([
-					"fileName" => "fabula/FabulaXmlParser.hx",
-					"lineNumber" => 37,
-					"className" => "fabula.FabulaXmlParser",
-					"methodName" => "parse",
-				]));
 				#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:38: characters 5-13
 				continue;
 			}
@@ -122,13 +114,6 @@ class FabulaXmlParser {
 			$event = FabulaXmlParser::parseEvents($sequence, $seq, $events, $branches);
 			#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:52: lines 52-67
 			if ($event !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:54: characters 5-10
-				(Log::$trace)($event->id, new HxAnon([
-					"fileName" => "fabula/FabulaXmlParser.hx",
-					"lineNumber" => 54,
-					"className" => "fabula.FabulaXmlParser",
-					"methodName" => "parse",
-				]));
 				#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:56: lines 56-66
 				if ($event->choices !== null) {
 					#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:58: lines 58-62
@@ -194,13 +179,6 @@ class FabulaXmlParser {
 			$list = ($_g1->arr[$_g] ?? null);
 			#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:89: lines 89-92
 			++$_g;
-			#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:91: characters 4-9
-			(Log::$trace)("coucou list", new HxAnon([
-				"fileName" => "fabula/FabulaXmlParser.hx",
-				"lineNumber" => 91,
-				"className" => "fabula.FabulaXmlParser",
-				"methodName" => "parse",
-			]));
 		}
 		#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:93: characters 3-32
 		return new HxAnon(["sequences" => $sequences]);
@@ -236,13 +214,6 @@ class FabulaXmlParser {
 			if ($_g === "choice") {
 				#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:161: lines 161-165
 				if ($event === null) {
-					#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:163: characters 7-12
-					(Log::$trace)("impossible to add a choice without a parent event", new HxAnon([
-						"fileName" => "fabula/FabulaXmlParser.hx",
-						"lineNumber" => 163,
-						"className" => "fabula.FabulaXmlParser",
-						"methodName" => "parseEvents",
-					]));
 					#C:\HaxeLib\fabula/git/src/fabula/FabulaXmlParser.hx:164: characters 7-12
 					break;
 				}

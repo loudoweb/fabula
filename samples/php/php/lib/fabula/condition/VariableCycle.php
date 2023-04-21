@@ -5,9 +5,7 @@
 
 namespace fabula\condition;
 
-use \php\_Boot\HxAnon;
 use \php\Boot;
-use \haxe\Log;
 
 class VariableCycle extends VariableEnum {
 	/**
@@ -60,13 +58,6 @@ class VariableCycle extends VariableEnum {
 				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableCycle.hx:39: characters 5-27
 				$value = ($this->options->arr[$index1] ?? null);
 			} else if ($this->options->indexOf($value) === -1) {
-				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableCycle.hx:44: characters 6-11
-				(Log::$trace)("[Fabula > Variable] " . ($value??'null') . " not in options of " . ($this->id??'null'), new HxAnon([
-					"fileName" => "fabula/condition/VariableCycle.hx",
-					"lineNumber" => 44,
-					"className" => "fabula.condition.VariableCycle",
-					"methodName" => "set",
-				]));
 				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableCycle.hx:45: characters 6-18
 				return false;
 			}

@@ -6,11 +6,9 @@
 namespace fabula;
 
 use \fabula\condition\VariableInt;
-use \php\_Boot\HxAnon;
 use \fabula\condition\VariableCycle;
 use \fabula\condition\VariableString;
 use \php\Boot;
-use \haxe\Log;
 use \fabula\condition\ConditionCollection;
 use \fabula\condition\VariableEnum;
 use \fabula\condition\EVariableType;
@@ -102,16 +100,8 @@ class Sequence {
 	 * @return void
 	 */
 	public function addSequence ($events, $branches) {
-		#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:73: lines 73-74
-		if (($this->events !== null) || ($this->branches !== null)) {
-			#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:74: characters 4-9
-			(Log::$trace)("WARNING a new sequence will replace an old sequence", new HxAnon([
-				"fileName" => "fabula/Sequence.hx",
-				"lineNumber" => 74,
-				"className" => "fabula.Sequence",
-				"methodName" => "addSequence",
-			]));
-		}
+		#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:73: characters 7-51
+		$tmp = ($this->events !== null) || ($this->branches !== null);
 		#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:75: characters 3-23
 		$this->events = $events;
 		#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:76: characters 3-27
@@ -241,13 +231,6 @@ class Sequence {
 			if (($this->events->arr[$this->current] ?? null)->isExit || ($this->nextTarget === "\$\$EXIT\$\$")) {
 				#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:107: characters 5-19
 				$this->numCompleted++;
-				#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:108: characters 5-10
-				(Log::$trace)("[Fabula] sequence " . ($this->id??'null') . " completed", new HxAnon([
-					"fileName" => "fabula/Sequence.hx",
-					"lineNumber" => 108,
-					"className" => "fabula.Sequence",
-					"methodName" => "getNextEvent",
-				]));
 				#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:109: characters 5-16
 				return null;
 			}
@@ -288,13 +271,6 @@ class Sequence {
 			} else {
 				#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:141: characters 5-19
 				$this->numCompleted++;
-				#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:142: characters 5-10
-				(Log::$trace)("sequence completed", new HxAnon([
-					"fileName" => "fabula/Sequence.hx",
-					"lineNumber" => 142,
-					"className" => "fabula.Sequence",
-					"methodName" => "getNextEvent",
-				]));
 			}
 		}
 		#C:\HaxeLib\fabula/git/src/fabula/Sequence.hx:145: characters 3-14

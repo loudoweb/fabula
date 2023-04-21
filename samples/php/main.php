@@ -12,6 +12,9 @@ spl_autoload_register(
 \php\Boot::__hx__init();
 use \fabula\Fabula;
 
+ob_start(); // only php Echo
+session_start(); // start php session
+
 /*
 * we load the Fabula library and defines an XML string containing.
 * When we define $story, $event, $choice.
@@ -22,35 +25,49 @@ $story->selectSequence("Talk_to_kid");
 $event = $story->getNextEvent();
 $choice = $event->getChoices();
 
-/*
- * If this request receive the ID of choice and the id of the event for stock in completed ID
- * and current ID. Then the request send the next Event or null if it's over.
- * Else if there is no ID the request send the first sequence.
- */
-if (isset($_POST["id"]) && isset($_POST["eventID"])) {
-	$story->currentSequence = $_POST["eventID"];
-	
+if (isset($_POST["id"])) {
+	$story->completedID = $_SESSION['ArrayCompleteId'];
+	$story->currentSequence->currentId = $_SESSION['EventId'];
 
+	//Select the choice with choice id
     $story->selectChoice($id = $_POST["id"], $index = null);
 	$event = $story->getNextEvent();
 	$choice = $event->getChoices();
 
-	header('Content-Type: application/json');
+	//send speaker, label and choice to HTML
 	$response = [
-		'choice' => json_encode($choice),
-		//if there is no event, event = null
-		'event' => $event ? json_encode($event) : null
+		'speaker' => json_encode($event->speaker),
+		'label'  => json_encode($event->text),
+		'choice' => json_encode($choice)
 	];
 
+	//stock event id in complete id array
+	$_SESSION['EventId'] = $story->currentSequence->currentId;
+	$story->completedID[] = $_SESSION['EventId'];
+
+	//stock the complete id array
+	$_SESSION['ArrayCompleteId'] = $story->completedID;
+
+	ob_clean();
+	header('Content-Type: application/json');
 	echo json_encode($response);
 } else {
-
-	header('Content-Type: application/json');
 	$response = [
-		'choice' => json_encode($choice),
-		'event' => json_encode($event)
+		'speaker' => json_encode($event->speaker),
+		'label'  => json_encode($event->text),
+		'choice' => json_encode($choice)
 	];
 
+	
+	//stock event id in complete id array
+	$_SESSION['EventId'] = $story->currentSequence->currentId;
+	$story->completedID[] = $_SESSION['EventId'];
+	
+	//stock the complete id array
+	$_SESSION['ArrayCompleteId'] = $story->completedID;
+
+	ob_clean();
+	header('Content-Type: application/json');
 	echo json_encode($response);
 }
 ?>

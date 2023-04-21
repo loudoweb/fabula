@@ -5,9 +5,7 @@
 
 namespace fabula\condition;
 
-use \php\_Boot\HxAnon;
 use \php\Boot;
-use \haxe\Log;
 use \php\_Boot\HxString;
 
 class VariableEnum extends Variable {
@@ -78,13 +76,6 @@ class VariableEnum extends Variable {
 					return false;
 				}
 			} else if ($this->options->indexOf($value) === -1) {
-				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableEnum.hx:51: characters 6-11
-				(Log::$trace)("[Fabula > Variable] " . ($value??'null') . " not in options of " . ($this->id??'null'), new HxAnon([
-					"fileName" => "fabula/condition/VariableEnum.hx",
-					"lineNumber" => 51,
-					"className" => "fabula.condition.VariableEnum",
-					"methodName" => "set",
-				]));
 				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableEnum.hx:52: characters 6-18
 				return false;
 			}
@@ -93,13 +84,6 @@ class VariableEnum extends Variable {
 		} else {
 			#C:\HaxeLib\fabula/git/src/fabula/condition/VariableEnum.hx:59: lines 59-63
 			if (($index >= $this->options->length) || ($index < 0)) {
-				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableEnum.hx:61: characters 5-10
-				(Log::$trace)("[Fabula > Variable] " . ($index??'null') . " not in length of " . ($this->id??'null'), new HxAnon([
-					"fileName" => "fabula/condition/VariableEnum.hx",
-					"lineNumber" => 61,
-					"className" => "fabula.condition.VariableEnum",
-					"methodName" => "set",
-				]));
 				#C:\HaxeLib\fabula/git/src/fabula/condition/VariableEnum.hx:62: characters 5-17
 				return false;
 			}
