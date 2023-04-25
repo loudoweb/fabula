@@ -144,41 +144,44 @@ class Event {
 	 * @return void
 	 */
 	public function addChoice ($choice) {
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:168: lines 168-172
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:186: lines 186-190
 		if ($this->choices === null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:170: characters 4-16
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:188: characters 4-16
 			$this->choices = new \Array_hx();
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:171: characters 4-22
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:189: characters 4-22
 			$this->_cacheChoices = new \Array_hx();
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:173: characters 3-23
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:191: characters 3-23
 		$_this = $this->choices;
 		$_this->arr[$_this->length++] = $choice;
 	}
 
 	/**
+	 * Get all choices that meet the condition in the current thread.
+	 * @return Array<Choice>
+	 * 
 	 * @return \Array_hx
 	 */
 	public function getChoices () {
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:105: characters 3-21
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:109: characters 3-21
 		$this->_cacheChoices = new \Array_hx();
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:106: lines 106-118
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:110: lines 110-122
 		if ($this->choices !== null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:108: characters 14-18
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:112: characters 14-18
 			$_g = 0;
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:108: characters 18-32
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:112: characters 18-32
 			$_g1 = $this->choices->length;
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:108: lines 108-117
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:112: lines 112-121
 			while ($_g < $_g1) {
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:108: characters 14-32
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:112: characters 14-32
 				$i = $_g++;
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:110: characters 5-85
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:114: characters 5-85
 				$hasOnceLimit = (($this->choices->arr[$i] ?? null)->limit > 0) && (($this->choices->arr[$i] ?? null)->count >= ($this->choices->arr[$i] ?? null)->limit);
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:112: lines 112-116
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:116: lines 116-120
 				if (!$hasOnceLimit) {
-					#C:\HaxeLib\fabula/git/src/fabula/Event.hx:114: lines 114-115
+					#C:\HaxeLib\fabula/git/src/fabula/Event.hx:118: lines 118-119
 					if ((($this->choices->arr[$i] ?? null)->condition === null) || ($this->choices->arr[$i] ?? null)->condition->test()) {
-						#C:\HaxeLib\fabula/git/src/fabula/Event.hx:115: characters 7-37
+						#C:\HaxeLib\fabula/git/src/fabula/Event.hx:119: characters 7-37
 						$_this = $this->_cacheChoices;
 						$x = ($this->choices->arr[$i] ?? null);
 						$_this->arr[$_this->length++] = $x;
@@ -186,26 +189,32 @@ class Event {
 				}
 			}
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:120: lines 120-129
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:124: lines 124-133
 		if ($this->_cacheChoices->length === 0) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:122: lines 122-128
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:126: lines 126-132
 			if ($this->isExit) {
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:124: characters 5-78
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:128: characters 5-78
 				$_this = $this->_cacheChoices;
 				$x = new Choice("EXIT", Fabula::$QUIT, "quit", null, $this->target, true);
 				$_this->arr[$_this->length++] = $x;
 			} else {
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:127: characters 5-84
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:131: characters 5-84
 				$_this = $this->_cacheChoices;
 				$x = new Choice("CONTINUE", Fabula::$CONTINUE, "continue", null, $this->target);
 				$_this->arr[$_this->length++] = $x;
 			}
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:130: characters 3-23
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:134: characters 3-23
 		return $this->_cacheChoices;
 	}
 
 	/**
+	 * Get a choice from id or index
+	 * @param id id of the choice
+	 * @param index index of the choice (use it alternatively to id)
+	 * @param selectFromAll default to false, set to true if you want to get a choice from the whole list of choices (i.e., a choice that doesn't necessarily met its condition)
+	 * @return Choice null if not found
+	 * 
 	 * @param string $id
 	 * @param int $index
 	 * @param bool $selectFromAll
@@ -213,45 +222,50 @@ class Event {
 	 * @return Choice
 	 */
 	public function selectChoice ($id = null, $index = null, $selectFromAll = false) {
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:134: lines 134-155
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:145: lines 145-173
 		if ($selectFromAll === null) {
 			$selectFromAll = false;
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:135: characters 3-62
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:148: lines 148-151
+		if (($this->_cacheChoices === null) || ($this->_cacheChoices->length === 0)) {
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:150: characters 4-16
+			$this->getChoices();
+		}
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:153: characters 3-62
 		$_choiceArray = ($selectFromAll ? $this->choices : $this->_cacheChoices);
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:136: characters 3-30
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:154: characters 3-30
 		$selected = null;
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:137: lines 137-151
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:155: lines 155-169
 		if ($_choiceArray !== null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:139: lines 139-150
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:157: lines 157-168
 			if ($id !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:141: characters 15-19
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:159: characters 15-19
 				$_g = 0;
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:141: characters 19-38
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:159: characters 19-38
 				$_g1 = $_choiceArray->length;
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:141: lines 141-148
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:159: lines 159-166
 				while ($_g < $_g1) {
-					#C:\HaxeLib\fabula/git/src/fabula/Event.hx:141: characters 15-38
+					#C:\HaxeLib\fabula/git/src/fabula/Event.hx:159: characters 15-38
 					$i = $_g++;
-					#C:\HaxeLib\fabula/git/src/fabula/Event.hx:143: lines 143-147
+					#C:\HaxeLib\fabula/git/src/fabula/Event.hx:161: lines 161-165
 					if (($_choiceArray->arr[$i] ?? null)->id === $id) {
-						#C:\HaxeLib\fabula/git/src/fabula/Event.hx:145: characters 7-33
+						#C:\HaxeLib\fabula/git/src/fabula/Event.hx:163: characters 7-33
 						$selected = ($_choiceArray->arr[$i] ?? null);
-						#C:\HaxeLib\fabula/git/src/fabula/Event.hx:146: characters 7-12
+						#C:\HaxeLib\fabula/git/src/fabula/Event.hx:164: characters 7-12
 						break;
 					}
 				}
-			} else if ($index !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:150: characters 5-35
+			} else if (($index !== null) && ($index < $_choiceArray->length)) {
+				#C:\HaxeLib\fabula/git/src/fabula/Event.hx:168: characters 5-35
 				$selected = ($_choiceArray->arr[$index] ?? null);
 			}
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:152: lines 152-153
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:170: lines 170-171
 		if ($selected !== null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:153: characters 4-20
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:171: characters 4-20
 			$selected->count++;
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:154: characters 3-18
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:172: characters 3-18
 		return $selected;
 	}
 
@@ -259,19 +273,19 @@ class Event {
 	 * @return bool
 	 */
 	public function testConditions () {
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:159: characters 3-50
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:177: characters 3-50
 		$hasOnceLimit = ($this->limit > 0) && ($this->count >= $this->limit);
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:160: lines 160-161
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:178: lines 178-179
 		if ($this->conditions === null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:161: characters 4-24
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:179: characters 4-24
 			return !$hasOnceLimit;
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:163: characters 10-44
+		#C:\HaxeLib\fabula/git/src/fabula/Event.hx:181: characters 10-44
 		if (!$hasOnceLimit) {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:163: characters 27-44
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:181: characters 27-44
 			return $this->conditions->test();
 		} else {
-			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:163: characters 10-44
+			#C:\HaxeLib\fabula/git/src/fabula/Event.hx:181: characters 10-44
 			return false;
 		}
 	}

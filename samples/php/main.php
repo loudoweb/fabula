@@ -32,33 +32,42 @@ if (isset($_POST["id"])) {
 	//Select the choice with choice id
     $story->selectChoice($id = $_POST["id"], $index = null);
 	$event = $story->getNextEvent();
-	$choice = $event->getChoices();
 
-	//send speaker, label and choice to HTML
-	$response = [
-		'speaker' => json_encode($event->speaker),
-		'label'  => json_encode($event->text),
-		'choice' => json_encode($choice)
-	];
+	if($event != null){
 
-	//stock event id in complete id array
-	$_SESSION['EventId'] = $story->currentSequence->currentId;
-	$story->completedID[] = $_SESSION['EventId'];
+		//send speaker, label and choice to HTML
+		$response = [
+			'speaker' => json_encode($event->speaker),
+			'label'  => json_encode($event->text),
+			'choice' => json_encode($choice),
+			'logs' => ob_get_contents()
+		];
 
-	//stock the complete id array
-	$_SESSION['ArrayCompleteId'] = $story->completedID;
+		//stock event id in complete id array
+		$_SESSION['EventId'] = $story->currentSequence->currentId;
+		$story->completedID[] = $_SESSION['EventId'];
+
+		//stock the complete id array
+		$_SESSION['ArrayCompleteId'] = $story->completedID;
+	} else {
+		$response = null;
+	}
 
 	ob_clean();
 	header('Content-Type: application/json');
 	echo json_encode($response);
 } else {
+	$event = $story->getNextEvent();
+	$choice = $event->getChoices();
+
+	$story->completedID = $_SESSION['ArrayCompleteId'];
 	$response = [
 		'speaker' => json_encode($event->speaker),
 		'label'  => json_encode($event->text),
-		'choice' => json_encode($choice)
+		'choice' => json_encode($choice),
+        'logs' => ob_get_contents()
 	];
 
-	
 	//stock event id in complete id array
 	$_SESSION['EventId'] = $story->currentSequence->currentId;
 	$story->completedID[] = $_SESSION['EventId'];

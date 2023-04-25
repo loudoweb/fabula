@@ -118,42 +118,42 @@ class Fabula {
 	 * @return void
 	 */
 	public function addVariable ($id, $type, $startingValue) {
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:229: lines 229-230
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:230: lines 230-231
 		if ($this->variables === null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:230: characters 16-40
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:231: characters 16-40
 			$this1 = new \Array_hx();
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:230: characters 4-40
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:231: characters 4-40
 			$this->variables = $this1;
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:231: lines 231-245
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:232: lines 232-246
 		$__hx__switch = ($type->index);
 		if ($__hx__switch === 0) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:234: characters 5-58
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:235: characters 5-58
 			$_this = $this->variables;
 			$x = new VariableString($id, $startingValue);
 			$_this->arr[$_this->length++] = $x;
 		} else if ($__hx__switch === 1) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:236: characters 5-55
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:237: characters 5-55
 			$_this = $this->variables;
 			$x = new VariableInt($id, $startingValue);
 			$_this->arr[$_this->length++] = $x;
 		} else if ($__hx__switch === 2) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:238: characters 5-57
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:239: characters 5-57
 			$_this = $this->variables;
 			$x = new VariableFloat($id, $startingValue);
 			$_this->arr[$_this->length++] = $x;
 		} else if ($__hx__switch === 3) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:240: characters 5-56
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:241: characters 5-56
 			$_this = $this->variables;
 			$x = new VariableBool($id, $startingValue);
 			$_this->arr[$_this->length++] = $x;
 		} else if ($__hx__switch === 4) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:242: characters 5-56
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:243: characters 5-56
 			$_this = $this->variables;
 			$x = new VariableEnum($id, $startingValue);
 			$_this->arr[$_this->length++] = $x;
 		} else if ($__hx__switch === 5) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:244: characters 5-57
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:245: characters 5-57
 			$_this = $this->variables;
 			$x = new VariableCycle($id, $startingValue);
 			$_this->arr[$_this->length++] = $x;
@@ -191,46 +191,46 @@ class Fabula {
 	 * @return int
 	 */
 	public function countWords () {
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:294: characters 3-17
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:295: characters 3-17
 		$count = 0;
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:295: lines 295-311
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:296: lines 296-312
 		$_g = 0;
 		$_g1 = $this->_sequences;
 		while ($_g < $_g1->length) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:295: characters 8-11
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:296: characters 8-11
 			$seq = ($_g1->arr[$_g] ?? null);
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:295: lines 295-311
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:296: lines 296-312
 			++$_g;
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:297: lines 297-310
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:298: lines 298-311
 			if ($seq->events !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:299: lines 299-309
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:300: lines 300-310
 				$_g2 = 0;
 				$_g3 = $seq->events;
 				while ($_g2 < $_g3->length) {
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:299: characters 10-15
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:300: characters 10-15
 					$event = ($_g3->arr[$_g2] ?? null);
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:299: lines 299-309
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:300: lines 300-310
 					++$_g2;
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:301: characters 6-43
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:302: characters 6-43
 					$count += HxString::split($event->text, " ")->length;
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:302: lines 302-308
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:303: lines 303-309
 					if ($event->choices !== null) {
-						#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:304: lines 304-307
+						#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:305: lines 305-308
 						$_g4 = 0;
 						$_g5 = $event->choices;
 						while ($_g4 < $_g5->length) {
-							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:304: characters 12-18
+							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:305: characters 12-18
 							$choice = ($_g5->arr[$_g4] ?? null);
-							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:304: lines 304-307
+							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:305: lines 305-308
 							++$_g4;
-							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:306: characters 8-46
+							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:307: characters 8-46
 							$count += HxString::split($choice->text, " ")->length;
 						}
 					}
 				}
 			}
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:312: characters 3-15
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:313: characters 3-15
 		return $count;
 	}
 
@@ -243,7 +243,7 @@ class Fabula {
 	}
 
 	/**
-	 *
+	 * Get the next event.
 	 * @return Event. Null if current event is the last one.
 	 * 
 	 * @return Event
@@ -277,27 +277,27 @@ class Fabula {
 	 * @return Variable
 	 */
 	public function getVar ($name) {
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:250: characters 3-36
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:251: characters 3-36
 		$out = null;
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:251: lines 251-259
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:252: lines 252-260
 		if ($this->currentSequence !== null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:253: lines 253-258
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:254: lines 254-259
 			if ($this->currentSequence->variables !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:255: characters 5-46
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:256: characters 5-46
 				$out = VariableCollection_Impl_::get($this->currentSequence->variables, $name);
-				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:256: lines 256-257
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:257: lines 257-258
 				if ($out !== null) {
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:257: characters 6-16
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:258: characters 6-16
 					return $out;
 				}
 			}
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:260: lines 260-263
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:261: lines 261-264
 		if (($out === null) && ($this->variables !== null)) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:262: characters 4-29
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:263: characters 4-29
 			$out = VariableCollection_Impl_::get($this->variables, $name);
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:264: characters 3-13
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:265: characters 3-13
 		return $out;
 	}
 
@@ -323,12 +323,12 @@ class Fabula {
 	 * @return bool
 	 */
 	public function isIDCompleted ($id) {
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:274: lines 274-282
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:275: lines 275-283
 		if (\mb_substr($id, 0, 1) === ".") {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:277: characters 4-69
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:278: characters 4-69
 			return $this->currentSequence->completedID->indexOf(HxString::substring($id, 1)) !== -1;
 		} else {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:281: characters 4-40
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:282: characters 4-40
 			return $this->completedID->indexOf($id) !== -1;
 		}
 	}
@@ -414,10 +414,10 @@ class Fabula {
 	}
 
 	/**
-	 * Apply an user choice to the sequence, add it to the completed list and set variables
-	 * @param choice
-	 * @param id
-	 * @return Choice
+	 * Apply an user choice to the current event of the sequence, add it to the completed list and set variables.
+	 * @param id id of the choice
+	 * @param index index of the choice (use it alternatively to id)
+	 * @return Choice null if not found
 	 * 
 	 * @param string $id
 	 * @param int $index
@@ -427,44 +427,44 @@ class Fabula {
 	public function selectChoice ($id = null, $index = null) {
 		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:196: characters 3-28
 		$choice = null;
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:198: lines 198-216
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:198: lines 198-223
 		if (($this->currentSequence !== null) && ($this->currentSequence->current < $this->currentSequence->events->length)) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:201: characters 4-63
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:200: characters 4-63
 			$choice = $this->currentSequence->getEvent()->selectChoice($id, $index);
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:203: lines 203-213
-			if ($choice->variables !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:205: characters 17-40
-				$key = new NativeIndexedArrayIterator(\array_values(\array_map("strval", \array_keys($choice->variables->data))));
-				while ($key->hasNext()) {
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:205: lines 205-212
-					$key1 = $key->next();
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:207: characters 6-30
-					$_vari = $this->getVar($key1);
-					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:208: lines 208-211
-					if ($_vari !== null) {
-						#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:210: characters 7-43
-						$_vari->set(($choice->variables->data[$key1] ?? null));
+			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:202: lines 202-222
+			if ($choice !== null) {
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:204: lines 204-214
+				if ($choice->variables !== null) {
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:206: characters 18-41
+					$key = new NativeIndexedArrayIterator(\array_values(\array_map("strval", \array_keys($choice->variables->data))));
+					while ($key->hasNext()) {
+						#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:206: lines 206-213
+						$key1 = $key->next();
+						#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:208: characters 7-31
+						$_vari = $this->getVar($key1);
+						#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:209: lines 209-212
+						if ($_vari !== null) {
+							#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:211: characters 8-44
+							$_vari->set(($choice->variables->data[$key1] ?? null));
+						}
 					}
 				}
-			}
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:215: characters 4-78
-			$this->currentSequence->nextTarget = ($choice->isExit ? "\$\$EXIT\$\$" : $choice->target);
-		}
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:217: lines 217-223
-		if ($choice !== null) {
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:219: characters 4-24
-			$_this = $this->completedID;
-			$_this->arr[$_this->length++] = $id;
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:220: characters 4-40
-			$_this = $this->currentSequence->completedID;
-			$_this->arr[$_this->length++] = $id;
-			#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:221: lines 221-222
-			if ($this->_completedCallback !== null) {
-				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:222: characters 5-27
-				($this->_completedCallback)($id);
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:216: characters 5-79
+				$this->currentSequence->nextTarget = ($choice->isExit ? "\$\$EXIT\$\$" : $choice->target);
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:218: characters 5-32
+				$_this = $this->completedID;
+				$_this->arr[$_this->length++] = $choice->id;
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:219: characters 5-48
+				$_this = $this->currentSequence->completedID;
+				$_this->arr[$_this->length++] = $choice->id;
+				#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:220: lines 220-221
+				if ($this->_completedCallback !== null) {
+					#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:221: characters 6-35
+					($this->_completedCallback)($choice->id);
+				}
 			}
 		}
-		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:224: characters 3-16
+		#C:\HaxeLib\fabula/git/src/fabula/Fabula.hx:225: characters 3-16
 		return $choice;
 	}
 

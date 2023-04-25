@@ -58,10 +58,8 @@
             pointer-events: none;
         }
         #end{
-            height:1%;
-            width:100%;
+            border-bottom: 5px solid black;
             margin: 0.5% 0;
-            background-color:black;
         }
     </style>
 </head>
@@ -92,11 +90,11 @@
                 
                 //Get datas from PHP
                 var json = JSON.parse(xhr.responseText);
-                var speaker = JSON.parse(json.speaker);
-                var label = JSON.parse(json.label);
 
                 //Create speaker dialog
-                if(speaker != null) {
+                if(json != null) {
+                    var speaker = JSON.parse(json.speaker);
+                    var label = JSON.parse(json.label);
                     var choice = JSON.parse(json.choice);
                     var divLabel = document.createElement("div");
                     divLabel.setAttribute('id', 'label');
@@ -126,7 +124,7 @@
                     var divEnd = document.createElement('div');
                     divEnd.setAttribute('id', 'end');
 
-                    divEvent.append(divEnd);
+                    document.getElementById("event").append(divEnd);
                     play();
                 }
             }
@@ -142,6 +140,7 @@
                     
             var btnChoice = e.currentTarget;
             id = btnChoice.id;
+            console.log(id);
             btnChoice.classList.add('active');
             xhr.open("POST", "main.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

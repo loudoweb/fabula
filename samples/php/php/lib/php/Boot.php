@@ -941,8 +941,19 @@ class Boot {
 		if (\is_object($value)) {
 			#C:\haxeToolkit_415\haxe\std/php/Boot.hx:381: lines 381-383
 			if (($value instanceof \Array_hx)) {
-				#C:\haxeToolkit_415\haxe\std/php/Boot.hx:382: characters 5-75
-				return Boot::stringifyNativeIndexedArray(Boot::dynamicField($value, 'arr'), $maxRecursion - 1);
+				#C:\haxeToolkit_415\haxe\std/php/Boot.hx:382: characters 12-75
+				$arr = Boot::dynamicField($value, 'arr');
+				$maxRecursion1 = $maxRecursion - 1;
+				#C:\haxeToolkit_415\haxe\std/php/Boot.hx:382: characters 58-74
+				if ($maxRecursion1 === null) {
+					$maxRecursion1 = 10;
+				}
+				#C:\haxeToolkit_415\haxe\std/php/Boot.hx:382: characters 12-75
+				$strings = [];
+				foreach ($arr as $key => $value1) {
+					$strings[$key] = Boot::stringify($value1, $maxRecursion1 - 1);
+				}
+				return "[" . (\implode(",", $strings)??'null') . "]";
 			}
 			#C:\haxeToolkit_415\haxe\std/php/Boot.hx:384: lines 384-392
 			if (($value instanceof HxEnum)) {
