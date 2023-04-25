@@ -85,11 +85,17 @@
         }
 
         function handleEventData() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                console.log(xhr.responseText);
-                
+            if (xhr.readyState == 4 && xhr.status == 200) {                
+
                 //Get datas from PHP
-                var json = JSON.parse(xhr.responseText);
+                 try {
+                     var json = JSON.parse(xhr.responseText);
+                     console.log(json);
+                }catch(e)
+                {
+                    console.log(e);
+                    console.log(xhr.responseText);
+                }
 
                 //Create speaker dialog
                 if(json != null) {
@@ -187,6 +193,11 @@
         function funcReset(){
             document.getElementById("event").innerText = "";
             play();
+
+            xhr.open("POST", "main.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = null;
+            xhr.send("reset=true");
         }
     </script>
 
