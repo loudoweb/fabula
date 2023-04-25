@@ -2,6 +2,5 @@
 -lib kadabra-utils
 -D php7
 --macro include("fabula")
---no-traces
 
 --php ../dist/php
