@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="version" content="0.8.0"/>
+    <style type="text/css">
+         #speaker{
+            background-color: #709e70;
+            width: 15%;
+            text-align: center;
+            border: 2px solid;
+            border-radius: 5px 5px 0px 0px;
+        }
+        #label{
+            background-color: darkseagreen;
+            padding: 1%;
+            width: 60%;
+            border-radius: 0px 5px 0px 5px;
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        }
+        button{
+            border: none;
+            margin-top: 2%;
+            margin: 0.5%;
+            padding: 1.5%;
+            cursor: pointer;
+        }
+        #play{
+            box-shadow: 3px 4px 0px 0px #899599;
+            background-color:#ededed;
+            border-radius:15px;
+            border:1px solid #bcd6bc;
+            padding:0.5% 3%;
+            text-transform: uppercase;
+        }
+        .choice{
+            border-radius: 5px 5px 5px 0px;
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+            border: 2px solid #128e92;
+            background-color: cadetblue;
+        }
+        .active{
+            border: 2px solid #128e92af;
+            background-color: #5f9ea08c;
+        }
+
+        #reset{
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #dedede;
+            padding: 10px 30px;
+            border: solid #6c7073 2px;
+            box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+            border-radius: 50px;
+            padding:0.5% 3%;
+        }
+        .noEvent{
+            pointer-events: none;
+        }
+        #end{
+            border-bottom: 5px solid black;
+            margin: 0.5% 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="event"></div>
+
+    <script>
+        var btnPlay;
+        var btnReset;
+        
+        //active play function on load
+        window.onload = function() {
+            play();
+        };
+
+        var xhr = new XMLHttpRequest();
+
+        //Get dialog datas
+        function getEventData() {
+            xhr.open("GET", "main.php", true);
+            xhr.onreadystatechange = handleEventData;
+            xhr.send();
+        }
+
+        function handleEventData() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                console.log(xhr.responseText);
+                
+                //Get datas from PHP
+                var json = JSON.parse(xhr.responseText);
+
+                //Create speaker dialog
+                if(json != null) {
+                    var speaker = JSON.parse(json.speaker);
+                    var label = JSON.parse(json.label);
+                    var choice = JSON.parse(json.choice);
+                    var divLabel = document.createElement("div");
+                    divLabel.setAttribute('id', 'label');
+
+                    var divSpeaker = document.createElement("div");
+                    divSpeaker.setAttribute('id', 'speaker');
+
+                    divLabel.innerText = "";
+                    divSpeaker.innerText = "";
+
+                    document.getElementById("event").append(divSpeaker, divLabel);
+                    divSpeaker.innerHTML = speaker;
+                    divLabel.innerHTML = label;
+
+                    //create choices
+                    for(i in choice)
+                    {
+                        var btnChoice = document.createElement('button');
+                        btnChoice.classList.add('choice');
+                        btnChoice.setAttribute('id', choice[i].id);
+                        btnChoice.innerHTML = choice[i].text;
+                        document.getElementById("event").append(btnChoice);
+                        btnChoice.addEventListener('click', makeChoice);
+                    }
+                } else {
+                    //if dialog ends we can show the end
+                    var divEnd = document.createElement('div');
+                    divEnd.setAttribute('id', 'end');
+
+                    document.getElementById("event").append(divEnd);
+                    play();
+                }
+            }
+        };
+
+        //when click choice, send post request for next sequence with choice ID
+        function makeChoice(e){
+            var list;
+            list = document.querySelectorAll(".choice");
+            for (var i = 0; i < list.length; ++i) {
+                list[i].classList.add('noEvent'); //can't click other choices
+            }
+                    
+            var btnChoice = e.currentTarget;
+            id = btnChoice.id;
+            console.log(id);
+            btnChoice.classList.add('active');
+            xhr.open("POST", "main.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = handleChoiceResponse;
+            xhr.send("id="+id);
+        }
+
+        //we get the next sequence with server response
+        function handleChoiceResponse() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                handleEventData();
+            }
+        }
+
+        //add button play and call funcPlay for start dialog
+        function play(){
+            btnPlay = document.createElement('button');
+            btnPlay.setAttribute('id', 'play');
+            btnPlay.innerText = "Play";
+
+            document.getElementById("event").append(btnPlay);
+            btnPlay.addEventListener('click', funcPlay);
+        }
+
+        //start dialog and reset the others
+        function funcPlay(){
+            btnPlay.style.display = "none";
+            getEventData();
+            reset();
+        }
+
+        //create reset button and call reset function
+        function reset(){
+            btnReset = document.createElement('button');
+            btnReset.setAttribute('id', 'reset');
+            btnReset.innerText = "Reset";
+
+            document.getElementById("event").append(btnReset);
+
+            btnReset.addEventListener('click', funcReset);
+        }
+
+        //reset all dialog
+        function funcReset(){
+            document.getElementById("event").innerText = "";
+            play();
+        }
+    </script>
+
+</body>
+</html>

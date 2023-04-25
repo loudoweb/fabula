@@ -38,6 +38,11 @@
                 border: 2px solid #128e92;
                 background-color: cadetblue;
             }
+            .active{
+                border: 2px solid #128e92af;
+                background-color: #5f9ea08c;
+            }
+
             #reset{
                 position: absolute;
                 top: 0;
@@ -53,19 +58,10 @@
                 pointer-events: none;
             }
             #end{
-                text-align: center;
-                letter-spacing: 2.4px;
-                word-spacing: 2px;
-                font-weight: 700;
-                text-decoration: none solid rgb(68, 68, 68);
-                font-variant: small-caps;
-                text-transform: uppercase;
-                animation: move 2s;
-            }
-            @keyframes move {
-                25% {
-                  transform: translatey(-2.8vmin);
-                }
+                height:1%;
+                width:100%;
+                margin: 0.5% 0;
+                background-color:black;
             }
         </style>
     </head>
@@ -142,7 +138,6 @@
             } else {
                 var divEnd = document.createElement('div');
                 divEnd.setAttribute('id', 'end');
-                divEnd.innerText = "END...";
 
                 divEvent.append(divEnd);
 
@@ -158,7 +153,8 @@
 
         function choice(e){
             var btnChoice = e.currentTarget;
-            story.selectChoice(btnChoice.id);
+            btnChoice.classList.add('active');
+            story.selectChoice(null, btnChoice.id);
            next();
         }
 

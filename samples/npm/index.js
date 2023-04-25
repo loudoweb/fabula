@@ -57,7 +57,6 @@ function next(){
     } else {
         var divEnd = document.createElement('div');
         divEnd.setAttribute('id', 'end');
-        divEnd.innerText = "END...";
 
         divEvent.append(divEnd);
 
