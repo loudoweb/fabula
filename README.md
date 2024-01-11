@@ -292,7 +292,7 @@ You will need some libraries depending on your target.
     - status : OK
     - [Sample](https://github.com/loudoweb/fabula/tree/master/samples/commonjs)
 
-- **js modules**
+- **js and typescript modules**
 
     - This version allows you to have all classes in separated files for better debugging. You can use something like webpack to compile everything in one file. There is no release in npm registry yet so you have to copy paste the files in your projects.
     - file : js_modules.hxml

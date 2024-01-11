@@ -1,5 +1,6 @@
 -lib genes
 -D genes.unchanged_no_rewrite
+-D dts
 #-D js-source-map
 --times
 -D macro-times
