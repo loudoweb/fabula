@@ -3,12 +3,12 @@ Cross-platform Engine for stories, events and dialogs parsed from xml for video 
 
 ### Genesis
 
-This engine has been originally coded for my own tactical rpg procgen narrative game Graal Seeker at [Lugludum](https://www.lugludum.com) back in 2014. I've only decided to extract the code and make it an open source library in...2022. Since then I've successfuly used it in a recent point&click serious game.
+The legacy engine has been originally coded for my own tactical rpg procgen narrative game Graal Seeker at [Lugludum](https://www.lugludum.com) back in 2014. I've only decided to extract the code and make it an open source library in...2022. Since then I've successfuly used it in point&click serious games.
 
 ### Status
 
-Currently in development. Most of my original code still isn't there. Then I'll add new features :)
-**WIP: RC planned for 2023**
+Currently in development. Most of my original code still isn't there and I plan to add new features :)
+**WIP: RC planned for 2024/2025**
 
 ## writing your story with xml
 
@@ -81,7 +81,7 @@ You can test this story [here](https://loudoweb.github.io/fabula/samples/commonj
 On VSCode and some other softwares you can have autocompletion + validation on your xml using the xsd schema. Just write your root xml tag like that:
 
 ```xml
-<data xmlns="http://www.loudoweb.fr/app/fabula/0.15.0" xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.15.0 http://www.loudoweb.fr/app/fabula/fabula-0.15.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<data xmlns="http://www.loudoweb.fr/app/fabula/0.16.0" xsi:schemaLocation="http://www.loudoweb.fr/app/fabula/0.16.0 http://www.loudoweb.fr/app/fabula/fabula-0.16.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 </data>
 ```
 ### how it's work
@@ -236,7 +236,7 @@ var event = story.getNextEvent();
 //display the text
 trace(event.text);
 //loop through all available choices (fabula test all conditions for you)
-for (choice in event.getChoices())
+for (choice in story.getChoices())
 {
    trace(choice.text)
 }
@@ -294,7 +294,7 @@ You will need some libraries depending on your target.
 
 - **js and typescript modules**
 
-    - This version allows you to have all classes in separated files for better debugging. You can use something like webpack to compile everything in one file. There is no release in npm registry yet so you have to copy paste the files in your projects.
+    - This version allows you to have all classes in separated files for better debugging. You can use something like webpack to compile everything in one file. I have successfully used it with Phaser. There is no release in npm registry yet so you have to copy paste the files in your projects.
     - file : js_modules.hxml
     - dependency: `haxelib install genes`
     - status : OK

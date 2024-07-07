@@ -56,7 +56,7 @@ class Main
 			divSpeaker.append(event.speaker);
 			divLabel.insertAdjacentHTML('afterbegin', event.text);
 
-			var choices = event.getChoices();
+			var choices = story.getChoices();
 			for (choice in choices)
 			{
 				var btnChoice = Browser.document.createButtonElement();

@@ -32,9 +32,12 @@ class Sequence
 	public var currentId:Null<String>;
 	public var numCompleted:Int;
 
-	public function new(id:String)
+	public var autoAddChoice:Bool;
+
+	public function new(id:String, autoAddChoice:Bool = true)
 	{
 		this.id = id;
+		this.autoAddChoice = autoAddChoice;
 		current = -1;
 		currentId = null;
 		numCompleted = 0;

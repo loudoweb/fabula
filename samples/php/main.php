@@ -45,7 +45,7 @@ if (isset($_POST["id"])) {
 	
 
 	if($event != null){
-		$choice = $event->getChoices();
+		$choice = $story->getChoices();
 		//stock current event id in session
 		$_SESSION['EventId'] = $story->currentSequence->currentId;
 		//stock the complete id array
@@ -70,7 +70,7 @@ if (isset($_POST["id"])) {
 } else {
 	//get the first event
 	$event = $story->getNextEvent();
-	$choice = $event->getChoices();
+	$choice = $story->getChoices();
 
 	//stock current event id in session
 	$_SESSION['EventId'] = $story->currentSequence->currentId;	

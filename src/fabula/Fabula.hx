@@ -180,9 +180,33 @@ class Fabula
 		return nextEvent;
 	}
 
-	public function getCurrentEvent():Event
+	inline public function getCurrentEvent():Event
 	{
 		return currentSequence.getEvent();
+	}
+
+	/**
+	 * Get all choices that meet the condition in the current thread.
+	 * Can add default choices if sequence.autoAddChoice is true
+	 * @return Array<Choice>
+	 */
+	public function getChoices():Array<Choice>
+	{
+		var event = getCurrentEvent();
+		var choices = event.getChoices();
+
+		// use random text list for the following text's choices
+		if (choices.length == 0 && currentSequence.autoAddChoice)
+		{
+			if (event.isExit)
+			{
+				choices.push(new Choice("EXIT", Fabula.QUIT, "quit", event.target, true));
+			} else
+			{
+				choices.push(new Choice("CONTINUE", Fabula.CONTINUE, "continue", event.target));
+			}
+		}
+		return choices;
 	}
 
 	/**

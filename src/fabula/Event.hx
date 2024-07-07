@@ -65,6 +65,9 @@ class Event
 	 */
 	public var target:Null<String>;
 
+	/**
+	 * Conditioned choices (temp)
+	 */
 	var _cacheChoices:Array<Choice>;
 
 	/**
@@ -102,6 +105,7 @@ class Event
 
 	/**
 	 * Get all choices that meet the condition in the current thread.
+	 * It is recommended to use Fabula.getChoices() instead of directly this method because the former can add default choices
 	 * @return Array<Choice>
 	 */
 	public function getChoices():Array<Choice>
@@ -120,22 +124,12 @@ class Event
 				}
 			}
 		}
-		// TODO use general Fabula parameter AND use random text list for the following text's choices
-		if (_cacheChoices.length == 0)
-		{
-			if (isExit)
-			{
-				_cacheChoices.push(new Choice("EXIT", Fabula.QUIT, "quit", target, true));
-			} else
-			{
-				_cacheChoices.push(new Choice("CONTINUE", Fabula.CONTINUE, "continue", target));
-			}
-		}
 		return _cacheChoices;
 	}
 
 	/**
 	 * Get a choice from id or index
+	 * It is recommended to use Fabula.selectChoice() instead of directly this method because this one doesn't apply variables, etc.
 	 * @param id id of the choice
 	 * @param index index of the choice (use it alternatively to id)
 	 * @param selectFromAll default to false, set to true if you want to get a choice from the whole list of choices (i.e., a choice that doesn't necessarily met its condition)

@@ -5,8 +5,8 @@
     "classPath": "src",
     "description": "Engine for stories, events and dialogs parsed from xml.",
     "contributors": ["loudoweb"],
-    "releasenote": "variables, improved conditions, ability to limit choice and event, basic localization",
-    "version": "0.15.0",
+    "releasenote": "allow control on default choices added automatically",
+    "version": "0.16.0",
     "url": "https://github.com/loudoweb/fabula",
     "dependencies": {
       "kadabra-utils": ""

@@ -43,7 +43,7 @@ class FabulaXmlParser
 
 			var events:Array<Event> = [];
 			var branches:Array<Event> = [];
-			var seq = new Sequence(seqName);
+			var seq = new Sequence(seqName, sequence.getBool("autoAddChoice", true));
 			seq.addConditions(_conditionFactory.create(sequence.getString("if")));
 
 			var event = parseEvents(sequence, seq, events, branches);

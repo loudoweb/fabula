@@ -44,7 +44,7 @@ function next(){
         divSpeaker.append(event.speaker);
         divLabel.insertAdjacentHTML('afterbegin', event.text);
 
-        let choices = event.getChoices();
+        let choices = story.getChoices();
         for(i in choices)
         {
             var btnChoice = document.createElement('button');
